@@ -23,7 +23,7 @@ npm-debug.log*
 .sourcemaps
 .versions
 .vscode
-./src/environments/environment.ts
+environment.ts
 coverage
 dist
 node_modules
