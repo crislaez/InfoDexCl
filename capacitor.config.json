@@ -1,0 +1,13 @@
+{
+  "appId": "io.ionic.infodexcl",
+  "appName": "InfoDexCl",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}

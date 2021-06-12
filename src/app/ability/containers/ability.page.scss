@@ -1,0 +1,16 @@
+@import '../../../theme/variables';
+
+.div-accuracy{
+  @include displayFunction();
+}
+
+.div-ability{
+  width: 100%;
+  @include displayFunction();
+
+  div{
+    width: 45%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}

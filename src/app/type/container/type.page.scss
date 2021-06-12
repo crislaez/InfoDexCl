@@ -1,0 +1,23 @@
+@import '../../../theme/variables';
+
+.div-accuracy{
+  @include displayFunction();
+}
+
+.div-accuracy-stats{
+  @include displayFunction();
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+.div-accuracy-effect{
+  width: 100%;
+}
+
+.add-padding{
+  padding: 5px;
+}
+
+.displayed {
+  @include displayFunction();
+}
