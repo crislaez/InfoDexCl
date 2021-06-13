@@ -1,6 +1,6 @@
 ## (front-end) INFODEXCL
 
-Infodexcl es una aoplicacion hecha con ionic (Angular, TypeScript, Sass, html, Rxjs, Ngx)
+Infodexcl es una aplicación hecha en Ionic (Angular, TypeScript, Sass, html, Rxjs, Ngx)
 
 <img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_1.PNG" />
 <hr>
@@ -20,12 +20,12 @@ Infodexcl es una aoplicacion hecha con ionic (Angular, TypeScript, Sass, html, R
 
 ### Que hace el proyecto
 
-Infodexcl es una aplicacion hecha con ionic con la inormacion de pokemon, movimientos, abilidades y tipos
+Infodexcl es una aplicación hecha en Ionic con la información de todos los pokémon, movimientos, abilidades y tipos
  
 ### Donde pueden recibir ayuda los usuarios con el proyecto
  
-Escribiendome a mi correo crislaez30@gmail.com
+Escribiéndome a mi correo crislaez30@gmail.com
 
 ### Quien mantiene y construye el proyecto
 
-Yo mismo, y con muchisima ilusión
+Yo mismo, y con muchísima ilusión
