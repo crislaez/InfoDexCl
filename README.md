@@ -1,6 +1,6 @@
 ## (front-end) INFODEXCL
 
-Infodexcl es una aplicación hecha en Ionic (Angular, TypeScript, Sass, html, Rxjs, Ngx)
+Infodexcl es una aplicación hecha en Ionic (Angular, TypeScript, Sass/Css, Html, Rxjs, Ngx)
 
 <img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_1.PNG" />
 <hr>
