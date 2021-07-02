@@ -297,7 +297,7 @@ ion-card{
   background-image: none !important;
   border-bottom: none !important;
   --border-style: none;
-  
+
   h1{
     font-weight: bold;
     font-size: 35px;
@@ -311,6 +311,12 @@ ion-card{
     width: 100%;
   }
   color: #404040;
+}
+
+form{
+  width: 90%;
+  margin: auto;
+  margin-top: 30px;
 }
 
 .color-menu{
@@ -523,7 +529,7 @@ ion-refresher {
 
 .fade-in-image {
   animation: fadeIn 2s;
-  animation: fadeInUp 1s
+  animation: fadeInUp 0.4s;
 }
 
 @keyframes fadeIn {
@@ -533,8 +539,8 @@ ion-refresher {
 
 
 @keyframes fadeInUp {
-  0% {transform:translateY(60px);}
-  100% {transform:translateY(0px);}
+  0% {transform:translateY(60px) scale(0.5,0.5);}
+  100% {transform:translateY(0px) scale(1,1);}
 }
 
 .green{

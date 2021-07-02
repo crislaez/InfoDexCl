@@ -1,3 +1,4 @@
+import { IonContent } from "@ionic/angular"
 
 export const getPokemonImagePrincipal = (url: string): string => {
   const pokemonId =  url?.split('/')[6] || ''
@@ -44,3 +45,12 @@ export const clearName = (name: string): string => {
   if(name === null) return ''
   return name?.replace(/-/g, " ") || name
 }
+
+export const errorImage = (event, url) => {
+  event.target.src = url;
+}
+
+export const gotToTop = (content: IonContent): void => {
+  content.scrollToTop(500);
+}
+

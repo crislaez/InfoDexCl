@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.infodexcl",
-  "appName": "InfoDexCl",
+  "appId": "com.example.infodex",
+  "appName": "InfoDex",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

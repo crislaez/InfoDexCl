@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">InfoDexCl</string>
-    <string name="title_activity_main">InfoDexCl</string>
-    <string name="package_name">io.ionic.infodexcl</string>
-    <string name="custom_url_scheme">io.ionic.infodexcl</string>
+    <string name="app_name">InfoDex</string>
+    <string name="title_activity_main">InfoDex</string>
+    <string name="package_name">com.example.infodex</string>
+    <string name="custom_url_scheme">com.example.infodex</string>
 </resources>

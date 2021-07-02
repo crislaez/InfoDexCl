@@ -1,16 +1,19 @@
-import { Component, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ChangeDetectionStrategy, EventEmitter, ViewChild } from '@angular/core';
+import { Observable, combineLatest } from 'rxjs';
 import { tap, startWith, map, switchMap } from 'rxjs/operators';
 import { Ability, AbilityActions, fromAbility } from 'src/app/shared/ability-m';
-import { getPokemonImagePrincipal, getPokemonPokedexNumber, isNotData, clearName, trackById, getCardrBackground } from '../../shared/shared/utils/utils';
+import { getPokemonImagePrincipal, getPokemonPokedexNumber, isNotData, clearName, trackById, getCardrBackground, gotToTop } from '../../shared/shared/utils/utils';
 import { select, Store } from '@ngrx/store';
 import { FormControl } from '@angular/forms';
-
+import { IonInfiniteScroll } from '@ionic/angular';
+import { IonContent } from '@ionic/angular';
+import { Keyboard } from '@capacitor/keyboard';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-abilities',
   template: `
-  <ion-content [fullscreen]="true">
+  <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
 
     <!-- HEADER  -->
     <div class="header" no-border>
@@ -19,38 +22,43 @@ import { FormControl } from '@angular/forms';
       </ion-text>
     </div>
 
-    <!-- REFRESH -->
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+    <ng-container *ngIf="(info$ | async) as info; else loader">
 
-    <ng-container *ngIf="(abilities$ | async) as abilities; else loader">
       <!-- BUSCADOR  -->
-      <form class="form-search" (submit)="searchMove($event)">
-        <ion-item>
-          <ion-input name="name" placeholder="ability..." [formControl]="ability" ></ion-input>
-        </ion-item>
-        <ion-button type="submit"><ion-icon  name="search-outline"></ion-icon></ion-button>
+      <form (submit)="searchMove($event)" class="fade-in-card">
+        <ion-searchbar color="light" placeholder="ability..." [formControl]="ability" (ionClear)="clearSearch($event)"></ion-searchbar>
       </form>
 
       <!-- ABILITIES LIST  -->
       <ng-container *ngIf="!loading; else loader">
-        <ng-container *ngIf="abilities?.length > 0; else noAbilities">
+        <ng-container *ngIf="info?.abilities?.length > 0; else noAbilities">
 
-          <ion-virtual-scroll [items]="abilities" approxItemHeight="320px">
-            <ion-card class="ion-activatable ripple-parent" *virtualItem="let ability; let i = index;" [routerLink]="['/ability/'+ ability?.name]" [ngClass]="getCardrBackground(i)">
-              <ion-card-content class="ability-item">
-                <ion-label class="capital-letter span-white">{{clearName(ability?.name)}}</ion-label>
-              </ion-card-content>
-              <!-- RIPPLE EFFECT -->
-              <ion-ripple-effect></ion-ripple-effect>
-            </ion-card>
-          </ion-virtual-scroll>
+          <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let ability of info?.abilities; let i = index; trackBy: trackById" [routerLink]="['/ability/'+ ability?.name]" [ngClass]="getCardrBackground(i)">
+            <ion-card-content class="ability-item">
+              <ion-label class="capital-letter span-white">{{clearName(ability?.name)}}</ion-label>
+            </ion-card-content>
+            <!-- RIPPLE EFFECT -->
+            <ion-ripple-effect></ion-ripple-effect>
+          </ion-card>
+
+          <!-- INFINITE SCROLL  -->
+          <ng-container *ngIf="info?.total as total">
+            <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
+              <ion-infinite-scroll-content loadingSpinner="crescent" color="primary">
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+          </ng-container>
 
         </ng-container>
       </ng-container>
 
     </ng-container>
+
+
+     <!-- REFRESH -->
+     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
 
     <!-- IS NO MOVES  -->
     <ng-template #noAbilities>
@@ -63,6 +71,12 @@ import { FormControl } from '@angular/forms';
     <ng-template #loader>
       <ion-spinner name="crescent" color="primary"></ion-spinner>
     </ng-template>
+
+    <!-- TO TOP BUTTON  -->
+    <ion-fab *ngIf="showButton" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button class="color-button color-button-text" (click)="gotToTop(content)"> <ion-icon name="arrow-up-circle-outline"></ion-icon></ion-fab-button>
+    </ion-fab>
+
   </ion-content>
   `,
   styleUrls: ['./abilities.page.scss'],
@@ -76,45 +90,102 @@ export class AbilitiesPage {
   clearName = clearName;
   isNotData = isNotData;
   trackById = trackById;
-
+  gotToTop = gotToTop;
+  @ViewChild(IonInfiniteScroll) ionInfiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonContent, {static: true}) content: IonContent;
+  perPage: number = 15;
+  showButton: boolean = false;
   loading = false;
+
   ability = new FormControl('');
+  infiniteScroll$ = new EventEmitter();
   searchResult$ = new EventEmitter()
 
-  abilities$: Observable<Ability[]> = this.searchResult$.pipe(
-    startWith(''),
+  info$: Observable<any> = combineLatest([
+    this.searchResult$.pipe(startWith('')),
+    this.infiniteScroll$.pipe(startWith(15)),
+  ]).pipe(
     tap(() => this.loading = true),
-    switchMap((result) =>{
+    switchMap(([result, page]) =>{
       if(result){
         return this.store.pipe(select(fromAbility.getAbilities),
-          map(abilities => abilities.filter((ability: any) => ability?.name === result?.toLowerCase() || ability?.name.includes(result?.toLowerCase()))),
-          tap(() => this.loading = false)
+          map(abilities => {
+            const filterAbilities = (abilities || []).filter((ability: any) => ability?.name === result?.toLowerCase() || ability?.name.includes(result?.toLowerCase()));
+            return{
+              abilities: (filterAbilities || []).slice(0, page),
+              total: filterAbilities?.length
+            }
+          }),
         )
       }else{
         return this.store.pipe(select(fromAbility.getAbilities),
-        tap(() => this.loading = false)
+          map(abilities => {
+            return{
+              abilities:(abilities || []).slice(0, page),
+              total:abilities?.length
+            }
+        })
         )
       }
-    })
-  )
+    }),
+    tap(() => this.loading = false)
+  );
 
 
-  constructor(private store: Store) {
-    // this.abilities$.subscribe(data => console.log(data))
+  constructor(private store: Store, public platform: Platform) {
+    // this.info$.subscribe(data => console.log(data?.abilities))
   }
 
 
+  //SEARCH
   searchMove(event: Event): void{
     event.preventDefault();
+    if(!this.platform.is('mobileweb')) Keyboard.hide();
     this.searchResult$.next(this.ability?.value)
-    this.ability.reset();
+    this.clearAll();
   }
 
+  // DELETE SEARCH
+  clearSearch(event): void{
+    if(!this.platform.is('mobileweb')) Keyboard.hide();
+    this.searchResult$.next('');
+    this.clearAll();
+  }
+
+  // INIFINITE SCROLL
+   loadData(event, total) {
+    setTimeout(() => {
+      this.perPage = this.perPage + 15;
+      if(this.perPage >= total){
+        if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
+      }
+      this.infiniteScroll$.next(this.perPage)
+
+      event.target.complete();
+    }, 500);
+  }
+
+  // REFRESH
   doRefresh(event) {
     setTimeout(() => {
       this.searchResult$.next('')
+      this.ability.reset();
+      this.clearAll();
+
       event.target.complete();
     }, 500);
+  }
+
+  // SCROLL EVENT
+  logScrolling({detail:{scrollTop}}): void{
+    if(scrollTop >= 300) this.showButton = true
+    else this.showButton = false
+  }
+
+  clearAll(): void{
+    this.perPage = 15
+    this.infiniteScroll$.next(this.perPage)
+    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
   }
 
 
