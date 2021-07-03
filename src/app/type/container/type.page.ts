@@ -1,15 +1,16 @@
-import { Component, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, EventEmitter, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from "@angular/common";
 import { combineLatest, Observable } from 'rxjs';
 import { filter, switchMap, tap, catchError, startWith } from 'rxjs/operators';
 import { PokemonService } from 'src/app/shared/pokemon';
-import { getPokemonImagePrincipal, getPokemonPokedexNumber, defaultImagePokemon, isNotData, clearName, trackById } from '../../shared/shared/utils/utils';
+import { getPokemonImagePrincipal, getPokemonPokedexNumber, defaultImagePokemon, isNotData, clearName, trackById, gotToTop} from '../../shared/shared/utils/utils';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-type',
   template:`
-  <ion-content [fullscreen]="true">
+  <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
 
     <!-- REFRESH -->
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -173,6 +174,12 @@ import { getPokemonImagePrincipal, getPokemonPokedexNumber, defaultImagePokemon,
     <ng-template #loader>
       <ion-spinner name="crescent" color="primary"></ion-spinner>
     </ng-template>
+
+    <!-- TO TOP BUTTON  -->
+    <ion-fab *ngIf="showButton" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button class="color-button color-button-text" (click)="gotToTop(content)"> <ion-icon name="arrow-up-circle-outline"></ion-icon></ion-fab-button>
+    </ion-fab>
+
   </ion-content>
   `,
   styleUrls: ['./type.page.scss'],
@@ -186,7 +193,11 @@ export class TypePage {
   clearName = clearName;
   isNotData = isNotData;
   trackById = trackById;
+  gotToTop = gotToTop;
+  @ViewChild(IonContent, {static: true}) content: IonContent;
   pokemonOrMove = 1;
+  showButton: boolean = false;
+
   reload$ = new EventEmitter();
 
   type$: Observable<any> = this.reload$.pipe(
@@ -205,7 +216,7 @@ export class TypePage {
         )
       )
     )
-  )
+  );
 
 
   constructor(private route: ActivatedRoute, private _pokemon: PokemonService,  private location: Location) {
@@ -213,7 +224,7 @@ export class TypePage {
    }
 
 
-   errorImage(event, url) {
+  errorImage(event, url) {
     event.target.src = url;
   }
 
@@ -245,5 +256,10 @@ export class TypePage {
     }, 500);
   }
 
+  // SCROLL EVENT
+  logScrolling({detail:{scrollTop}}): void{
+    if(scrollTop >= 300) this.showButton = true
+    else this.showButton = false
+  }
 
 }

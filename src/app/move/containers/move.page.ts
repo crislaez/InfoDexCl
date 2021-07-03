@@ -1,16 +1,17 @@
-import { Component, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, EventEmitter, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from "@angular/common";
 import { Observable, EMPTY, combineLatest } from 'rxjs';
 import { filter, switchMap, tap, catchError, startWith } from 'rxjs/operators';
 import { PokemonService } from 'src/app/shared/pokemon';
-import { getPokemonImagePrincipal, getPokemonPokedexNumber, defaultImagePokemon, isNotData, clearName, trackById } from '../../shared/shared/utils/utils';
+import { getPokemonImagePrincipal, getPokemonPokedexNumber, defaultImagePokemon, isNotData, clearName, trackById, gotToTop } from '../../shared/shared/utils/utils';
+import { IonContent } from '@ionic/angular';
 
 
 @Component({
   selector: 'app-move',
   template:`
-  <ion-content [fullscreen]="true">
+  <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
 
     <!-- REFRESH -->
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -118,7 +119,7 @@ import { getPokemonImagePrincipal, getPokemonPokedexNumber, defaultImagePokemon,
 
       <!-- IS NO DATA  -->
       <ng-template #noItem>
-      <div> -</div>
+        <div> -</div>
       </ng-template>
 
       <!-- IS NO DATA  -->
@@ -139,6 +140,11 @@ import { getPokemonImagePrincipal, getPokemonPokedexNumber, defaultImagePokemon,
       <ng-template #loader>
         <ion-spinner name="crescent" color="primary"></ion-spinner>
       </ng-template>
+
+      <!-- TO TOP BUTTON  -->
+      <ion-fab *ngIf="showButton" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button class="color-button color-button-text" (click)="gotToTop(content)"> <ion-icon name="arrow-up-circle-outline"></ion-icon></ion-fab-button>
+      </ion-fab>
     </ion-content>
   `,
   styleUrls: ['./move.page.scss'],
@@ -152,6 +158,10 @@ export class MovePage  {
   clearName = clearName;
   isNotData = isNotData;
   trackById = trackById;
+  gotToTop = gotToTop
+  @ViewChild(IonContent, {static: true}) content: IonContent;
+  showButton: boolean = false;
+
   reload$ = new EventEmitter();
 
   move$: Observable<any> = this.reload$.pipe(
@@ -211,6 +221,12 @@ export class MovePage  {
       this.reload$.next('')
       event.target.complete();
     }, 500);
+  }
+
+  // SCROLL EVENT
+  logScrolling({detail:{scrollTop}}): void{
+    if(scrollTop >= 300) this.showButton = true
+    else this.showButton = false
   }
 
 }

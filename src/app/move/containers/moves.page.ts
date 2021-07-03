@@ -43,7 +43,7 @@ import { Platform } from '@ionic/angular';
            <!-- INFINITE SCROLL  -->
            <ng-container *ngIf="info?.total as total">
               <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-                <ion-infinite-scroll-content loadingSpinner="crescent" color="primary">
+                <ion-infinite-scroll-content loadingSpinner="crescent" color="primary" class="loadingspinner">
                 </ion-infinite-scroll-content>
               </ion-infinite-scroll>
             </ng-container>
@@ -68,7 +68,7 @@ import { Platform } from '@ionic/angular';
     <!-- LOADER  -->
     <ng-template #loader>
       <ion-spinner name="crescent" color="primary"></ion-spinner>
-    </ng-template>
+     </ng-template>
 
     <!-- TO TOP BUTTON  -->
     <ion-fab *ngIf="showButton" vertical="bottom" horizontal="end" slot="fixed">

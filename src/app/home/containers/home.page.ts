@@ -48,15 +48,13 @@ import { Platform } from '@ionic/angular';
              <!-- INFINITE SCROLL  -->
              <ng-container *ngIf="info?.total as total">
               <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-                <ion-infinite-scroll-content loadingSpinner="crescent" color="primary">
+                <ion-infinite-scroll-content loadingSpinner="crescent" color="primary" class="loadingspinner">
                 </ion-infinite-scroll-content>
               </ion-infinite-scroll>
             </ng-container>
 
           </ng-container>
         </ng-container>
-
-
 
       </ng-container>
     </ng-container>

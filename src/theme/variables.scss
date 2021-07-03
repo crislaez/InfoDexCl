@@ -1,7 +1,7 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
-@import url("https://fonts.googleapis.com/css?family=Raleway");
-$font-family-base: "Raleway", sans-serif !default;
+// @import url("https://fonts.googleapis.com/css?family=Raleway");
+// $font-family-base: "Raleway", sans-serif !default;
 
 /** Ionic CSS Variables **/
 :root {
@@ -237,9 +237,21 @@ $font-family-base: "Raleway", sans-serif !default;
   }
 }
 
-// *{
-//   font-family: 'Source Sans Pro', sans-serif;
-// }
+// FONT
+*{
+  // font-family: 'Source Sans Pro', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  // font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+  // font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  // font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+//buscador
+ion-searchbar{
+  --box-shadow: none !important;
+  --border-radius: 50px !important;
+}
+
 
 ion-spinner {
   display: block;
@@ -253,6 +265,7 @@ ion-header {
   width: 100%;
   border: none;
   position: none;
+
   ion-toolbar{
     width: 100%;
     display: flex;
@@ -518,6 +531,10 @@ ion-refresher {
 
 .radius{
   border-radius: 10px;
+}
+
+.loadingspinner{
+  --color : #3880ff;
 }
 
 @mixin displayFunction(){

@@ -1,16 +1,17 @@
-import { Component, ChangeDetectionStrategy, EventEmitter, ViewChildren, ElementRef, QueryList } from '@angular/core';
+import { Component, ChangeDetectionStrategy, EventEmitter, ViewChildren, ElementRef, QueryList, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from "@angular/common";
 import { Observable, EMPTY, combineLatest } from 'rxjs';
 import { filter, switchMap,tap ,map, catchError, startWith } from 'rxjs/operators';
 import { PokemonService } from 'src/app/shared/pokemon';
-import { getPokemonImagePrincipal, defaultImagePokemon, getPokemonPokedexNumber, isNotData, clearName, trackById } from '../../shared/shared/utils/utils';
+import { getPokemonImagePrincipal, defaultImagePokemon, getPokemonPokedexNumber, isNotData, clearName, trackById, gotToTop } from '../../shared/shared/utils/utils';
+import { IonContent } from '@ionic/angular';
 
 
 @Component({
   selector: 'app-pokemon',
   template: `
-  <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="ionScroll($event)">
+  <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
 
    <!-- REFRESH -->
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -219,22 +220,30 @@ import { getPokemonImagePrincipal, defaultImagePokemon, getPokemonPokedexNumber,
       <ion-spinner name="crescent" color="primary"></ion-spinner>
     </ng-template>
 
+    <!-- TO TOP BUTTON  -->
+    <ion-fab *ngIf="showButton" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button class="color-button color-button-text" (click)="gotToTop(content)"> <ion-icon name="arrow-up-circle-outline"></ion-icon></ion-fab-button>
+    </ion-fab>
+
   </ion-content>
   `,
   styleUrls: ['./pokemon.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PokemonPage {
-  // @ViewChildren(IonCard, { read: ElementRef }) cards: QueryList<ElementRef>;
 
-  notFoundImage: string = '../../../assets/images/notFound.png'
   getPokemonImagePrincipal = getPokemonImagePrincipal;
   getPokemonPokedexNumber = getPokemonPokedexNumber;
   defaultImagePokemon = defaultImagePokemon;
   clearName = clearName;
   isNotData = isNotData;
   trackById = trackById;
+  gotToTop = gotToTop;
+  @ViewChild(IonContent, {static: true}) content: IonContent;
+  notFoundImage: string = '../../../assets/images/notFound.png'
   stastsValue = 1;
+  showButton: boolean = false;
+
   reload$ = new EventEmitter();
 
   pokemon$: Observable<any> = this.reload$.pipe(
@@ -433,5 +442,9 @@ export class PokemonPage {
     }, 500);
   }
 
-
+ // SCROLL EVENT
+ logScrolling({detail:{scrollTop}}): void{
+  if(scrollTop >= 300) this.showButton = true
+  else this.showButton = false
+}
 }
