@@ -17,7 +17,7 @@ import { Store, select } from '@ngrx/store';
             <ion-menu-button class="color-menu"></ion-menu-button>
         </ion-button>
 
-        <ion-title class="color-menu" >ClDex</ion-title>
+        <ion-title class="color-menu" >InfoDex</ion-title>
 
         <div size="small" slot="end" class="div-clear"  >
         </div>
