@@ -147,6 +147,7 @@ export class MovesPage {
   // DELETE SEARCH
   clearSearch(event): void{
     if(!this.platform.is('mobileweb')) Keyboard.hide();
+    this.move.reset();
     this.searchResult$.next('');
     this.clearAll();
   }

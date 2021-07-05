@@ -154,6 +154,7 @@ export class HomePage  {
   // DELETE SEARCH
   clearSearch(event): void{
     if(!this.platform.is('mobileweb')) Keyboard.hide();
+    this.pokemon.reset();
     this.searchResult$.next('');
     this.clearAll();
   }
