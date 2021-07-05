@@ -15,8 +15,7 @@ export const getPokemonPokedexNumber = (url: string): string => {
 }
 
 export const isNotData = (data: any): boolean => {
-  if(Object.keys(data)?.length > 0) return true
-  else return false
+  return Object.keys(data || {})?.length > 0 ? true: false
 }
 
 export const trackById = (_: number, item: any): number => {

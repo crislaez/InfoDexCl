@@ -1,11 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, throwError, of, EMPTY } from 'rxjs';
-import { map, tap, switchMap, catchError } from 'rxjs/operators';
-// import { Chapters } from '../models';
-import { CoreConfigService, EndpointType } from '../../../core/services/core-config.service';
-// import { getChapters } from '../reducers/biblereducer';
-
+import { Observable, throwError } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { CoreConfigService } from '../../../core/services/core-config.service';
 
 @Injectable({
   providedIn: 'root'

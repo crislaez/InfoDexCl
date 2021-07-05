@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, EventEmitter, ViewChild } from '@an
 import { ActivatedRoute } from '@angular/router';
 import { Location } from "@angular/common";
 import { Observable, EMPTY, combineLatest } from 'rxjs';
-import { filter, switchMap, tap, catchError, startWith } from 'rxjs/operators';
+import { filter, switchMap, tap, catchError, startWith, map } from 'rxjs/operators';
 import { PokemonService } from 'src/app/shared/pokemon';
 import { getPokemonImagePrincipal, getPokemonPokedexNumber, defaultImagePokemon, isNotData, clearName, trackById, gotToTop } from '../../shared/shared/utils/utils';
 import { IonContent } from '@ionic/angular';
@@ -132,7 +132,7 @@ import { IonContent } from '@ionic/angular';
       <!-- IS NO MOVE  -->
       <ng-template #noMove>
         <div class="error-serve">
-          <span >No ability</span>
+          <span >No move</span>
         </div>
       </ng-template>
 

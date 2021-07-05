@@ -166,7 +166,7 @@ import { IonContent } from '@ionic/angular';
     <!-- IS NO MOVE  -->
     <ng-template #noType>
       <div class="error-serve">
-        <span >No ability</span>
+        <span >No type</span>
       </div>
     </ng-template>
 
