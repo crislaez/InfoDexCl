@@ -252,6 +252,11 @@ ion-searchbar{
   --border-radius: 50px !important;
 }
 
+ion-infinite-scroll-content{
+  ion-spinner{
+    margin-top: 0;
+  }
+}
 
 ion-spinner {
   display: block;
