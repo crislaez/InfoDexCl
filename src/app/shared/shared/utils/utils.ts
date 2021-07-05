@@ -46,7 +46,8 @@ export const clearName = (name: string): string => {
 }
 
 export const errorImage = (event, url) => {
-  event.target.src = url;
+  const image = '../../../../assets/images/notFound.png'
+  event.target.src = url || image;
 }
 
 export const gotToTop = (content: IonContent): void => {
