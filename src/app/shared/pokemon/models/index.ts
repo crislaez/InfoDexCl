@@ -1,3 +1,4 @@
 export interface Pokemon{
-  sprites: any
+  sprites: any;
+  name:string;
 }

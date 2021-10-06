@@ -1,27 +1,25 @@
 import { createReducer, on  } from '@ngrx/store';
 import { PokemonActions } from '../actions';
 import { Pokemon } from '../models';
+import { EntityStatus } from '../../shared/utils/utils';
 
-
-interface Status {
-  pending?: boolean;
-  error?: string;
-}
 export interface State{
   pokemons?: Pokemon[];
-  pending?: boolean;
+  status?: EntityStatus;
+  error:unknown;
 }
 
 const initialState: State = {
-  pending: false,
   pokemons: [],
+  status: EntityStatus.Initial,
+  error:undefined
 }
 
 
 const PokemonReducer = createReducer(
   initialState,
-  on(PokemonActions.loadPokemons, (state) => ({...state, pending: true})),
-  on(PokemonActions.savePokemons, (state, { pokemons }) => ({...state, pokemons, pending: false })),
+  on(PokemonActions.loadPokemons, (state) => ({ ...state, status: EntityStatus.Pending })),
+  on(PokemonActions.savePokemons, (state, { pokemons, error, status }) => ({...state, pokemons, error, status })),
 );
 
 export function reducer(state: State | undefined, action: PokemonActions.PokemonActionsUnion){
@@ -29,5 +27,5 @@ export function reducer(state: State | undefined, action: PokemonActions.Pokemon
 }
 
 export const getPokemons = (state: State) => state?.pokemons;
-
-export const getPending = (state: State) => state?.pending;
+export const getStatus = (state: State) => state?.status;
+export const getError = (state: State) => state?.error;

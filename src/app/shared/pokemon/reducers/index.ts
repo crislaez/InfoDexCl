@@ -17,16 +17,14 @@ export const getPokemons = createSelector(
   fromPokemon.getPokemons
 )
 
-export const getPending = createSelector(
+export const getStatus = createSelector(
   getPokemonState,
-  fromPokemon.getPending
+  fromPokemon.getStatus
 )
 
-// export const getChaptersByBook = (passageName: string) => createSelector(
-//   getBooks,
-//  (getBooks) => {
-//    return getBooks?.find( ({passage}) => passage == passageName)?.chapters || []
-//  }
-// )
+export const getError = createSelector(
+  getPokemonState,
+  fromPokemon.getError
+)
 
 

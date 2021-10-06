@@ -20,6 +20,7 @@ export class MoveService {
 
   getmoves(): Observable<any>{
     return this.http.get<any>(`${this.baseURL}move?limit=-1`).pipe(
+      map(res => (res || [])),
       catchError((error) => {
         return throwError(error)
       })

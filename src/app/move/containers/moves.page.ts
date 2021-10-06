@@ -22,41 +22,57 @@ import { Platform } from '@ionic/angular';
       </ion-text>
     </div>
 
-    <ng-container *ngIf="(info$ | async) as info; else loader">
-      <!-- BUSCADOR  -->
-      <form (submit)="searchMove($event)" class="fade-in-card">
-        <ion-searchbar color="light" placeholder="move..." [formControl]="move" (ionClear)="clearSearch($event)"></ion-searchbar>
-      </form>
+    <ng-container *ngIf="(info$ | async) as info">
+      <ng-container *ngIf="(status$ | async) as status">
+        <ng-container *ngIf="status !== 'pending'; else loader">
+          <ng-container *ngIf="status !== 'error'; else serverError">
 
-      <!-- MOVES LIST  -->
-      <ng-container *ngIf="!loading; else loader">
-        <ng-container *ngIf="info?.moves?.length > 0; else noMoves">
 
-          <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let moves of info?.moves; let i = index; trackBy: trackById" [routerLink]="['/move/'+ moves?.name]" [ngClass]="getCardrBackground(i)" >
-            <ion-card-content class="move-item">
-              <ion-label class="capital-letter span-white">{{clearName(moves?.name)}}</ion-label>
-            </ion-card-content>
-            <!-- RIPPLE EFFECT -->
-            <ion-ripple-effect></ion-ripple-effect>
-          </ion-card>
+              <!-- BUSCADOR  -->
+              <form (submit)="searchMove($event)" class="fade-in-card">
+                <ion-searchbar color="light" placeholder="move..." [formControl]="move" (ionClear)="clearSearch($event)"></ion-searchbar>
+              </form>
 
-           <!-- INFINITE SCROLL  -->
-           <ng-container *ngIf="info?.total as total">
-              <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-                <ion-infinite-scroll-content loadingSpinner="crescent" color="primary" class="loadingspinner">
-                </ion-infinite-scroll-content>
-              </ion-infinite-scroll>
-            </ng-container>
+              <!-- MOVES LIST  -->
+              <ng-container *ngIf="info?.moves?.length > 0; else noMoves">
 
+                <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let moves of info?.moves; let i = index; trackBy: trackById" [routerLink]="['/move/'+ moves?.name]" [ngClass]="getCardrBackground(i)" >
+                  <ion-card-content class="move-item">
+                    <ion-label class="capital-letter span-white">{{clearName(moves?.name)}}</ion-label>
+                  </ion-card-content>
+                  <!-- RIPPLE EFFECT -->
+                  <ion-ripple-effect></ion-ripple-effect>
+                </ion-card>
+
+                <!-- INFINITE SCROLL  -->
+                <ng-container *ngIf="info?.total as total">
+                  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
+                    <ion-infinite-scroll-content loadingSpinner="crescent" color="primary" class="loadingspinner">
+                    </ion-infinite-scroll-content>
+                  </ion-infinite-scroll>
+                </ng-container>
+              </ng-container>
+
+          </ng-container>
         </ng-container>
       </ng-container>
-
     </ng-container>
 
      <!-- REFRESH -->
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
+
+    <!-- IS ERROR -->
+    <ng-template #serverError>
+      <div class="error-serve">
+        <div>
+          <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
+          <br>
+          <span class="text-second-color"> An error has occurred, swipe down to reload </span>
+        </div>
+      </div>
+    </ng-template>
 
     <!-- IS NO MOVES  -->
     <ng-template #noMoves>
@@ -91,75 +107,70 @@ export class MovesPage {
   gotToTop = gotToTop;
   @ViewChild(IonInfiniteScroll) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent, {static: true}) content: IonContent;
-  loading = false;
-  perPage: number = 15;
+
   showButton: boolean = false;
+  statusComponent:{perPage:number, search:string} = {
+    perPage:15,
+    search:''
+  };
 
   move = new FormControl('');
-  infiniteScroll$ = new EventEmitter();
-  searchResult$ = new EventEmitter();
+  infiniteScroll$ = new EventEmitter<{perPage:number, search:string}>();
+  status$ = this.store.pipe(select(fromMove.getStatus));
 
-  info$: Observable<any> = combineLatest([
-    this.searchResult$.pipe( startWith('')),
-    this.infiniteScroll$.pipe(startWith(15)),
-  ]).pipe(
-    startWith(''),
-    tap(() => this.loading = true),
-    switchMap(([result, page]) =>{
-      if(result){
-        return this.store.pipe(select(fromMove.getMoves),
-          map(moves => {
-            let filterMoves = (moves || []).filter((move: any) => move?.name === result?.toLowerCase() || move?.name.includes(result?.toLowerCase()));
-            return{
-              moves:(filterMoves || []).slice(0, page),
-              total:filterMoves?.length
-            }
-          })
-        )
-      }else{
-        return this.store.pipe(select(fromMove.getMoves),
-          map(moves => {
-            return {
-              moves: (moves || []).slice(0, page),
-              total:moves?.length
-            }
-          })
-        )
-      }
-    }),
-    tap(() => this.loading = false)
+  info$: Observable<any> = this.infiniteScroll$.pipe(
+    startWith(this.statusComponent),
+    switchMap(({perPage, search}) => {
+      return this.store.pipe(select(fromMove.getMoves),
+        map(moves => {
+          let result = [...moves];
+
+          if(!!search){
+            result = (moves || []).filter(({name}) => name === search?.toLowerCase() || name?.includes(search?.toLowerCase() ) || (search?.toLowerCase()  || '')?.includes(name));
+          }
+
+          return {
+            moves: (result || []).slice(0, perPage),
+            total: result?.length
+          }
+        })
+      )
+    })
   );
 
 
-  constructor(private store: Store, public platform: Platform) {
-    // this.info$.subscribe(data => console.log(data?.total))
-  }
+  constructor(
+    private store: Store,
+    public platform: Platform
+  ) { }
 
 
   //SEARCH
   searchMove(event: Event): void{
     event.preventDefault();
     if(!this.platform.is('mobileweb')) Keyboard.hide();
-    this.searchResult$.next(this.move?.value)
-    this.clearAll();
+    this.statusComponent = {perPage:15, search: this.move?.value};
+    this.infiniteScroll$.next(this.statusComponent);
+    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
   }
 
   // DELETE SEARCH
   clearSearch(event): void{
     if(!this.platform.is('mobileweb')) Keyboard.hide();
     this.move.reset();
-    this.searchResult$.next('');
-    this.clearAll();
+    this.statusComponent = {perPage:15, search: ''};
+    this.infiniteScroll$.next(this.statusComponent);
+    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false;
   }
 
   // INIFINITE SCROLL
   loadData(event, total) {
     setTimeout(() => {
-      this.perPage = this.perPage + 15;
-      if(this.perPage >= total){
+      this.statusComponent = {...this.statusComponent, perPage: this.statusComponent.perPage + 15};
+      if(this.statusComponent.perPage >= total){
         if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
       }
-      this.infiniteScroll$.next(this.perPage)
+      this.infiniteScroll$.next(this.statusComponent);
 
       event.target.complete();
     }, 500);
@@ -168,9 +179,10 @@ export class MovesPage {
   // REFRESH
   doRefresh(event) {
     setTimeout(() => {
-      this.searchResult$.next('')
+      this.statusComponent = {perPage:15, search:''};
+      this.infiniteScroll$.next(this.statusComponent);
       this.move.reset();
-      this.clearAll();
+      if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
 
       event.target.complete();
     }, 500);
@@ -182,11 +194,6 @@ export class MovesPage {
     else this.showButton = false
   }
 
-  clearAll(): void{
-    this.perPage = 15
-    this.infiniteScroll$.next(this.perPage)
-    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
-  }
 
 
 }

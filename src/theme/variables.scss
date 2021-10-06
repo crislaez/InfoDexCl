@@ -466,6 +466,11 @@ ion-virtual-scroll{
   flex-wrap: wrap;
   justify-content: space-around;
   align-content: center;
+
+  div{
+    width: 80%;
+    text-align: center;
+  }
 }
 
 .redirect{

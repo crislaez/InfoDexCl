@@ -22,42 +22,57 @@ import { Platform } from '@ionic/angular';
       </ion-text>
     </div>
 
+    <ng-container *ngIf="(info$ | async) as info; else loader">
+      <ng-container *ngIf="(status$ | async) as status">
+        <ng-container *ngIf="status !== 'pending'; else loader">
+          <ng-container *ngIf="status !== 'error'; else serverError">
+
+            <!-- BUSCADOR  -->
+            <form (submit)="searchType($event)" class="fade-in-card">
+              <ion-searchbar color="light" placeholder="type..." [formControl]="type" (ionClear)="clearSearch($event)"></ion-searchbar>
+            </form>
+
+            <!-- TYPES LIST  -->
+            <ng-container *ngIf="info?.types?.length > 0; else noTypes">
+
+              <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let type of info?.types; let i = index; trackBy: trackById"  [ngClass]="getClassColor(type?.name)" [routerLink]="['/type/'+ type?.name]" >
+                <ion-card-content class="type-item">
+                  <ion-label class="capital-letter span-white">{{type?.name}}</ion-label>
+                </ion-card-content>
+                  <!-- RIPPLE EFFECT -->
+                  <ion-ripple-effect></ion-ripple-effect>
+              </ion-card>
+
+              <!-- INFINITE SCROLL  -->
+              <ng-container *ngIf="info?.total as total">
+                <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
+                  <ion-infinite-scroll-content loadingSpinner="crescent" color="primary" class="loadingspinner">
+                  </ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+              </ng-container>
+
+            </ng-container>
+
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+
     <!-- REFRESH -->
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 
-    <ng-container *ngIf="(info$ | async) as info; else loader">
-
-      <!-- BUSCADOR  -->
-      <form (submit)="searchType($event)" class="fade-in-card">
-        <ion-searchbar color="light" placeholder="type..." [formControl]="type" (ionClear)="clearSearch($event)"></ion-searchbar>
-      </form>
-
-      <!-- TYPES LIST  -->
-      <ng-container *ngIf="!loading; else loader">
-        <ng-container *ngIf="info?.types?.length > 0; else noTypes">
-
-          <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let type of info?.types; let i = index; trackBy: trackById"  [ngClass]="getClassColor(type?.name)" [routerLink]="['/type/'+ type?.name]" >
-            <ion-card-content class="type-item">
-              <ion-label class="capital-letter span-white">{{type?.name}}</ion-label>
-            </ion-card-content>
-              <!-- RIPPLE EFFECT -->
-              <ion-ripple-effect></ion-ripple-effect>
-          </ion-card>
-
-          <!-- INFINITE SCROLL  -->
-          <ng-container *ngIf="info?.total as total">
-            <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-              <ion-infinite-scroll-content loadingSpinner="crescent" color="primary" class="loadingspinner">
-              </ion-infinite-scroll-content>
-            </ion-infinite-scroll>
-          </ng-container>
-
-        </ng-container>
-      </ng-container>
-
-    </ng-container>
+    <!-- IS ERROR -->
+    <ng-template #serverError>
+      <div class="error-serve">
+        <div>
+          <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
+          <br>
+          <span class="text-second-color"> An error has occurred, swipe down to reload </span>
+        </div>
+      </div>
+    </ng-template>
 
     <!-- IS NO TYPES  -->
     <ng-template #noTypes>
@@ -90,76 +105,71 @@ export class TypesPage {
   gotToTop = gotToTop;
   @ViewChild(IonInfiniteScroll) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent, {static: true}) content: IonContent;
-  loading = false;
-  perPage: number = 15;
+
   showButton: boolean = false;
+  statusComponent:{perPage:number, search:string} = {
+    perPage:15,
+    search:''
+  };
 
   type = new FormControl('');
-  infiniteScroll$ = new EventEmitter();
-  searchResult$ = new EventEmitter()
+  infiniteScroll$ = new EventEmitter<{perPage:number, search:string}>();
+  status$ = this.store.pipe(select(fromType.getStatus));
 
-  info$: Observable<any> = combineLatest([
-    this.searchResult$.pipe(startWith('')),
-    this.infiniteScroll$.pipe(startWith(15)),
-  ]).pipe(
-    tap(() => this.loading = true),
-    switchMap(([result, page]) =>{
-      if(result){
-        return this.store.pipe(select(fromType.getTypes),
-          map(types => types.filter((type: any) => type?.name !== 'unknown')),
-          map(types => {
-            const filterTypes = (types || []).filter((type: any) => type?.name === result?.toLowerCase() || type?.name.includes(result?.toLowerCase()))
-            return{
-              types: (filterTypes || []).slice(0, page),
-              total:filterTypes?.length
-            }
-          }),
-        )
-      }else{
-        return this.store.pipe(select(fromType.getTypes),
-          map(types => types.filter((type: any) => type?.name !== 'unknown')),
-          map(types => {
-            return{
-              types: (types || []).slice(0, page),
-              total:types?.length
-            }
-          })
-        )
-      }
-    }),
-    tap(() => this.loading = false)
+  info$: Observable<any> = this.infiniteScroll$.pipe(
+    startWith(this.statusComponent),
+    switchMap(({perPage, search}) =>{
+      return this.store.select(fromType.getTypes).pipe(
+        map(types => (types || []).filter(({name}) => name !== 'unknown')),
+        map(types => {
+          let result = [...types];
+
+          if(!!search){
+            result = (types || []).filter(({name}) => name === search?.toLowerCase() || name?.includes(search?.toLowerCase() ) || (search?.toLowerCase()  || '')?.includes(name));
+          }
+
+          return{
+            types: (result || []).slice(0, perPage),
+            total: result?.length
+          }
+        })
+      )
+    })
   );
 
 
-  constructor(private store: Store, public platform: Platform) {
-    // this.abilities$.subscribe(data => console.log(data))
-  }
+  constructor(
+    private store: Store,
+    public platform: Platform
+  ) { }
 
 
   //SEARCH
   searchType(event: Event): void{
     event.preventDefault();
     if(!this.platform.is('mobileweb')) Keyboard.hide();
-    this.searchResult$.next(this.type?.value)
-    this.clearAll();
+    this.statusComponent = {perPage:15, search: this.type?.value};
+    this.infiniteScroll$.next(this.statusComponent);
+    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
   }
 
   // DELETE SEARCH
   clearSearch(event): void{
     if(!this.platform.is('mobileweb')) Keyboard.hide();
     this.type.reset();
-    this.searchResult$.next('');
-    this.clearAll();
+    this.statusComponent = {perPage:15, search: ''};
+    this.infiniteScroll$.next(this.statusComponent);
+    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false;
   }
 
   // INIFINITE SCROLL
   loadData(event, total) {
     setTimeout(() => {
-      this.perPage = this.perPage + 15;
-      if(this.perPage >= total){
+      this.statusComponent = {...this.statusComponent, perPage: this.statusComponent.perPage + 15};
+      if(this.statusComponent.perPage >= total){
         if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
       }
-      this.infiniteScroll$.next(this.perPage)
+      this.infiniteScroll$.next(this.statusComponent);
 
       event.target.complete();
     }, 500);
@@ -168,9 +178,10 @@ export class TypesPage {
   // REFRESH
   doRefresh(event) {
     setTimeout(() => {
-      this.searchResult$.next('')
+      this.statusComponent = {perPage:15, search:''};
+      this.infiniteScroll$.next(this.statusComponent);
       this.type.reset();
-      this.clearAll();
+      if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
 
       event.target.complete();
     }, 500);
@@ -180,12 +191,6 @@ export class TypesPage {
   logScrolling({detail:{scrollTop}}): void{
     if(scrollTop >= 300) this.showButton = true
     else this.showButton = false
-  }
-
-  clearAll(): void{
-    this.perPage = 15
-    this.infiniteScroll$.next(this.perPage)
-    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
   }
 
   getClassColor(name): string{

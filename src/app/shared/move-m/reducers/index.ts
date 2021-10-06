@@ -17,16 +17,16 @@ export const getMoves = createSelector(
   fromMove.getMoves
 )
 
-export const getPending = createSelector(
+export const getStatus = createSelector(
   getMoveState,
-  fromMove.getPending
+  fromMove.getStatus
 )
 
-// export const getChaptersByBook = (passageName: string) => createSelector(
-//   getBooks,
-//  (getBooks) => {
-//    return getBooks?.find( ({passage}) => passage == passageName)?.chapters || []
-//  }
-// )
+export const getError = createSelector(
+  getMoveState,
+  fromMove.getError
+)
+
+
 
 

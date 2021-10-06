@@ -17,16 +17,13 @@ export const getTypes = createSelector(
   fromType.getTypes
 )
 
-export const getPending = createSelector(
+export const getStatus = createSelector(
   getTypeState,
-  fromType.getPending
+  fromType.getStatus
 )
 
-// export const getChaptersByBook = (passageName: string) => createSelector(
-//   getBooks,
-//  (getBooks) => {
-//    return getBooks?.find( ({passage}) => passage == passageName)?.chapters || []
-//  }
-// )
-
+export const getError = createSelector(
+  getTypeState,
+  fromType.getError
+)
 

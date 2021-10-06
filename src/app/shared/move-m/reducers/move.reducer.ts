@@ -1,27 +1,26 @@
 import { createReducer, on  } from '@ngrx/store';
 import { MoveActions } from '../actions';
 import { Move } from '../models';
+import { EntityStatus } from '../../shared/utils/utils';
 
 
-interface Status {
-  pending?: boolean;
-  error?: string;
-}
 export interface State{
   moves?: Move[];
-  pending?: boolean;
+  status?: EntityStatus;
+  error:unknown;
 }
 
 const initialState: State = {
-  pending: false,
   moves: [],
+  status: EntityStatus.Initial,
+  error:undefined
 }
 
 
 const moveReducer = createReducer(
   initialState,
-  on(MoveActions.loadMoves, (state) => ({...state, pending: true})),
-  on(MoveActions.saveMoves, (state, { moves }) => ({...state, moves, pending: false })),
+  on(MoveActions.loadMoves, (state) => ({...state, status: EntityStatus.Pending})),
+  on(MoveActions.saveMoves, (state, { moves, error, status }) => ({...state, moves, error, status  })),
 );
 
 export function reducer(state: State | undefined, action: MoveActions.MoveActionsUnion){
@@ -29,5 +28,5 @@ export function reducer(state: State | undefined, action: MoveActions.MoveAction
 }
 
 export const getMoves = (state: State) => state?.moves;
-
-export const getPending = (state: State) => state?.pending;
+export const getStatus = (state: State) => state?.status;
+export const getError = (state: State) => state?.error;

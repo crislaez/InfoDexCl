@@ -22,36 +22,38 @@ import { Platform } from '@ionic/angular';
       </ion-text>
     </div>
 
-    <ng-container *ngIf="(info$ | async) as info; else loader">
+    <ng-container *ngIf="(info$ | async) as info">
+      <ng-container *ngIf="(status$ | async) as status">
+        <ng-container *ngIf="status !== 'pending'; else loader">
+          <ng-container *ngIf="status !== 'error'; else serverError">
 
-      <!-- BUSCADOR  -->
-      <form (submit)="searchMove($event)" class="fade-in-card">
-        <ion-searchbar color="light" placeholder="ability..." [formControl]="ability" (ionClear)="clearSearch($event)"></ion-searchbar>
-      </form>
+            <!-- BUSCADOR  -->
+            <form (submit)="searchMove($event)" class="fade-in-card">
+              <ion-searchbar color="light" placeholder="ability..." [formControl]="ability" (ionClear)="clearSearch($event)"></ion-searchbar>
+            </form>
 
-      <!-- ABILITIES LIST  -->
-      <ng-container *ngIf="!loading; else loader">
-        <ng-container *ngIf="info?.abilities?.length > 0; else noAbilities">
+            <!-- ABILITIES LIST  -->
+            <ng-container *ngIf="info?.abilities?.length > 0; else noAbilities">
+              <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let ability of info?.abilities; let i = index; trackBy: trackById" [routerLink]="['/ability/'+ ability?.name]" [ngClass]="getCardrBackground(i)">
+                <ion-card-content class="ability-item">
+                  <ion-label class="capital-letter span-white">{{clearName(ability?.name)}}</ion-label>
+                </ion-card-content>
+                <!-- RIPPLE EFFECT -->
+                <ion-ripple-effect></ion-ripple-effect>
+              </ion-card>
 
-          <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let ability of info?.abilities; let i = index; trackBy: trackById" [routerLink]="['/ability/'+ ability?.name]" [ngClass]="getCardrBackground(i)">
-            <ion-card-content class="ability-item">
-              <ion-label class="capital-letter span-white">{{clearName(ability?.name)}}</ion-label>
-            </ion-card-content>
-            <!-- RIPPLE EFFECT -->
-            <ion-ripple-effect></ion-ripple-effect>
-          </ion-card>
+              <!-- INFINITE SCROLL  -->
+              <ng-container *ngIf="info?.total as total">
+                <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
+                  <ion-infinite-scroll-content loadingSpinner="crescent" color="primary" class="loadingspinner">
+                  </ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+              </ng-container>
+            </ng-container>
 
-          <!-- INFINITE SCROLL  -->
-          <ng-container *ngIf="info?.total as total">
-            <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-              <ion-infinite-scroll-content loadingSpinner="crescent" color="primary" class="loadingspinner">
-              </ion-infinite-scroll-content>
-            </ion-infinite-scroll>
           </ng-container>
-
         </ng-container>
       </ng-container>
-
     </ng-container>
 
 
@@ -59,6 +61,17 @@ import { Platform } from '@ionic/angular';
      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
+
+    <!-- IS ERROR -->
+    <ng-template #serverError>
+      <div class="error-serve">
+        <div>
+          <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
+          <br>
+          <span class="text-second-color"> An error has occurred, swipe down to reload </span>
+        </div>
+      </div>
+    </ng-template>
 
     <!-- IS NO MOVES  -->
     <ng-template #noAbilities>
@@ -93,74 +106,70 @@ export class AbilitiesPage {
   gotToTop = gotToTop;
   @ViewChild(IonInfiniteScroll) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent, {static: true}) content: IonContent;
-  perPage: number = 15;
+
   showButton: boolean = false;
-  loading = false;
+  statusComponent:{perPage:number, search:string} = {
+    perPage:15,
+    search:''
+  };
 
   ability = new FormControl('');
   infiniteScroll$ = new EventEmitter();
-  searchResult$ = new EventEmitter()
+  status$ = this.store.pipe(select(fromAbility.getStatus));
 
-  info$: Observable<any> = combineLatest([
-    this.searchResult$.pipe(startWith('')),
-    this.infiniteScroll$.pipe(startWith(15)),
-  ]).pipe(
-    tap(() => this.loading = true),
-    switchMap(([result, page]) =>{
-      if(result){
-        return this.store.pipe(select(fromAbility.getAbilities),
-          map(abilities => {
-            const filterAbilities = (abilities || []).filter((ability: any) => ability?.name === result?.toLowerCase() || ability?.name.includes(result?.toLowerCase()));
-            return{
-              abilities: (filterAbilities || []).slice(0, page),
-              total: filterAbilities?.length
-            }
-          }),
-        )
-      }else{
-        return this.store.pipe(select(fromAbility.getAbilities),
-          map(abilities => {
-            return{
-              abilities:(abilities || []).slice(0, page),
-              total:abilities?.length
-            }
+  info$: Observable<any> = this.infiniteScroll$.pipe(
+    startWith(this.statusComponent),
+    switchMap(({perPage, search}) => {
+      return this.store.pipe(select(fromAbility.getAbilities),
+        map(abilities => {
+          let result = [...abilities];
+
+          if(!!search){
+            result = (abilities || []).filter(({name}) => name === search?.toLowerCase() || name?.includes(search?.toLowerCase() ) || (search?.toLowerCase()  || '')?.includes(name));
+          }
+
+          return{
+            abilities: (result || []).slice(0, perPage),
+            total: result?.length
+          }
         })
-        )
-      }
-    }),
-    tap(() => this.loading = false)
+      )
+    })
   );
 
 
-  constructor(private store: Store, public platform: Platform) {
-    // this.info$.subscribe(data => console.log(data?.abilities))
-  }
+  constructor(
+    private store: Store,
+    public platform: Platform
+  ) { }
 
 
   //SEARCH
   searchMove(event: Event): void{
     event.preventDefault();
     if(!this.platform.is('mobileweb')) Keyboard.hide();
-    this.searchResult$.next(this.ability?.value)
-    this.clearAll();
+    this.statusComponent = {perPage:15, search: this.ability?.value};
+    this.infiniteScroll$.next(this.statusComponent);
+    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
   }
 
   // DELETE SEARCH
   clearSearch(event): void{
     if(!this.platform.is('mobileweb')) Keyboard.hide();
     this.ability.reset();
-    this.searchResult$.next('');
-    this.clearAll();
+    this.statusComponent = {perPage:15, search: ''};
+    this.infiniteScroll$.next(this.statusComponent);
+    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
   }
 
   // INIFINITE SCROLL
    loadData(event, total) {
     setTimeout(() => {
-      this.perPage = this.perPage + 15;
-      if(this.perPage >= total){
+      this.statusComponent = {...this.statusComponent, perPage: this.statusComponent.perPage + 15};
+      if(this.statusComponent.perPage >= total){
         if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
       }
-      this.infiniteScroll$.next(this.perPage)
+      this.infiniteScroll$.next(this.statusComponent);
 
       event.target.complete();
     }, 500);
@@ -169,9 +178,10 @@ export class AbilitiesPage {
   // REFRESH
   doRefresh(event) {
     setTimeout(() => {
-      this.searchResult$.next('')
+      this.statusComponent = {perPage:15, search:''};
+      this.infiniteScroll$.next(this.statusComponent);
       this.ability.reset();
-      this.clearAll();
+      if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
 
       event.target.complete();
     }, 500);
@@ -181,12 +191,6 @@ export class AbilitiesPage {
   logScrolling({detail:{scrollTop}}): void{
     if(scrollTop >= 300) this.showButton = true
     else this.showButton = false
-  }
-
-  clearAll(): void{
-    this.perPage = 15
-    this.infiniteScroll$.next(this.perPage)
-    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
   }
 
 

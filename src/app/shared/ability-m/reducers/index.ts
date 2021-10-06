@@ -17,16 +17,16 @@ export const getAbilities = createSelector(
   fromAbility.getAbilities
 )
 
-export const getPending = createSelector(
+export const getStatus = createSelector(
   getAbilityState,
-  fromAbility.getPending
+  fromAbility.getStatus
 )
 
-// export const getChaptersByBook = (passageName: string) => createSelector(
-//   getBooks,
-//  (getBooks) => {
-//    return getBooks?.find( ({passage}) => passage == passageName)?.chapters || []
-//  }
-// )
+export const getError = createSelector(
+  getAbilityState,
+  fromAbility.getError
+)
+
+
 
 

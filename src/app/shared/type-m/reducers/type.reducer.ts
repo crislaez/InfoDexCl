@@ -1,27 +1,25 @@
 import { createReducer, on  } from '@ngrx/store';
 import { TypeActions } from '../actions';
 import { Type } from '../models';
+import { EntityStatus } from '../../shared/utils/utils';
 
-
-interface Status {
-  pending?: boolean;
-  error?: string;
-}
 export interface State{
   types?: Type[];
-  pending?: boolean;
+  status?: EntityStatus;
+  error:unknown;
 }
 
 const initialState: State = {
-  pending: false,
   types: [],
+  status: EntityStatus.Initial,
+  error:undefined
 }
 
 
 const typeReducer = createReducer(
   initialState,
-  on(TypeActions.loadTypes, (state) => ({...state, pending: true})),
-  on(TypeActions.saveypes, (state, { types }) => ({...state, types, pending: false })),
+  on(TypeActions.loadTypes, (state) => ({...state, status: EntityStatus.Pending})),
+  on(TypeActions.saveypes, (state, { types, error, status }) => ({...state, types, error, status })),
 );
 
 export function reducer(state: State | undefined, action: TypeActions.TypeActionsUnion){
@@ -29,5 +27,5 @@ export function reducer(state: State | undefined, action: TypeActions.TypeAction
 }
 
 export const getTypes = (state: State) => state?.types;
-
-export const getPending = (state: State) => state?.pending;
+export const getStatus = (state: State) => state?.status;
+export const getError = (state: State) => state?.error;

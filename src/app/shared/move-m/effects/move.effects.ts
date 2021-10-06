@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Location } from '@angular/common';
-import { Store, select } from '@ngrx/store';
+import { ToastController } from '@ionic/angular';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, filter, tap, withLatestFrom } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { EntityStatus } from '../../shared/utils/utils';
 import { MoveActions } from '../actions';
 import { MoveService } from '../services/move.service';
-import { of } from 'rxjs';
 
 
 @Injectable()
@@ -16,12 +16,25 @@ export class MoveEffects {
       ofType(MoveActions.loadMoves),
       switchMap( () =>
         this._move.getmoves().pipe(
-          map( ({results}): any => MoveActions.saveMoves({ moves: results})),
-          catchError( () => [MoveActions.saveMoves({ moves: []})]),
+          map( ({results}): any => MoveActions.saveMoves({ moves: results, error:undefined, status: EntityStatus.Loaded})),
+          catchError( (error) => {
+            return of(
+              MoveActions.saveMoves({ moves: [], error, status: EntityStatus.Error}),
+              MoveActions.loadMovesFailure({message: 'Error loading moves'})
+            )
+          }),
         )
       )
     )
   );
+
+  loadPokemonsFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MoveActions.loadMovesFailure),
+      tap(({message}) => this.presentToast(message, 'danger')),
+    ), { dispatch: false }
+  );
+
 
   loadMoveInit$ = createEffect(() =>
     of(MoveActions.loadMoves())
@@ -30,6 +43,19 @@ export class MoveEffects {
   constructor(
     private actions$: Actions,
     private _move: MoveService,
-    private location: Location
+    public toastController: ToastController,
   ){}
+
+
+  async presentToast(message, color) {
+    const toast = await this.toastController.create({
+      message: message,
+      color: color,
+      duration: 1000
+    });
+    toast.present();
+  }
+
+
+
 }

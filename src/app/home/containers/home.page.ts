@@ -23,39 +23,40 @@ import { Platform } from '@ionic/angular';
     </div>
 
     <ng-container *ngIf="info$ | async as info; else loader">
-      <ng-container *ngIf="!(pending$ | async); else loader">
+      <ng-container *ngIf="(status$ | async) as status">
+        <ng-container *ngIf="status !== 'pending'; else loader">
+          <ng-container *ngIf="status !== 'error'; else serverError">
 
-        <!-- BUSCADOR  -->
-        <form (submit)="searchPokemon($event)" class="fade-in-card">
-          <ion-searchbar color="light" placeholder="pokemon..." [formControl]="pokemon" (ionClear)="clearSearch($event)"></ion-searchbar>
-        </form>
+            <!-- BUSCADOR  -->
+            <form (submit)="searchPokemon($event)" class="fade-in-card">
+              <ion-searchbar color="light" placeholder="pokemon..." [formControl]="pokemon" (ionClear)="clearSearch($event)"></ion-searchbar>
+            </form>
 
-        <!-- POKEMON LIST  -->
-        <ng-container *ngIf="!loading; else loader">
-          <ng-container *ngIf="info?.pokemons?.length > 0; else noPokemons">
+            <!-- POKEMON LIST  -->
+            <ng-container *ngIf="info?.pokemons?.length > 0; else noPokemons">
 
-            <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let pokemon of info?.pokemons; let i = index; trackBy: trackById" [routerLink]="['/pokemon/'+ getPokemonPokedexNumber(pokemon?.url)]" >
-              <ion-card-content class="pokemon-item" [ngClass]="getCardrBackground(i)">
-                <ion-label class="capital-letter span-white">#{{getPokemonPokedexNumber(pokemon?.url)}}  {{clearName(pokemon?.name)}}</ion-label>
-                <ion-avatar slot="start">
-                  <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.url)" [alt]="getPokemonImagePrincipal(pokemon?.url)" (error)="errorImage($event,  defaultImagePokemon(pokemon?.url))">
-                </ion-avatar>
-              </ion-card-content>
+              <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let pokemon of info?.pokemons; let i = index; trackBy: trackById" [routerLink]="['/pokemon/'+ getPokemonPokedexNumber(pokemon?.url)]" >
+                <ion-card-content class="pokemon-item" [ngClass]="getCardrBackground(i)">
+                  <ion-label class="capital-letter span-white">#{{getPokemonPokedexNumber(pokemon?.url)}}  {{clearName(pokemon?.name)}}</ion-label>
+                  <ion-avatar slot="start">
+                    <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.url)" [alt]="getPokemonImagePrincipal(pokemon?.url)" (error)="errorImage($event,  defaultImagePokemon(pokemon?.url))">
+                  </ion-avatar>
+                </ion-card-content>
 
-              <ion-ripple-effect></ion-ripple-effect>
-            </ion-card>
+                <ion-ripple-effect></ion-ripple-effect>
+              </ion-card>
 
-             <!-- INFINITE SCROLL  -->
-             <ng-container *ngIf="info?.total as total">
-              <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-                <ion-infinite-scroll-content color="primary" class="loadingspinner">
-                </ion-infinite-scroll-content>
-              </ion-infinite-scroll>
+              <!-- INFINITE SCROLL  -->
+              <ng-container *ngIf="info?.total as total">
+                <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
+                  <ion-infinite-scroll-content color="primary" class="loadingspinner">
+                  </ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+              </ng-container>
             </ng-container>
 
           </ng-container>
         </ng-container>
-
       </ng-container>
     </ng-container>
 
@@ -63,6 +64,17 @@ import { Platform } from '@ionic/angular';
      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" >
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
+
+    <!-- IS ERROR -->
+    <ng-template #serverError>
+      <div class="error-serve">
+        <div>
+          <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
+          <br>
+          <span class="text-second-color"> An error has occurred, swipe down to reload </span>
+        </div>
+      </div>
+    </ng-template>
 
     <!-- IS NO POKEMONS  -->
     <ng-template #noPokemons>
@@ -98,75 +110,70 @@ export class HomePage  {
   gotToTop = gotToTop;
   @ViewChild(IonInfiniteScroll) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent, {static: true}) content: IonContent;
-  loading = false;
-  perPage: number = 15;
+
   showButton: boolean = false;
+  statusComponent:{perPage:number, search:string} = {
+    perPage:15,
+    search:''
+  };
 
   pokemon = new FormControl('');
-  infiniteScroll$ = new EventEmitter();
-  searchResult$ = new EventEmitter();
-  pending$: Observable<boolean> = this.store.pipe(select(fromPokemon.getPending));
+  infiniteScroll$ = new EventEmitter<{perPage:number, search:string}>();
+  status$ = this.store.pipe(select(fromPokemon.getStatus));
 
-  info$: Observable<any> = combineLatest([
-    this.searchResult$.pipe(startWith('')),
-    this.infiniteScroll$.pipe(startWith(15)),
-  ]).pipe(
-    tap(() => this.loading = true),
-    switchMap(([result, page]) => {
-      if(!!result){
-        return this.store.pipe(select(fromPokemon.getPokemons),
-          map(pokemons => {
-            let filterPokemon = (pokemons || []).filter((pokemon: any) =>  pokemon?.name === result?.toLowerCase() || pokemon?.name.includes(result?.toLowerCase()));
-            return {
-              pokemons: (filterPokemon|| []).slice(0, page),
-              total:filterPokemon?.length
-            }
-          })
-        )
-      }else{
-        return this.store.pipe(select(fromPokemon.getPokemons),
-          map((pokemons) => {
-            return{
-              pokemons: (pokemons || []).slice(0, page),
-              total:pokemons?.length
-            }
-          })
-        )
-      }
-    }),
-    tap(() => this.loading = false)
+  info$: Observable<any> = this.infiniteScroll$.pipe(
+    startWith(this.statusComponent),
+    switchMap(({perPage, search}) => {
+      return this.store.select(fromPokemon.getPokemons).pipe(
+        map(pokemons => {
+          let result = [...pokemons];
+
+          if(!!search){
+            result = (pokemons || []).filter(({name}) => name === search?.toLowerCase() || name?.includes(search?.toLowerCase() ) || (search?.toLowerCase()  || '')?.includes(name));
+          }
+
+          return {
+            pokemons: (result || [])?.slice(0, perPage),
+            total: result?.length
+          }
+        })
+      )
+    })
   );
 
 
-  constructor(private store: Store, public platform: Platform) {
-    // this.info$.subscribe(data => console.log(data?.pokemons))
-  }
+  constructor(
+    private store: Store,
+    public platform: Platform
+  ) { }
 
 
   //SEARCH
   searchPokemon(event: Event): void{
     event.preventDefault();
     if(!this.platform.is('mobileweb')) Keyboard.hide();
-    this.searchResult$.next(this.pokemon?.value)
-    this.clearAll();
+    this.statusComponent = {perPage:15, search: this.pokemon?.value};
+    this.infiniteScroll$.next(this.statusComponent);
+    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
   }
 
   // DELETE SEARCH
   clearSearch(event): void{
     if(!this.platform.is('mobileweb')) Keyboard.hide();
     this.pokemon.reset();
-    this.searchResult$.next('');
-    this.clearAll();
+    this.statusComponent = {perPage:15, search: ''};
+    this.infiniteScroll$.next(this.statusComponent);
+    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false;
   }
 
   // INIFINITE SCROLL
   loadData(event, total) {
     setTimeout(() => {
-      this.perPage = this.perPage + 15;
-      if(this.perPage >= total){
+      this.statusComponent = {...this.statusComponent, perPage: this.statusComponent.perPage + 15};
+      if(this.statusComponent.perPage >= total){
         if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
       }
-      this.infiniteScroll$.next(this.perPage)
+      this.infiniteScroll$.next(this.statusComponent);
 
       event.target.complete();
     }, 500);
@@ -175,9 +182,10 @@ export class HomePage  {
   // REFRESH
   doRefresh(event) {
     setTimeout(() => {
-      this.searchResult$.next('')
+      this.statusComponent = {perPage:15, search:''};
+      this.infiniteScroll$.next(this.statusComponent);
       this.pokemon.reset();
-      this.clearAll();
+      if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
 
       event.target.complete();
     }, 500);
@@ -189,10 +197,5 @@ export class HomePage  {
     else this.showButton = false
   }
 
-  clearAll(): void{
-    this.perPage = 15
-    this.infiniteScroll$.next(this.perPage)
-    if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = false
-  }
 
 }
