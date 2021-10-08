@@ -33,7 +33,7 @@ import { IonContent } from '@ionic/angular';
           <!-- EFFECT  -->
           <ion-card class="card-stats fade-in-image">
             <ion-card-header class="card-header">
-              <h2>Effect</h2>
+              <h2>{{ 'COMMON.EFFECT' | translate }}</h2>
             </ion-card-header>
            <ion-card-content>
             <div *ngIf="getAbilityEffectEnglish(ability?.effect_entries); else noData">{{getAbilityEffectEnglish(ability?.effect_entries)}}</div>
@@ -43,7 +43,7 @@ import { IonContent } from '@ionic/angular';
            <!-- POKEMONS  -->
            <ion-card class="card-stats fade-in-image">
               <ion-card-header class="card-header">
-                <h2>Pokemon that learn it</h2>
+                <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
               </ion-card-header>
               <ion-card-content class="div-accuracy">
 
@@ -55,9 +55,9 @@ import { IonContent } from '@ionic/angular';
                       <ion-avatar slot="start">
                         <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.pokemon?.url)" (error)="errorImage($event, defaultImagePokemon(pokemon?.url))">
                       </ion-avatar>
-                      <div class="card-stats-div"><span class="span-dark">hide:</span>
-                      <span *ngIf="pokemon?.is_hidden === true; else hideAbility">Yes</span>
-                        <ng-template #hideAbility>No</ng-template>
+                      <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HIDE' | translate }}:</span>
+                      <span *ngIf="pokemon?.is_hidden === true; else hideAbility">{{ 'COMMON.YES' | translate }}</span>
+                        <ng-template #hideAbility>{{ 'COMMON.NO' | translate }}</ng-template>
                       </div>
                     </ion-card-content>
                     <!-- RIPPLE EFFECT -->

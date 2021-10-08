@@ -34,15 +34,15 @@ import { IonContent } from '@ionic/angular';
             <!-- DATA  -->
             <ion-card class="card-stats fade-in-image">
               <ion-card-header class="card-header">
-                <h2>Data</h2>
+                <h2>{{ 'COMMON.DATA' | translate }}</h2>
               </ion-card-header>
               <ion-card-content class="div-accuracy">
                 <div class="div-accuracy-stats">
-                  <div><span class="span-dark">Power:</span></div>
+                  <div><span class="span-dark">{{ 'COMMON.POWER' | translate }}:</span></div>
                   <div *ngIf="move?.power; else noItem">{{move?.power}}</div>
                 </div>
                 <div class="div-accuracy-stats">
-                  <div><span class="span-dark">Type:</span></div>
+                  <div><span class="span-dark">{{ 'COMMON.TYPE' | translate }}:</span></div>
                   <div class="card-type radius ion-activatable ripple-parent" *ngIf="move?.type?.name; else noItem" [routerLink]="['/type/'+getPokemonPokedexNumber(move?.type?.url)]" [ngClass]="getClassColor(move?.type?.name)">
                     <ion-label class="capital-letter">{{move?.type?.name}}</ion-label>
                     <!-- RIPPLE EFFECT -->
@@ -51,26 +51,26 @@ import { IonContent } from '@ionic/angular';
                   <!-- <div *ngIf="move?.type?.name; else noItem" class="capital-letter redirect" [routerLink]="['/type/'+ getPokemonPokedexNumber(move?.type?.url)]">{{move?.type?.name}}</div> -->
                 </div>
                 <div class="div-accuracy-stats">
-                  <div><span class="span-dark">Damage class:</span></div>
+                  <div><span class="span-dark">{{ 'COMMON.DAMAGE_CLASS' | translate }}:</span></div>
                   <div class="card-type radius" *ngIf="move?.damage_class?.name; else noItem"[ngClass]="getClassColor(move?.damage_class?.name)">
                     <ion-label class="capital-letter">{{move?.damage_class?.name}}</ion-label>
                   </div>
                   <!-- <div class="capital-letter" *ngIf="move?.damage_class?.name; else noItem">{{move?.damage_class?.name}}</div> -->
                 </div>
                 <div class="div-accuracy-stats">
-                  <div><span class="span-dark">PP:</span></div>
+                  <div><span class="span-dark">{{ 'COMMON.PP' | translate }}:</span></div>
                   <div class="capital-letter" *ngIf="move?.pp; else noItem">{{move?.pp}}</div>
                 </div>
                 <div class="div-accuracy-stats">
-                  <div><span class="span-dark">Accuracy:</span></div>
+                  <div><span class="span-dark">{{ 'COMMON.ACCURACY' | translate }}:</span></div>
                   <div class="capital-letter" *ngIf="move?.accuracy; else noItem">{{move?.accuracy}}</div>
                 </div>
                 <div class="div-accuracy-stats">
-                  <div><span class="span-dark">Priority:</span></div>
+                  <div><span class="span-dark">{{ 'COMMON.PRIORITY' | translate }}:</span></div>
                   <div class="capital-letter" *ngIf="move?.priority; else noItem">{{move?.priority}}</div>
                 </div>
                 <div class="div-accuracy-stats">
-                  <div><span class="span-dark">Effect chance:</span></div>
+                  <div><span class="span-dark">{{ 'COMMON.EFFECT_CHANCE' | translate }}:</span></div>
                   <div class="capital-letter" *ngIf="move?.effect_chance; else noItem">{{move?.effect_chance}}</div>
                 </div>
                 <div *ngIf="move?.stat_changes?.length > 0" class="div-accuracy-stats" >
@@ -83,7 +83,7 @@ import { IonContent } from '@ionic/angular';
             <!-- EFFECT  -->
             <ion-card class="card-stats fade-in-image">
               <ion-card-header class="card-header">
-                <h2>Effect</h2>
+                <h2>{{ 'COMMON.EFFECT' | translate }}</h2>
               </ion-card-header>
               <ion-card-content *ngIf="move?.effect_entries?.length > 0; else noData">
                 <div class="no-data" *ngFor="let effect of move?.effect_entries; trackBy: trackById">{{effect?.effect}}</div>
@@ -93,7 +93,7 @@ import { IonContent } from '@ionic/angular';
              <!-- LEARNING BY POKEMON  -->
              <ion-card class="card-stats fade-in-image">
               <ion-card-header class="card-header">
-                <h2>Pokemon that learn it</h2>
+                <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
               </ion-card-header>
               <ion-card-content class="div-accuracy">
 

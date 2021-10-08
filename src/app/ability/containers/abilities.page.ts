@@ -1,14 +1,12 @@
-import { Component, ChangeDetectionStrategy, EventEmitter, ViewChild } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
-import { tap, startWith, map, switchMap } from 'rxjs/operators';
-import { Ability, AbilityActions, fromAbility } from 'src/app/shared/ability-m';
-import { getPokemonImagePrincipal, getPokemonPokedexNumber, isNotData, clearName, trackById, getCardrBackground, gotToTop } from '../../shared/shared/utils/utils';
-import { select, Store } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, EventEmitter, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IonInfiniteScroll } from '@ionic/angular';
-import { IonContent } from '@ionic/angular';
 import { Keyboard } from '@capacitor/keyboard';
-import { Platform } from '@ionic/angular';
+import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
+import { fromAbility } from 'src/app/shared/ability-m';
+import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '../../shared/shared/utils/utils';
 
 @Component({
   selector: 'app-abilities',
@@ -18,7 +16,7 @@ import { Platform } from '@ionic/angular';
     <!-- HEADER  -->
     <div class="header" no-border>
       <ion-text>
-        <h1>Abilities</h1>
+        <h1>{{ 'COMMON.ABILITIES' | translate }}</h1>
       </ion-text>
     </div>
 
@@ -29,7 +27,7 @@ import { Platform } from '@ionic/angular';
 
             <!-- BUSCADOR  -->
             <form (submit)="searchMove($event)" class="fade-in-card">
-              <ion-searchbar color="light" placeholder="ability..." [formControl]="ability" (ionClear)="clearSearch($event)"></ion-searchbar>
+              <ion-searchbar color="light" [placeholder]="'COMMON.ABILITY_SPREAT' | translate " [formControl]="ability" (ionClear)="clearSearch($event)"></ion-searchbar>
             </form>
 
             <!-- ABILITIES LIST  -->

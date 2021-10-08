@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { HomePageRoutingModule } from './home-routing.module';
-import { HomePage } from './containers/home.page';
-import { SharedModule } from '../shared/shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 import { PokemonModule } from '../shared/pokemon/pokemon.module';
-
+import { SharedModule } from '../shared/shared/shared.module';
+import { HomePage } from './containers/home.page';
+import { HomePageRoutingModule } from './home-routing.module';
 
 @NgModule({
   imports: [
@@ -13,6 +13,7 @@ import { PokemonModule } from '../shared/pokemon/pokemon.module';
     IonicModule,
     SharedModule,
     PokemonModule,
+    TranslateModule.forChild(),
     HomePageRoutingModule
   ],
   declarations: [HomePage]

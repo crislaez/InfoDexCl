@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { MovePageRoutingModule } from './move-routing.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { MoveMModule } from '../shared/move-m/move-m.module';
+import { SharedModule } from '../shared/shared/shared.module';
 import { MovePage } from './containers/move.page';
 import { MovesPage } from './containers/moves.page';
-import { SharedModule } from '../shared/shared/shared.module';
-import { MoveMModule } from '../shared/move-m/move-m.module';
-
+import { MovePageRoutingModule } from './move-routing.module';
 
 @NgModule({
   imports: [
@@ -16,6 +16,7 @@ import { MoveMModule } from '../shared/move-m/move-m.module';
     IonicModule,
     SharedModule,
     MoveMModule,
+    TranslateModule.forChild(),
     MovePageRoutingModule
   ],
   declarations: [

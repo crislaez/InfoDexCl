@@ -1,14 +1,12 @@
-import { Component, ChangeDetectionStrategy, EventEmitter, ViewChild } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
-import { tap, startWith, map, switchMap } from 'rxjs/operators';
-import { getPokemonImagePrincipal, getPokemonPokedexNumber, isNotData, trackById, gotToTop} from '../../shared/shared/utils/utils';
-import { select, Store } from '@ngrx/store';
-import { fromType, TypeActions, Type } from 'src/app/shared/type-m';
+import { ChangeDetectionStrategy, Component, EventEmitter, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IonInfiniteScroll } from '@ionic/angular';
-import { IonContent } from '@ionic/angular';
 import { Keyboard } from '@capacitor/keyboard';
-import { Platform } from '@ionic/angular';
+import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
+import { fromType } from 'src/app/shared/type-m';
+import { getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '../../shared/shared/utils/utils';
 
 @Component({
   selector: 'app-types',
@@ -18,7 +16,7 @@ import { Platform } from '@ionic/angular';
     <!-- HEADER  -->
     <div class="header" no-border>
       <ion-text>
-        <h1>Types</h1>
+        <h1>{{ 'COMMON.TYPES' | translate }}</h1>
       </ion-text>
     </div>
 

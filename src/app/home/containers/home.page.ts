@@ -1,13 +1,12 @@
-import { Component, ChangeDetectionStrategy, EventEmitter, ViewChild } from '@angular/core';
-import { fromPokemon } from 'src/app/shared/pokemon';
-import { Store, select} from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs'
-import { map, startWith, switchMap, tap } from 'rxjs/operators'
+import { ChangeDetectionStrategy, Component, EventEmitter, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { getPokemonImagePrincipal, defaultImagePokemon, getPokemonPokedexNumber, clearName, getCardrBackground, trackById, errorImage, gotToTop} from '../../shared/shared/utils/utils';
-import { IonContent, IonInfiniteScroll } from '@ionic/angular';
 import { Keyboard } from '@capacitor/keyboard';
-import { Platform } from '@ionic/angular';
+import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
+import { fromPokemon } from 'src/app/shared/pokemon';
+import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, trackById } from '../../shared/shared/utils/utils';
 
 
 @Component({
@@ -18,7 +17,7 @@ import { Platform } from '@ionic/angular';
     <!-- HEADER  -->
     <div class="header" no-border>
       <ion-text>
-        <h1>Pokémon</h1>
+        <h1>{{ 'COMMON.POKEMON' | translate }}</h1>
       </ion-text>
     </div>
 
@@ -29,7 +28,7 @@ import { Platform } from '@ionic/angular';
 
             <!-- BUSCADOR  -->
             <form (submit)="searchPokemon($event)" class="fade-in-card">
-              <ion-searchbar color="light" placeholder="pokemon..." [formControl]="pokemon" (ionClear)="clearSearch($event)"></ion-searchbar>
+              <ion-searchbar color="light" [placeholder]="'COMMON.POKEMON_SPREAT' | translate" [formControl]="pokemon" (ionClear)="clearSearch($event)"></ion-searchbar>
             </form>
 
             <!-- POKEMON LIST  -->

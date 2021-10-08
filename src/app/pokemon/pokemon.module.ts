@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { PokemonPageRoutingModule } from './pokemon-routing.module';
 import { PokemonPage } from './containers/pokemon.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -11,6 +12,7 @@ import { PokemonPage } from './containers/pokemon.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    TranslateModule.forChild(),
     PokemonPageRoutingModule
   ],
   declarations: [

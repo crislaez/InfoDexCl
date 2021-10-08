@@ -33,7 +33,7 @@ import { IonContent } from '@ionic/angular';
           <!--DOUBLE  DAMAGE FROM -->
           <ion-card class="card-stats fade-in-image">
             <ion-card-header class="card-header">
-              <h2>Double damage from</h2>
+              <h2>{{ 'COMMON.DOUBLE_DAMAGE_FROM' | translate }}</h2>
             </ion-card-header>
             <ion-card-content *ngIf="type?.damage_relations?.double_damage_from?.length; else noData" class="div-accuracy">
               <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.double_damage_from; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
@@ -47,7 +47,7 @@ import { IonContent } from '@ionic/angular';
           <!--DOUBLE  DAMAGE TO -->
           <ion-card class="card-stats fade-in-image">
             <ion-card-header class="card-header">
-              <h2>Double damage to</h2>
+              <h2>{{ 'COMMON.DOUBLE_DAMAGE_TO' | translate }}</h2>
             </ion-card-header>
             <ion-card-content  *ngIf="type?.damage_relations?.double_damage_to?.length; else noData" class="div-accuracy">
               <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.double_damage_to; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
@@ -61,7 +61,7 @@ import { IonContent } from '@ionic/angular';
           <!--HALF  DAMAGE FROM -->
           <ion-card class="card-stats fade-in-image">
             <ion-card-header class="card-header">
-              <h2>Half damage from</h2>
+              <h2>{{ 'COMMON.HALF_DAMAGE_FROM' | translate }}</h2>
             </ion-card-header>
             <ion-card-content *ngIf="type?.damage_relations?.half_damage_from?.length; else noData" class="div-accuracy">
               <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.half_damage_from; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
@@ -75,7 +75,7 @@ import { IonContent } from '@ionic/angular';
            <!--HALF  DAMAGE TO -->
            <ion-card class="card-stats fade-in-image">
             <ion-card-header class="card-header">
-              <h2>Half damage to</h2>
+              <h2>{{ 'COMMON.HALF_DAMAGE_TO' | translate }}</h2>
             </ion-card-header>
             <ion-card-content *ngIf="type?.damage_relations?.half_damage_to?.length; else noData" class="div-accuracy">
                <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.half_damage_to; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
@@ -89,7 +89,7 @@ import { IonContent } from '@ionic/angular';
           <!--NO  DAMAGE FROM -->
           <ion-card class="card-stats fade-in-image">
             <ion-card-header class="card-header">
-              <h2>No damage from</h2>
+              <h2>{{ 'COMMON.NO_DAMAGE_FROM' | translate }}</h2>
             </ion-card-header>
             <ion-card-content *ngIf="type?.damage_relations?.no_damage_from?.length; else noData" class="div-accuracy">
               <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.no_damage_from; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
@@ -103,7 +103,7 @@ import { IonContent } from '@ionic/angular';
           <!--NO  DAMAGE TO -->
           <ion-card class="card-stats fade-in-image">
             <ion-card-header class="card-header">
-              <h2>No damage to</h2>
+              <h2>{{ 'COMMON.NO_DAMAGE_TO' | translate }}</h2>
             </ion-card-header>
             <ion-card-content *ngIf="type?.damage_relations?.no_damage_to?.length; else noData" class="div-accuracy">
               <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.no_damage_to; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
@@ -121,7 +121,7 @@ import { IonContent } from '@ionic/angular';
               <ion-button color="primary" class="margin-button" (click)="pokemonOrMove = 2">Moves</ion-button>
               <h2 *ngIf="pokemonOrMove === 1; else allMovesTitle">Pokemon that learn it</h2>
               <ng-template #allMovesTitle>
-                <h2>All type moves</h2>
+                <h2>{{ 'COMMON.ALL_TYPE_MOVES' | translate }}</h2>
               </ng-template>
             </ion-card-header>
             <ion-card-content class="div-accuracy">

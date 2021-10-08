@@ -1,13 +1,12 @@
-import { Component, ChangeDetectionStrategy, EventEmitter, ViewChild } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
-import { startWith, switchMap, tap, map } from 'rxjs/operators';
-import { getPokemonImagePrincipal, getPokemonPokedexNumber, isNotData, clearName, trackById, getCardrBackground, gotToTop} from '../../shared/shared/utils/utils';
-import { select, Store } from '@ngrx/store';
-import { fromMove, MoveActions, Move } from 'src/app/shared/move-m';
+import { ChangeDetectionStrategy, Component, EventEmitter, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IonInfiniteScroll, IonContent } from '@ionic/angular';
 import { Keyboard } from '@capacitor/keyboard';
-import { Platform } from '@ionic/angular';
+import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
+import { fromMove } from 'src/app/shared/move-m';
+import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '../../shared/shared/utils/utils';
 
 
 @Component({
@@ -18,7 +17,7 @@ import { Platform } from '@ionic/angular';
      <!-- HEADER  -->
     <div class="header" no-border>
       <ion-text>
-        <h1>Moves</h1>
+        <h1>{{ 'COMMON.MOVES' | translate }}</h1>
       </ion-text>
     </div>
 

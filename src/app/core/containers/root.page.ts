@@ -1,9 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { MenuController } from '@ionic/angular';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
-
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +11,10 @@ import { Store, select } from '@ngrx/store';
       <ion-toolbar mode="md|ios">
 
         <ion-button fill="clear" size="small" slot="start"  (click)="open()">
-            <ion-menu-button class="color-menu"></ion-menu-button>
+          <ion-menu-button class="color-menu-second"></ion-menu-button>
         </ion-button>
 
-        <ion-title class="color-menu" >InfoDex</ion-title>
+        <ion-title class="color-menu-second" >{{ 'COMMON.TITLE' | translate }}</ion-title>
 
         <div size="small" slot="end" class="div-clear"  >
         </div>
@@ -29,16 +26,16 @@ import { Store, select } from '@ngrx/store';
     <ion-menu side="start" menuId="first" contentId="main">
       <ion-header>
         <ion-toolbar >
-          <ion-title class="color-menu">Menu</ion-title>
+          <ion-title class="color-menu-second">{{ 'COMMON.MENU' | translate }}</ion-title>
         </ion-toolbar>
       </ion-header>
 
       <ion-content >
         <ion-list>
-          <ion-item class="color-menu" [routerLink]="['home']" (click)="openEnd()">Pokemon</ion-item>
-          <ion-item class="color-menu" [routerLink]="['move']" (click)="openEnd()">Moves</ion-item>
-          <ion-item class="color-menu" [routerLink]="['ability']" (click)="openEnd()">Abilities</ion-item>
-          <ion-item class="color-menu" [routerLink]="['type']" (click)="openEnd()">Type</ion-item>
+          <ion-item class="color-menu" [routerLink]="['home']" (click)="openEnd()">{{ 'COMMON.POKEMON' | translate }}</ion-item>
+          <ion-item class="color-menu" [routerLink]="['move']" (click)="openEnd()">{{ 'COMMON.MOVES' | translate }}</ion-item>
+          <ion-item class="color-menu" [routerLink]="['ability']" (click)="openEnd()">{{ 'COMMON.ABILITIES' | translate }}</ion-item>
+          <ion-item class="color-menu" [routerLink]="['type']" (click)="openEnd()">{{ 'COMMON.TYPES' | translate }}</ion-item>
         </ion-list>
       </ion-content>
     </ion-menu>
@@ -53,9 +50,11 @@ import { Store, select } from '@ngrx/store';
 })
 export class RootComponent {
 
-  constructor(private menu: MenuController, private store: Store, private router: Router) {
-    // this.menuList$.subscribe(data => console.log(data))
-  }
+  constructor(
+    private menu: MenuController,
+    private router: Router
+  ) {  }
+
 
   open() {
     this.menu.enable(true, 'first');

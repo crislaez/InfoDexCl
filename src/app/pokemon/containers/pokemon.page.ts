@@ -29,7 +29,7 @@ import { IonContent } from '@ionic/angular';
               <h1 class="capital-letter">{{clearName(pokemon?.name)}}</h1>
               <div class="header-container-empty" ></div>
               <ng-container *ngIf="pokemon?.types">
-                <h2>Type</h2>
+                <h2>{{ 'COMMON.TYPE' | translate}}</h2>
                 <ion-card class="card-type card-shadow ion-activatable ripple-parent" *ngFor="let type of pokemon?.types; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(type?.type?.url)]" [ngClass]="getClassColor(null, type?.type?.name)">
                   <ion-label class="capital-letter">{{type?.type?.name}} </ion-label>
                   <!-- RIPPLE EFFECT -->
@@ -47,7 +47,7 @@ import { IonContent } from '@ionic/angular';
            <!-- BASE EXPERIENCES  -->
            <ion-card class="card-stats fade-in-image">
             <ion-card-header class="card-header">
-              <h2>Description</h2>
+              <h2>{{ 'COMMON.DESCRIPTION' | translate}}</h2>
             </ion-card-header>
             <ion-card-content >
               <div>{{pokemon?.flavor_text_entries}}</div>
@@ -57,7 +57,7 @@ import { IonContent } from '@ionic/angular';
           <!-- CHAIN EVOLUTION  -->
           <ion-card class="card-stats fade-in-image" *ngIf="checkToChainEvolutions(pokemon)">
             <ion-card-header class="card-header">
-              <h2>Chain evolution</h2>
+              <h2>{{ 'COMMON.CHAIN_EVOLUTION' | translate}}</h2>
             </ion-card-header>
               <ion-card class="pokemon-evolution ion-activatable ripple-parent" *ngFor="let chain of getEvolutionChains(pokemon?.evolutions?.chain); trackBy: trackById" [routerLink]="['/pokemon/'+ getPokemonPokedexNumber(chain?.url)]">
                 <ion-card-content>
@@ -76,7 +76,7 @@ import { IonContent } from '@ionic/angular';
            <!-- ALTERNATIVE FORm  -->
            <ion-card class="card-stats fade-in-image" *ngIf="checkAlternativesForm(pokemon)">
             <ion-card-header class="card-header">
-              <h2>Alternatives form</h2>
+              <h2>{{ 'COMMON.ALTERNATIVES_FORM' | translate}}</h2>
             </ion-card-header>
               <ion-card class="pokemon-evolution ion-activatable ripple-parent" *ngFor="let alternativeForm of pokemon?.varieties; trackBy: trackById" [routerLink]="['/pokemon/'+ getPokemonPokedexNumber(alternativeForm?.pokemon?.url)]">
                 <ion-card-content>
@@ -93,7 +93,7 @@ import { IonContent } from '@ionic/angular';
           <!-- STATS  -->
           <ion-card class="card-stats fade-in-image">
             <ion-card-header class="card-header">
-              <h2>Stats</h2>
+              <h2>{{ 'COMMON.STATS' | translate}}</h2>
             </ion-card-header>
             <ion-card-content class="card-stats">
               <ion-button color="primary" class="margin-button" (click)="stastsValue = 1">Base stats</ion-button>
@@ -121,14 +121,14 @@ import { IonContent } from '@ionic/angular';
           <!-- BASE EXPERIENCES  -->
           <ion-card class="card-stats fade-in-image">
             <ion-card-header class="card-header">
-              <h2>Interesting data</h2>
+              <h2>{{ 'COMMON.INTERESTING_DATA' | translate}}</h2>
             </ion-card-header>
             <ng-container >
-              <div class="card-stats-div"><span class="span-dark">Base experience:</span></div>
+              <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.BASE_EXPERIENCE' | translate}}:</span></div>
               <div class="card-stats-div">{{pokemon?.base_experience}}</div>
-              <div class="card-stats-div"><span class="span-dark">Height:</span></div>
+              <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HEIGHT' | translate}}:</span></div>
               <div class="card-stats-div">{{meterFormatter(pokemon?.height)}}</div>
-              <div class="card-stats-div"><span class="span-dark">Weight:</span></div>
+              <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.WEIGHT' | translate}}:</span></div>
               <div class="card-stats-div">{{klFormatter(pokemon?.weight)}}</div>
             </ng-container>
           </ion-card>
@@ -136,7 +136,7 @@ import { IonContent } from '@ionic/angular';
           <!-- ABILITIES  -->
           <ion-card class="card-stats fade-in-image" *ngIf="pokemon?.abilities?.length > 0">
             <ion-card-header class="card-header">
-              <h2>Abilities</h2>
+              <h2>{{ 'COMMON.ABILITIES' | translate}}</h2>
             </ion-card-header>
             <ng-container *ngFor="let ability of pokemon?.abilities; trackBy: trackById" >
               <ion-card class="card-type no-margin ability ion-activatable ripple-parent" [routerLink]="['/ability/'+getPokemonPokedexNumber(ability?.ability?.url)]" >
@@ -144,9 +144,9 @@ import { IonContent } from '@ionic/angular';
                 <!-- RIPPLE EFFECT -->
                 <ion-ripple-effect></ion-ripple-effect>
               </ion-card>
-              <div class="card-stats-div"><span class="span-dark">hide:</span>
-                <span *ngIf="ability?.is_hidden === true; else hideAbility">Yes</span>
-                <ng-template #hideAbility>No</ng-template>
+              <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HIDE' | translate}}:</span>
+                <span *ngIf="ability?.is_hidden === true; else hideAbility">{{ 'COMMON.YES' | translate}}</span>
+                <ng-template #hideAbility>{{ 'COMMON.NO' | translate}}</ng-template>
               </div>
             </ng-container>
           </ion-card>
@@ -154,7 +154,7 @@ import { IonContent } from '@ionic/angular';
           <!-- ENCOUNTERS  -->
           <ion-card class="card-stats fade-in-image" *ngIf="pokemon?.encounters?.length > 0">
             <ion-card-header class="card-header">
-              <h2>Encounters</h2>
+              <h2>{{ 'COMMON.ENCOUNTERS' | translate}}</h2>
             </ion-card-header>
             <ng-container *ngFor="let encounter of pokemon?.encounters; trackBy: trackById" >
               <div class="card-stats-div span-dark capital-letter">{{clearName(encounter?.location_area?.name)}}:</div>
@@ -165,7 +165,7 @@ import { IonContent } from '@ionic/angular';
           <!-- MOVES -->
           <ion-card class="card-stats fade-in-image" *ngIf="pokemon?.moves?.length > 0">
             <ion-card-header class="card-header">
-              <h2>Moves</h2>
+              <h2>{{ 'COMMON.MOVES' | translate}}</h2>
             </ion-card-header>
             <ng-container *ngFor="let move of pokemon?.moves; trackBy: trackById" >
 
@@ -175,9 +175,9 @@ import { IonContent } from '@ionic/angular';
                 <ion-ripple-effect></ion-ripple-effect>
               </ion-card>
               <div class="card-stats-level" *ngFor="let moveAtLevel of move?.version_group_details; trackBy: trackById">
-                <div><span class="span-dark">Level:</span> {{moveAtLevel?.level_learned_at}}</div>
-                <div><span class="span-dark">Method:</span> {{clearName(moveAtLevel?.move_learn_method?.name)}}</div>
-                <div class="capital-letter"><span class="span-dark">Version:</span> {{clearName(moveAtLevel?.version_group?.name)}}</div>
+                <div><span class="span-dark">{{ 'COMMON.LEVEL' | translate}}:</span> {{moveAtLevel?.level_learned_at}}</div>
+                <div><span class="span-dark">{{ 'COMMON.METHOD' | translate}}:</span> {{clearName(moveAtLevel?.move_learn_method?.name)}}</div>
+                <div class="capital-letter"><span class="span-dark">{{ 'COMMON.VERSION' | translate}}:</span> {{clearName(moveAtLevel?.version_group?.name)}}</div>
               </div>
               <!-- <ion-item-divider></ion-item-divider> -->
             </ng-container>
@@ -185,7 +185,7 @@ import { IonContent } from '@ionic/angular';
 
           <!-- IMAGES  -->
           <div class="card-header">
-            <h2>Generations sprites</h2>
+            <h2>{{ 'COMMON.GENERATIONS_SPRITES' | translate}}</h2>
           </div>
           <!-- ion-card -->
           <ng-container *ngFor="let generations of getKeysGenerationsImages(pokemon?.sprites?.versions); trackBy: trackById">

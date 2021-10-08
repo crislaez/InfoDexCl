@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { AbilityPageRoutingModule } from './ability-routing.module';
-import { AbilityPage } from './containers/ability.page';
-import { AbilitiesPage } from './containers/abilities.page';
-import { SharedModule } from '../shared/shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 import { AbilityMModule } from '../shared/ability-m/ability-m.module';
+import { SharedModule } from '../shared/shared/shared.module';
+import { AbilityPageRoutingModule } from './ability-routing.module';
+import { AbilitiesPage } from './containers/abilities.page';
+import { AbilityPage } from './containers/ability.page';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { AbilityMModule } from '../shared/ability-m/ability-m.module';
     IonicModule,
     SharedModule,
     AbilityMModule,
+    TranslateModule.forChild(),
     AbilityPageRoutingModule
   ],
   declarations: [
