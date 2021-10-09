@@ -70,7 +70,7 @@ import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPoke
         <div>
           <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
           <br>
-          <span class="text-second-color"> An error has occurred, swipe down to reload </span>
+          <span class="text-second-color">{{ 'COMMON.ERROR' | translate }}</span>
         </div>
       </div>
     </ng-template>

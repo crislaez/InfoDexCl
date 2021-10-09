@@ -166,7 +166,7 @@ import { IonContent } from '@ionic/angular';
     <!-- IS NO MOVE  -->
     <ng-template #noType>
       <div class="error-serve">
-        <span >No type</span>
+        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
       </div>
     </ng-template>
 

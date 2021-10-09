@@ -27,4 +27,19 @@ export const getError = createSelector(
   fromPokemon.getError
 )
 
+export const getPokemon = createSelector(
+  getPokemonState,
+  fromPokemon.getPokemon
+)
+
+export const getPokemonStatus = createSelector(
+  getPokemonState,
+  fromPokemon.getPokemonStatus
+)
+
+export const getPokemonError = createSelector(
+  getPokemonState,
+  fromPokemon.getPokemonError
+)
+
 

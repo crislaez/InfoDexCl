@@ -47,8 +47,14 @@
     "ALL_TYPE_MOVES":"All type moves"
   },
   "ERRORS":{
-    "ERROR_LOAD_MONSTER_CARDS":"error loading monsters cards",
-    "ERROR_LOAD_MAGICS_CARDS":"error loading magics cards",
-    "ERROR_LOAD_CARD":"error loading card"
+    "NO_DATA":"No data",
+    "ERROR_LOAD_POKEMON":"Error loading pokemon",
+    "ERROR_LOAD_POKEMONS":"Error loading pokemons",
+    "ERROR_LOAD_ABILITY":"Error loading ability",
+    "ERROR_LOAD_ABILIITIES":"Error loading abilities",
+    "ERROR_LOAD_MOVE":"Error loading move",
+    "ERROR_LOAD_MOVESS":"Error loading moves",
+    "ERROR_LOAD_TYPE":"Error loading type",
+    "ERROR_LOAD_TYPESS":"Error loading types"
   }
 }

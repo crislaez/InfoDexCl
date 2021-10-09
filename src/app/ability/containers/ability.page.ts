@@ -1,76 +1,94 @@
-import { Component, ChangeDetectionStrategy, EventEmitter, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from "@angular/common";
-import { Observable, EMPTY, combineLatest } from 'rxjs';
-import { filter, switchMap, tap, catchError, startWith } from 'rxjs/operators';
-import { PokemonService } from 'src/app/shared/pokemon';
-import { getPokemonImagePrincipal, getPokemonPokedexNumber, defaultImagePokemon, isNotData, clearName, trackById, gotToTop } from '../../shared/shared/utils/utils';
 import { IonContent } from '@ionic/angular';
+import { Store } from '@ngrx/store';
+import { AbilityActions, fromAbility } from '@pokemon/shared/ability-m';
+import { combineLatest } from 'rxjs';
+import { startWith, switchMap, tap } from 'rxjs/operators';
+import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '../../shared/shared/utils/utils';
 
 @Component({
   selector: 'app-ability',
   template:`
    <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
 
+     <ng-container *ngIf="(ability$ | async) as ability">
+       <ng-container *ngIf="(status$ | async) as status">
+        <ng-container *ngIf="status !== 'pending'; else loader">
+          <ng-container *ngIf="status !== 'error'; else serverError">
+
+            <ng-container *ngIf="isNotData(ability); else noAbility">
+              <div class="container none">
+
+                <!-- HEADER  -->
+                <div class="header" no-border>
+                  <div class="header-container">
+                    <ion-back-button defaultHref="/ability" class="color-menu" [text]="''"></ion-back-button>
+                    <h1 class="capital-letter">{{clearName(ability?.name)}}</h1>
+                    <div class="header-container-empty" ></div>
+                  </div>
+                </div>
+
+                <!-- EFFECT  -->
+                <ion-card class="card-stats fade-in-image">
+                  <ion-card-header class="card-header">
+                    <h2>{{ 'COMMON.EFFECT' | translate }}</h2>
+                  </ion-card-header>
+                <ion-card-content>
+                  <div *ngIf="getAbilityEffectEnglish(ability?.effect_entries); else noData">{{getAbilityEffectEnglish(ability?.effect_entries)}}</div>
+                </ion-card-content>
+                </ion-card>
+
+                <!-- POKEMONS  -->
+                <ion-card class="card-stats fade-in-image">
+                    <ion-card-header class="card-header">
+                      <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
+                    </ion-card-header>
+                    <ion-card-content class="div-accuracy">
+
+                      <ng-container *ngIf="ability?.pokemon?.length > 0; else noData">
+                        <ion-card class="div-pokemon-learning ion-activatable ripple-parent" *ngFor="let pokemon of ability?.pokemon; trackBy: trackById"  [routerLink]="['/pokemon/'+getPokemonPokedexNumber(pokemon?.pokemon?.url)]" >
+                          <ion-card-content class="pokemon-item">
+                            <ion-label class="span-complete">#{{getPokemonPokedexNumber(pokemon?.pokemon?.url)}}</ion-label>
+                            <ion-label class="span-complete capital-letter">{{clearName(pokemon?.pokemon?.name)}}</ion-label>
+                            <ion-avatar slot="start">
+                              <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.pokemon?.url)" (error)="errorImage($event, defaultImagePokemon(pokemon?.url))">
+                            </ion-avatar>
+                            <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HIDE' | translate }}:</span>
+                            <span *ngIf="pokemon?.is_hidden === true; else hideAbility">{{ 'COMMON.YES' | translate }}</span>
+                              <ng-template #hideAbility>{{ 'COMMON.NO' | translate }}</ng-template>
+                            </div>
+                          </ion-card-content>
+                          <!-- RIPPLE EFFECT -->
+                          <ion-ripple-effect></ion-ripple-effect>
+                        </ion-card>
+                      </ng-container>
+
+                    </ion-card-content>
+                </ion-card>
+              </div>
+
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+     </ng-container>
+
     <!-- REFRESH -->
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 
-     <ng-container *ngIf="(ability$ | async) as ability; else loader">
-      <ng-container *ngIf="isNotData(ability); else noAbility">
-        <div class="container none">
-
-          <!-- HEADER  -->
-          <div class="header" no-border>
-            <div class="header-container">
-              <ion-back-button defaultHref="" class="color-menu" [text]="''"></ion-back-button>
-              <h1 class="capital-letter">{{clearName(ability?.name)}}</h1>
-              <div class="header-container-empty" ></div>
-            </div>
-          </div>
-
-          <!-- EFFECT  -->
-          <ion-card class="card-stats fade-in-image">
-            <ion-card-header class="card-header">
-              <h2>{{ 'COMMON.EFFECT' | translate }}</h2>
-            </ion-card-header>
-           <ion-card-content>
-            <div *ngIf="getAbilityEffectEnglish(ability?.effect_entries); else noData">{{getAbilityEffectEnglish(ability?.effect_entries)}}</div>
-           </ion-card-content>
-          </ion-card>
-
-           <!-- POKEMONS  -->
-           <ion-card class="card-stats fade-in-image">
-              <ion-card-header class="card-header">
-                <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
-              </ion-card-header>
-              <ion-card-content class="div-accuracy">
-
-                <ng-container *ngIf="ability?.pokemon?.length > 0; else noData">
-                  <ion-card class="div-pokemon-learning ion-activatable ripple-parent" *ngFor="let pokemon of ability?.pokemon; trackBy: trackById"  [routerLink]="['/pokemon/'+getPokemonPokedexNumber(pokemon?.pokemon?.url)]" >
-                    <ion-card-content class="pokemon-item">
-                      <ion-label class="span-complete">#{{getPokemonPokedexNumber(pokemon?.pokemon?.url)}}</ion-label>
-                      <ion-label class="span-complete capital-letter">{{clearName(pokemon?.pokemon?.name)}}</ion-label>
-                      <ion-avatar slot="start">
-                        <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.pokemon?.url)" (error)="errorImage($event, defaultImagePokemon(pokemon?.url))">
-                      </ion-avatar>
-                      <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HIDE' | translate }}:</span>
-                      <span *ngIf="pokemon?.is_hidden === true; else hideAbility">{{ 'COMMON.YES' | translate }}</span>
-                        <ng-template #hideAbility>{{ 'COMMON.NO' | translate }}</ng-template>
-                      </div>
-                    </ion-card-content>
-                    <!-- RIPPLE EFFECT -->
-                    <ion-ripple-effect></ion-ripple-effect>
-                  </ion-card>
-                </ng-container>
-
-              </ion-card-content>
-           </ion-card>
+    <!-- IS ERROR -->
+    <ng-template #serverError>
+      <div class="error-serve">
+        <div>
+          <span><ion-icon class="item-color big-size" name="cloud-offline-outline"></ion-icon></span>
+          <br>
+          <span class="item-color">{{ 'COMMON.ERROR' | translate }}</span>
         </div>
-
-      </ng-container>
-     </ng-container>
+      </div>
+    </ng-template>
 
      <!-- IS NO DATA  -->
     <ng-template #noData>
@@ -82,7 +100,7 @@ import { IonContent } from '@ionic/angular';
      <!-- IS NO ABILITY  -->
     <ng-template #noAbility>
       <div class="error-serve">
-        <span >No ability</span>
+      <span >{{ 'COMMON.NO_DATA' | translate }}</span>
       </div>
     </ng-template>
 
@@ -114,29 +132,42 @@ export class AbilityPage {
   showButton: boolean = false;
 
   reload$ = new EventEmitter();
+  status$ = this.store.select(fromAbility.getAbilityStatus);
 
-  ability$: Observable<any> = this.reload$.pipe(
-    startWith(''),
+  ability$ = combineLatest([
+    this.route.params,
+    this.reload$.pipe(startWith(''))
+  ]).pipe(
+    tap(([{ability}, reload]) => {
+      this.store.dispatch(AbilityActions.LoadAbility({abilityyName: ability}))
+    }),
     switchMap(() =>
-      combineLatest([
-        this.route.params
-      ]).pipe(
-        filter(([{ability}]) => !!ability),
-        switchMap(([{ability}]) =>
-          this._pokemon.getAbility(ability).pipe(
-            catchError((error) => {
-              return [{}]
-            })
-          )
-        )
-      )
+      this.store.select(fromAbility.getAbility)
     )
   );
+  // ability$: Observable<any> = this.reload$.pipe(
+  //   startWith(''),
+  //   switchMap(() =>
+  //     combineLatest([
+  //       this.route.params
+  //     ]).pipe(
+  //       filter(([{ability}]) => !!ability),
+  //       switchMap(([{ability}]) =>
+  //         this._pokemon.getAbility(ability).pipe(
+  //           catchError((error) => {
+  //             return [{}]
+  //           })
+  //         )
+  //       )
+  //     )
+  //   )
+  // );
 
 
-  constructor(private route: ActivatedRoute, private _pokemon: PokemonService, private location: Location) {
-    // this.ability$.subscribe(data => console.log(data))
-   }
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store,
+  ) { }
 
 
    errorImage(event, url) {

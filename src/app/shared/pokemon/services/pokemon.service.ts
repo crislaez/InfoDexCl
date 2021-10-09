@@ -24,6 +24,7 @@ export class PokemonService {
 
   getPokemon(name: string): Observable<any>{
     return this.http.get<any>(`${this.baseURL}pokemon/${name}`).pipe(
+      map(res => (res || {})),
       catchError((error) => {
         return throwError(error)
       })

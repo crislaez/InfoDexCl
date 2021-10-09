@@ -11,12 +11,7 @@ import { IonContent } from '@ionic/angular';
 @Component({
   selector: 'app-move',
   template:`
-  <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
-
-    <!-- REFRESH -->
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+    <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
 
       <ng-container *ngIf="(move$ | async) as move; else loader">
         <ng-container *ngIf="isNotData(move); else noMove">
@@ -117,6 +112,11 @@ import { IonContent } from '@ionic/angular';
         </ng-container>
       </ng-container>
 
+      <!-- REFRESH -->
+      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+
       <!-- IS NO DATA  -->
       <ng-template #noItem>
         <div> -</div>
@@ -132,7 +132,7 @@ import { IonContent } from '@ionic/angular';
       <!-- IS NO MOVE  -->
       <ng-template #noMove>
         <div class="error-serve">
-          <span >No move</span>
+          <span >{{ 'COMMON.NO_DATA' | translate }}</span>
         </div>
       </ng-template>
 

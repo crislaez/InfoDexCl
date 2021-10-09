@@ -27,6 +27,21 @@ export const getError = createSelector(
   fromAbility.getError
 )
 
+export const getAbility = createSelector(
+  getAbilityState,
+  fromAbility.getAbility
+)
+
+export const getAbilityStatus = createSelector(
+  getAbilityState,
+  fromAbility.getAbilityStatus
+)
+
+export const getAbilityError = createSelector(
+  getAbilityState,
+  fromAbility.getAbilityError
+)
+
 
 
 
