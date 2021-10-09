@@ -16,7 +16,7 @@ const initialState: State = {
   pokemons: [],
   status: EntityStatus.Initial,
   error:undefined,
-  pokemon: null,
+  pokemon: {},
   pokemonStatus: EntityStatus.Initial,
   pokemonError:undefined
 }
@@ -24,10 +24,10 @@ const initialState: State = {
 
 const PokemonReducer = createReducer(
   initialState,
-  on(PokemonActions.loadPokemons, (state) => ({ ...state, status: EntityStatus.Pending })),
+  on(PokemonActions.loadPokemons, (state) => ({ ...state, error: undefined, status: EntityStatus.Pending })),
   on(PokemonActions.savePokemons, (state, { pokemons, error, status }) => ({...state, pokemons, error, status })),
 
-  on(PokemonActions.loadPokemon, (state) => ({ ...state, pokemonStatus: EntityStatus.Pending })),
+  on(PokemonActions.loadPokemon, (state) => ({ ...state, pokemonError: undefined, pokemonStatus: EntityStatus.Pending })),
   on(PokemonActions.savePokemon, (state, { pokemon, error, status }) => ({...state, pokemon, pokemonError: error, pokemonStatus: status })),
 );
 

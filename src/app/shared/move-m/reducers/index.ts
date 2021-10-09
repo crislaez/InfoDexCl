@@ -27,6 +27,21 @@ export const getError = createSelector(
   fromMove.getError
 )
 
+export const getMove = createSelector(
+  getMoveState,
+  fromMove.getMove
+)
+
+export const getMoveStatus = createSelector(
+  getMoveState,
+  fromMove.getMoveStatus
+)
+
+export const getMoveError = createSelector(
+  getMoveState,
+  fromMove.getMoveError
+)
+
 
 
 

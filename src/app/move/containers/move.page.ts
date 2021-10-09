@@ -1,114 +1,120 @@
-import { Component, ChangeDetectionStrategy, EventEmitter, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from "@angular/common";
-import { Observable, EMPTY, combineLatest } from 'rxjs';
-import { filter, switchMap, tap, catchError, startWith, map } from 'rxjs/operators';
-import { PokemonService } from 'src/app/shared/pokemon';
-import { getPokemonImagePrincipal, getPokemonPokedexNumber, defaultImagePokemon, isNotData, clearName, trackById, gotToTop } from '../../shared/shared/utils/utils';
 import { IonContent } from '@ionic/angular';
-
+import { Store } from '@ngrx/store';
+import { fromMove, MoveActions } from '@pokemon/shared/move-m';
+import { combineLatest } from 'rxjs';
+import { startWith, switchMap, tap } from 'rxjs/operators';
+import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '../../shared/shared/utils/utils';
 
 @Component({
   selector: 'app-move',
   template:`
     <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
 
-      <ng-container *ngIf="(move$ | async) as move; else loader">
-        <ng-container *ngIf="isNotData(move); else noMove">
-          <div class="container" [ngClass]="getClassColor(move?.type?.name)">
+      <ng-container *ngIf="(move$ | async) as move">
+        <ng-container *ngIf="(status$ | async) as status">
+          <ng-container *ngIf="status !== 'pending'; else loader">
+            <ng-container *ngIf="status !== 'error'; else serverError">
 
-            <!-- HEADER  -->
-            <div class="header" no-border>
-              <div class="header-container">
-                <ion-back-button defaultHref="" class="color-menu" [text]="''"></ion-back-button>
-                <h1 class="capital-letter">{{clearName(move?.name)}}</h1>
-                <div class="header-container-empty" ></div>
-              </div>
-            </div>
+              <ng-container *ngIf="isNotData(move); else noMove">
+                <div class="container" [ngClass]="getClassColor(move?.type?.name)">
 
-            <!-- DATA  -->
-            <ion-card class="card-stats fade-in-image">
-              <ion-card-header class="card-header">
-                <h2>{{ 'COMMON.DATA' | translate }}</h2>
-              </ion-card-header>
-              <ion-card-content class="div-accuracy">
-                <div class="div-accuracy-stats">
-                  <div><span class="span-dark">{{ 'COMMON.POWER' | translate }}:</span></div>
-                  <div *ngIf="move?.power; else noItem">{{move?.power}}</div>
-                </div>
-                <div class="div-accuracy-stats">
-                  <div><span class="span-dark">{{ 'COMMON.TYPE' | translate }}:</span></div>
-                  <div class="card-type radius ion-activatable ripple-parent" *ngIf="move?.type?.name; else noItem" [routerLink]="['/type/'+getPokemonPokedexNumber(move?.type?.url)]" [ngClass]="getClassColor(move?.type?.name)">
-                    <ion-label class="capital-letter">{{move?.type?.name}}</ion-label>
-                    <!-- RIPPLE EFFECT -->
-                    <ion-ripple-effect></ion-ripple-effect>
+                  <!-- HEADER  -->
+                  <div class="header" no-border>
+                    <div class="header-container">
+                      <ion-back-button defaultHref="/move" class="color-menu" [text]="''"></ion-back-button>
+                      <h1 class="capital-letter">{{clearName(move?.name)}}</h1>
+                      <div class="header-container-empty" ></div>
+                    </div>
                   </div>
-                  <!-- <div *ngIf="move?.type?.name; else noItem" class="capital-letter redirect" [routerLink]="['/type/'+ getPokemonPokedexNumber(move?.type?.url)]">{{move?.type?.name}}</div> -->
-                </div>
-                <div class="div-accuracy-stats">
-                  <div><span class="span-dark">{{ 'COMMON.DAMAGE_CLASS' | translate }}:</span></div>
-                  <div class="card-type radius" *ngIf="move?.damage_class?.name; else noItem"[ngClass]="getClassColor(move?.damage_class?.name)">
-                    <ion-label class="capital-letter">{{move?.damage_class?.name}}</ion-label>
-                  </div>
-                  <!-- <div class="capital-letter" *ngIf="move?.damage_class?.name; else noItem">{{move?.damage_class?.name}}</div> -->
-                </div>
-                <div class="div-accuracy-stats">
-                  <div><span class="span-dark">{{ 'COMMON.PP' | translate }}:</span></div>
-                  <div class="capital-letter" *ngIf="move?.pp; else noItem">{{move?.pp}}</div>
-                </div>
-                <div class="div-accuracy-stats">
-                  <div><span class="span-dark">{{ 'COMMON.ACCURACY' | translate }}:</span></div>
-                  <div class="capital-letter" *ngIf="move?.accuracy; else noItem">{{move?.accuracy}}</div>
-                </div>
-                <div class="div-accuracy-stats">
-                  <div><span class="span-dark">{{ 'COMMON.PRIORITY' | translate }}:</span></div>
-                  <div class="capital-letter" *ngIf="move?.priority; else noItem">{{move?.priority}}</div>
-                </div>
-                <div class="div-accuracy-stats">
-                  <div><span class="span-dark">{{ 'COMMON.EFFECT_CHANCE' | translate }}:</span></div>
-                  <div class="capital-letter" *ngIf="move?.effect_chance; else noItem">{{move?.effect_chance}}</div>
-                </div>
-                <div *ngIf="move?.stat_changes?.length > 0" class="div-accuracy-stats" >
-                  <div><span class="span-dark">Stats change:</span></div>
-                  <div class="capital-letter" *ngFor="let stat of move?.stat_changes; trackBy: trackById">{{stat?.stat?.name}}</div>
-                </div>
-              </ion-card-content>
-            </ion-card>
 
-            <!-- EFFECT  -->
-            <ion-card class="card-stats fade-in-image">
-              <ion-card-header class="card-header">
-                <h2>{{ 'COMMON.EFFECT' | translate }}</h2>
-              </ion-card-header>
-              <ion-card-content *ngIf="move?.effect_entries?.length > 0; else noData">
-                <div class="no-data" *ngFor="let effect of move?.effect_entries; trackBy: trackById">{{effect?.effect}}</div>
-              </ion-card-content>
-            </ion-card>
+                  <!-- DATA  -->
+                  <ion-card class="card-stats fade-in-image">
+                    <ion-card-header class="card-header">
+                      <h2>{{ 'COMMON.DATA' | translate }}</h2>
+                    </ion-card-header>
+                    <ion-card-content class="div-accuracy">
+                      <div class="div-accuracy-stats">
+                        <div><span class="span-dark">{{ 'COMMON.POWER' | translate }}:</span></div>
+                        <div *ngIf="move?.power; else noItem">{{move?.power}}</div>
+                      </div>
+                      <div class="div-accuracy-stats">
+                        <div><span class="span-dark">{{ 'COMMON.TYPE' | translate }}:</span></div>
+                        <div class="card-type radius ion-activatable ripple-parent" *ngIf="move?.type?.name; else noItem" [routerLink]="['/type/'+getPokemonPokedexNumber(move?.type?.url)]" [ngClass]="getClassColor(move?.type?.name)">
+                          <ion-label class="capital-letter">{{move?.type?.name}}</ion-label>
+                          <!-- RIPPLE EFFECT -->
+                          <ion-ripple-effect></ion-ripple-effect>
+                        </div>
+                        <!-- <div *ngIf="move?.type?.name; else noItem" class="capital-letter redirect" [routerLink]="['/type/'+ getPokemonPokedexNumber(move?.type?.url)]">{{move?.type?.name}}</div> -->
+                      </div>
+                      <div class="div-accuracy-stats">
+                        <div><span class="span-dark">{{ 'COMMON.DAMAGE_CLASS' | translate }}:</span></div>
+                        <div class="card-type radius" *ngIf="move?.damage_class?.name; else noItem"[ngClass]="getClassColor(move?.damage_class?.name)">
+                          <ion-label class="capital-letter">{{move?.damage_class?.name}}</ion-label>
+                        </div>
+                        <!-- <div class="capital-letter" *ngIf="move?.damage_class?.name; else noItem">{{move?.damage_class?.name}}</div> -->
+                      </div>
+                      <div class="div-accuracy-stats">
+                        <div><span class="span-dark">{{ 'COMMON.PP' | translate }}:</span></div>
+                        <div class="capital-letter" *ngIf="move?.pp; else noItem">{{move?.pp}}</div>
+                      </div>
+                      <div class="div-accuracy-stats">
+                        <div><span class="span-dark">{{ 'COMMON.ACCURACY' | translate }}:</span></div>
+                        <div class="capital-letter" *ngIf="move?.accuracy; else noItem">{{move?.accuracy}}</div>
+                      </div>
+                      <div class="div-accuracy-stats">
+                        <div><span class="span-dark">{{ 'COMMON.PRIORITY' | translate }}:</span></div>
+                        <div class="capital-letter" *ngIf="move?.priority; else noItem">{{move?.priority}}</div>
+                      </div>
+                      <div class="div-accuracy-stats">
+                        <div><span class="span-dark">{{ 'COMMON.EFFECT_CHANCE' | translate }}:</span></div>
+                        <div class="capital-letter" *ngIf="move?.effect_chance; else noItem">{{move?.effect_chance}}</div>
+                      </div>
+                      <div *ngIf="move?.stat_changes?.length > 0" class="div-accuracy-stats" >
+                        <div><span class="span-dark">Stats change:</span></div>
+                        <div class="capital-letter" *ngFor="let stat of move?.stat_changes; trackBy: trackById">{{stat?.stat?.name}}</div>
+                      </div>
+                    </ion-card-content>
+                  </ion-card>
 
-             <!-- LEARNING BY POKEMON  -->
-             <ion-card class="card-stats fade-in-image">
-              <ion-card-header class="card-header">
-                <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
-              </ion-card-header>
-              <ion-card-content class="div-accuracy">
+                  <!-- EFFECT  -->
+                  <ion-card class="card-stats fade-in-image">
+                    <ion-card-header class="card-header">
+                      <h2>{{ 'COMMON.EFFECT' | translate }}</h2>
+                    </ion-card-header>
+                    <ion-card-content *ngIf="move?.effect_entries?.length > 0; else noData">
+                      <div class="no-data" *ngFor="let effect of move?.effect_entries; trackBy: trackById">{{effect?.effect}}</div>
+                    </ion-card-content>
+                  </ion-card>
 
-                <ion-card class="div-pokemon-learning ion-activatable ripple-parent" *ngFor="let pokemon of move?.learned_by_pokemon; trackBy: trackById" [routerLink]="['/pokemon/'+getPokemonPokedexNumber(pokemon?.url)]" >
-                  <ion-card-content class="pokemon-item">
-                    <ion-label class="span-complete">#{{getPokemonPokedexNumber(pokemon?.url)}} </ion-label>
-                    <ion-label class="span-complete capital-letter">{{clearName(pokemon?.name)}}</ion-label>
-                    <ion-avatar slot="start">
-                      <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.url)" [alt]="getPokemonImagePrincipal(pokemon?.url)" (error)="errorImage($event, defaultImagePokemon(pokemon?.url))">
-                    </ion-avatar>
-                  </ion-card-content>
-                  <!-- RIPPLE EFFECT -->
-                  <ion-ripple-effect></ion-ripple-effect>
-                </ion-card>
+                  <!-- LEARNING BY POKEMON  -->
+                  <ion-card class="card-stats fade-in-image">
+                    <ion-card-header class="card-header">
+                      <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
+                    </ion-card-header>
+                    <ion-card-content class="div-accuracy">
 
-              </ion-card-content>
-            </ion-card>
+                      <ion-card class="div-pokemon-learning ion-activatable ripple-parent" *ngFor="let pokemon of move?.learned_by_pokemon; trackBy: trackById" [routerLink]="['/pokemon/'+getPokemonPokedexNumber(pokemon?.url)]" >
+                        <ion-card-content class="pokemon-item">
+                          <ion-label class="span-complete">#{{getPokemonPokedexNumber(pokemon?.url)}} </ion-label>
+                          <ion-label class="span-complete capital-letter">{{clearName(pokemon?.name)}}</ion-label>
+                          <ion-avatar slot="start">
+                            <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.url)" [alt]="getPokemonImagePrincipal(pokemon?.url)" (error)="errorImage($event, defaultImagePokemon(pokemon?.url))">
+                          </ion-avatar>
+                        </ion-card-content>
+                        <!-- RIPPLE EFFECT -->
+                        <ion-ripple-effect></ion-ripple-effect>
+                      </ion-card>
 
-          </div>
+                    </ion-card-content>
+                  </ion-card>
 
+                </div>
+              </ng-container>
+
+            </ng-container>
+          </ng-container>
         </ng-container>
       </ng-container>
 
@@ -116,6 +122,17 @@ import { IonContent } from '@ionic/angular';
       <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
+
+      <!-- IS ERROR -->
+      <ng-template #serverError>
+        <div class="error-serve">
+          <div>
+            <span><ion-icon class="item-color big-size" name="cloud-offline-outline"></ion-icon></span>
+            <br>
+            <span class="item-color">{{ 'COMMON.ERROR' | translate }}</span>
+          </div>
+        </div>
+      </ng-template>
 
       <!-- IS NO DATA  -->
       <ng-template #noItem>
@@ -125,7 +142,7 @@ import { IonContent } from '@ionic/angular';
       <!-- IS NO DATA  -->
       <ng-template #noData>
         <ion-card-content class="no-data">
-          <span >No data</span>
+          <span >{{ 'COMMON.NO_DATA' | translate }}</span>
         </ion-card-content>
       </ng-template>
 
@@ -163,29 +180,25 @@ export class MovePage  {
   showButton: boolean = false;
 
   reload$ = new EventEmitter();
+  status$ = this.store.select(fromMove.getMoveStatus);
 
-  move$: Observable<any> = this.reload$.pipe(
-    startWith(''),
+  move$ = combineLatest([
+    this.route.params,
+    this.reload$.pipe(startWith(''))
+  ]).pipe(
+    tap(([{move}, reload]) => {
+      this.store.dispatch(MoveActions.loadMove({moveName: move}))
+    }),
     switchMap(() =>
-      combineLatest([
-        this.route.params
-      ]).pipe(
-        filter(([{move}]) => !!move),
-        switchMap(([{move}]) =>
-          this._pokemon.getMove(move).pipe(
-            catchError((error) => {
-              return [{}]
-            })
-          )
-        )
-      )
+      this.store.select(fromMove.getMove)
     )
-  )
+  );
 
 
-  constructor(private route: ActivatedRoute, private _pokemon: PokemonService, private location: Location) {
-    // this.move$.subscribe(data => console.log(data))
-   }
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store
+  ) { }
 
 
    errorImage(event, url) {

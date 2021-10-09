@@ -7,7 +7,7 @@ export const loadTypes = createAction(
   '[Type] Load types'
 );
 
-export const saveypes = createAction(
+export const saveTypes = createAction(
   '[Type] Save types',
   props<{types: Type[], error:unknown, status: EntityStatus}>()
 );
@@ -18,10 +18,30 @@ export const loadTypesFailure = createAction(
 );
 
 
+export const loadType = createAction(
+  '[Type] Load type',
+  props<{typeName: string}>()
+);
+
+export const saveType = createAction(
+  '[Type] Save type',
+  props<{pokemonType: Type, error:unknown, status: EntityStatus}>()
+);
+
+export const loadTypeFailure = createAction(
+  '[Type] Load type failure',
+  props<{message: string}>()
+);
+
+
 
 const all = union({
   loadTypes,
-  saveypes
+  saveTypes,
+  loadTypesFailure,
+  loadType,
+  saveType,
+  loadTypeFailure
 })
 
 export type TypeActionsUnion = typeof all;

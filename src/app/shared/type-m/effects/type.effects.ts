@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { EntityStatus } from '../../shared/utils/utils';
@@ -15,11 +16,28 @@ export class TypeEffects {
       ofType(TypeActions.loadTypes),
       switchMap( () =>
         this._type.getTypes().pipe(
-          map( ({results}): any => TypeActions.saveypes({ types: results, error:undefined, status: EntityStatus.Loaded})),
+          map( ({results}): any => TypeActions.saveTypes({ types: results, error:undefined, status: EntityStatus.Loaded})),
           catchError( (error) => {
             return of(
-              TypeActions.saveypes({ types: [], error, status: EntityStatus.Error}),
-              TypeActions.loadTypesFailure({message: 'Error loading types'})
+              TypeActions.saveTypes({ types: [], error, status: EntityStatus.Error}),
+              TypeActions.loadTypesFailure({message: 'ERRORS.ERROR_LOAD_TYPE'})
+            )
+          }),
+        )
+      )
+    )
+  );
+
+  loadType$ = createEffect( () =>
+    this.actions$.pipe(
+      ofType(TypeActions.loadType),
+      switchMap( ({typeName}) =>
+        this._type.getType(typeName).pipe(
+          map( (results) => TypeActions.saveType({ pokemonType: results, error:undefined, status: EntityStatus.Loaded})),
+          catchError( (error) => {
+            return of(
+              TypeActions.saveType({ pokemonType: {}, error, status: EntityStatus.Error}),
+              TypeActions.loadTypesFailure({message: 'ERRORS.ERROR_LOAD_TYPES'})
             )
           }),
         )
@@ -30,7 +48,7 @@ export class TypeEffects {
   loadTypesFailure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TypeActions.loadTypesFailure),
-      tap(({message}) => this.presentToast(message, 'danger')),
+      tap(({message}) => this.presentToast(this.translate.instant(message), 'danger')),
     ), { dispatch: false }
   );
 
@@ -38,11 +56,14 @@ export class TypeEffects {
     of(TypeActions.loadTypes())
   );
 
+
   constructor(
     private actions$: Actions,
     private _type: TypeService,
+    private translate: TranslateService,
     public toastController: ToastController,
   ){}
+
 
   async presentToast(message, color) {
     const toast = await this.toastController.create({

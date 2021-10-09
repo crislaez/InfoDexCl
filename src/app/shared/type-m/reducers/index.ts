@@ -27,3 +27,19 @@ export const getError = createSelector(
   fromType.getError
 )
 
+
+export const getType = createSelector(
+  getTypeState,
+  fromType.getType
+)
+
+export const getTypeStatus = createSelector(
+  getTypeState,
+  fromType.getTypeStatus
+)
+
+export const getTypeError = createSelector(
+  getTypeState,
+  fromType.getTypeError
+)
+

@@ -93,7 +93,7 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
      <!-- IS NO DATA  -->
     <ng-template #noData>
       <div class="error-serve">
-        <span >No data</span>
+        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
       </div>
     </ng-template>
 
@@ -139,29 +139,12 @@ export class AbilityPage {
     this.reload$.pipe(startWith(''))
   ]).pipe(
     tap(([{ability}, reload]) => {
-      this.store.dispatch(AbilityActions.LoadAbility({abilityyName: ability}))
+      this.store.dispatch(AbilityActions.loadAbility({abilityyName: ability}))
     }),
     switchMap(() =>
       this.store.select(fromAbility.getAbility)
     )
   );
-  // ability$: Observable<any> = this.reload$.pipe(
-  //   startWith(''),
-  //   switchMap(() =>
-  //     combineLatest([
-  //       this.route.params
-  //     ]).pipe(
-  //       filter(([{ability}]) => !!ability),
-  //       switchMap(([{ability}]) =>
-  //         this._pokemon.getAbility(ability).pipe(
-  //           catchError((error) => {
-  //             return [{}]
-  //           })
-  //         )
-  //       )
-  //     )
-  //   )
-  // );
 
 
   constructor(

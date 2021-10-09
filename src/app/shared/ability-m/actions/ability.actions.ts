@@ -3,32 +3,32 @@ import { Ability } from '../models';
 import { EntityStatus } from '../../shared/utils/utils';
 
 
-export const LoadAbilities = createAction(
+export const loadAbilities = createAction(
   '[Ability] Load abilities'
 );
 
-export const SaveAbilities = createAction(
+export const saveAbilities = createAction(
   '[Ability] Save abilities',
   props<{abilities: Ability[], error:unknown, status: EntityStatus}>()
 );
 
-export const LoadAbilitiesFailure = createAction(
+export const loadAbilitiesFailure = createAction(
   '[Ability] Load abilities failure',
   props<{message: string}>()
 );
 
 
-export const LoadAbility = createAction(
+export const loadAbility = createAction(
   '[Ability] Load ability',
   props<{abilityyName: string}>()
 );
 
-export const SaveAbility = createAction(
+export const saveAbility = createAction(
   '[Ability] Save ability',
   props<{ability: Ability, error:unknown, status: EntityStatus}>()
 );
 
-export const LoadAbilityFailure = createAction(
+export const loadAbilityFailure = createAction(
   '[Ability] Load ability failure',
   props<{message: string}>()
 );
@@ -36,12 +36,12 @@ export const LoadAbilityFailure = createAction(
 
 
 const all = union({
-  LoadAbilities,
-  SaveAbilities,
-  LoadAbilitiesFailure,
-  LoadAbility,
-  SaveAbility,
-  LoadAbilityFailure
+  loadAbilities,
+  saveAbilities,
+  loadAbilitiesFailure,
+  loadAbility,
+  saveAbility,
+  loadAbilityFailure
 })
 
 export type AbilityActionsUnion = typeof all;

@@ -25,7 +25,6 @@ export class AbilityService {
   }
 
   getAbility(name: string): Observable<any>{
-    console.log(name)
     return this.http.get<any>(`${this.baseURL}ability/${name}/`).pipe(
       map(res => (res || {})),
       catchError((error) => {

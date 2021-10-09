@@ -246,6 +246,11 @@
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+ion-fab-button{
+  --background: #032541;
+  border-radius: 50%;
+}
+
 //buscador
 ion-searchbar{
   --box-shadow: none !important;
@@ -321,7 +326,7 @@ ion-card{
   h1{
     font-weight: bold;
     font-size: 35px;
-    color: #949FA4;
+    color: #3F3844;
     margin-top: 0px;
     width: 50%;
     margin: auto;
@@ -340,7 +345,7 @@ form{
 }
 
 .color-menu{
-  color: #949FA4;
+  color: #3F3844;
 }
 
 .color-menu-second{

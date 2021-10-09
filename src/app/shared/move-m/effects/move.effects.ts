@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { EntityStatus } from '../../shared/utils/utils';
@@ -20,7 +21,24 @@ export class MoveEffects {
           catchError( (error) => {
             return of(
               MoveActions.saveMoves({ moves: [], error, status: EntityStatus.Error}),
-              MoveActions.loadMovesFailure({message: 'Error loading moves'})
+              MoveActions.loadMovesFailure({message: 'ERRORS.ERROR_LOAD_MOVES'})
+            )
+          }),
+        )
+      )
+    )
+  );
+
+  loadMove$ = createEffect( () =>
+    this.actions$.pipe(
+      ofType(MoveActions.loadMove),
+      switchMap(({moveName}) =>
+        this._move.getMove(moveName).pipe(
+          map( (results) => MoveActions.saveMove({ move: results, error:undefined, status: EntityStatus.Loaded})),
+          catchError( (error) => {
+            return of(
+              MoveActions.saveMove({ move:{}, error, status: EntityStatus.Error}),
+              MoveActions.loadMoveFailure({message: 'ERRORS.ERROR_LOAD_MOVE'})
             )
           }),
         )
@@ -30,8 +48,8 @@ export class MoveEffects {
 
   loadPokemonsFailure$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(MoveActions.loadMovesFailure),
-      tap(({message}) => this.presentToast(message, 'danger')),
+      ofType(MoveActions.loadMovesFailure, MoveActions.loadMoveFailure),
+      tap(({message}) => this.presentToast(this.translate.instant(message), 'danger')),
     ), { dispatch: false }
   );
 
@@ -43,6 +61,7 @@ export class MoveEffects {
   constructor(
     private actions$: Actions,
     private _move: MoveService,
+    private translate: TranslateService,
     public toastController: ToastController,
   ){}
 

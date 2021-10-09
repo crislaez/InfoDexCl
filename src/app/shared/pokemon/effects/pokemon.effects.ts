@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
-import { of, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { EntityStatus } from '../../shared/utils/utils';
 import { PokemonActions } from '../actions';
@@ -65,7 +65,7 @@ export class PokemonEffects {
 
   private _PokemonCatchError(error): Observable<any>{
     return of(
-      PokemonActions.savePokemon({ pokemon: null, error, status: EntityStatus.Error }),
+      PokemonActions.savePokemon({ pokemon: {}, error, status: EntityStatus.Error }),
       PokemonActions.loadPokemonFailure({message: 'ERRORS.ERROR_LOAD_POKEMON'})
     )
   }

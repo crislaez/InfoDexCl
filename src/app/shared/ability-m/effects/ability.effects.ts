@@ -11,16 +11,16 @@ import { AbilityService } from '../services/ability.service';
 @Injectable()
 export class AbilityEffects {
 
-  LoadAbilities$ = createEffect( () =>
+  loadAbilities$ = createEffect( () =>
     this.actions$.pipe(
-      ofType(AbilityActions.LoadAbilities),
+      ofType(AbilityActions.loadAbilities),
       switchMap( () =>
         this._ability.getAbilities().pipe(
-          map( ({results}): any => AbilityActions.SaveAbilities({ abilities: results, error:undefined, status: EntityStatus.Loaded})),
+          map( ({results}): any => AbilityActions.saveAbilities({ abilities: results, error:undefined, status: EntityStatus.Loaded})),
           catchError( (error) => {
             return of(
-              AbilityActions.SaveAbilities({ abilities: [], error, status: EntityStatus.Error }),
-              AbilityActions.LoadAbilitiesFailure({message: 'ERRORS.ERROR_LOAD_ABILIITIES'})
+              AbilityActions.saveAbilities({ abilities: [], error, status: EntityStatus.Error }),
+              AbilityActions.loadAbilitiesFailure({message: 'ERRORS.ERROR_LOAD_ABILIITIES'})
             )
           }),
         )
@@ -28,16 +28,16 @@ export class AbilityEffects {
     )
   );
 
-  LoadAbility$ = createEffect( () =>
+  loadAbility$ = createEffect( () =>
     this.actions$.pipe(
-      ofType(AbilityActions.LoadAbility),
+      ofType(AbilityActions.loadAbility),
       switchMap( ({abilityyName}) =>
         this._ability.getAbility(abilityyName).pipe(
-          map( (results): any => AbilityActions.SaveAbility({ ability: results, error:undefined, status: EntityStatus.Loaded})),
+          map( (results): any => AbilityActions.saveAbility({ ability: results, error:undefined, status: EntityStatus.Loaded})),
           catchError( (error) => {
             return of(
-              AbilityActions.SaveAbility({ ability: null, error, status: EntityStatus.Error }),
-              AbilityActions.LoadAbilityFailure({message: 'ERRORS.ERROR_LOAD_ABILITY'})
+              AbilityActions.saveAbility({ ability: {}, error, status: EntityStatus.Error }),
+              AbilityActions.loadAbilityFailure({message: 'ERRORS.ERROR_LOAD_ABILITY'})
             )
           })
         )
@@ -47,13 +47,13 @@ export class AbilityEffects {
 
   loadPokemonsFailure$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AbilityActions.LoadAbilitiesFailure,  AbilityActions.LoadAbilityFailure),
+      ofType(AbilityActions.loadAbilitiesFailure,  AbilityActions.loadAbilityFailure),
       tap(({message}) => this.presentToast(this.translate.instant(message), 'danger')),
     ), { dispatch: false }
   );
 
   loadAbilityInit$ = createEffect(() =>
-    of(AbilityActions.LoadAbilities())
+    of(AbilityActions.loadAbilities())
   );
 
   constructor(

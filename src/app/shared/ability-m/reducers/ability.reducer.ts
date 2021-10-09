@@ -17,7 +17,7 @@ const initialState: State = {
   abilities: [],
   status: EntityStatus.Initial,
   error:undefined,
-  ability: null,
+  ability: {},
   abilityStatus: EntityStatus.Initial,
   abilityError: undefined
 }
@@ -25,11 +25,11 @@ const initialState: State = {
 
 const AbilitiesReducer = createReducer(
   initialState,
-  on(AbilityActions.LoadAbilities, (state) => ({...state, status: EntityStatus.Pending})),
-  on(AbilityActions.SaveAbilities, (state, { abilities, error, status }) => ({...state, abilities, error, status })),
+  on(AbilityActions.loadAbilities, (state) => ({...state,  error :undefined, status: EntityStatus.Pending})),
+  on(AbilityActions.saveAbilities, (state, { abilities, error, status }) => ({...state, abilities, error, status })),
 
-  on(AbilityActions.LoadAbility, (state) => ({...state, abilityStatus: EntityStatus.Pending})),
-  on(AbilityActions.SaveAbility, (state, { ability, error, status }) => ({...state, ability, abilityError: error, abilityStatus: status })),
+  on(AbilityActions.loadAbility, (state) => ({...state,  abilityError:undefined, abilityStatus: EntityStatus.Pending})),
+  on(AbilityActions.saveAbility, (state, { ability, error, status }) => ({...state, ability, abilityError: error, abilityStatus: status })),
 );
 
 export function reducer(state: State | undefined, action: AbilityActions.AbilityActionsUnion){

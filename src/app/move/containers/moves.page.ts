@@ -76,7 +76,7 @@ import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPoke
     <!-- IS NO MOVES  -->
     <ng-template #noMoves>
       <div class="error-serve">
-        <span >No moves</span>
+        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
       </div>
     </ng-template>
 

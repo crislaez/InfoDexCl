@@ -25,5 +25,14 @@ export class TypeService {
     )
   }
 
+  getType(name: string): Observable<any>{
+    return this.http.get<any>(`${this.baseURL}type/${name}/`).pipe(
+      map(res => (res || {})),
+      catchError((error) => {
+        return throwError(error)
+      })
+    )
+  }
+
 
 }

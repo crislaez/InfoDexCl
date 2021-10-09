@@ -67,7 +67,7 @@ import { getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData,
         <div>
           <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
           <br>
-          <span class="text-second-color"> An error has occurred, swipe down to reload </span>
+          <span class="item-color">{{ 'COMMON.ERROR' | translate }}</span>
         </div>
       </div>
     </ng-template>
@@ -75,7 +75,7 @@ import { getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData,
     <!-- IS NO TYPES  -->
     <ng-template #noTypes>
       <div class="error-serve">
-        <span >No types</span>
+        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
       </div>
     </ng-template>
 

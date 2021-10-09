@@ -17,9 +17,29 @@ export const loadMovesFailure = createAction(
 );
 
 
+export const loadMove = createAction(
+  '[Move] Load move',
+  props<{moveName: string}>()
+);
+
+export const saveMove = createAction(
+  '[Move] Save move',
+  props<{move: Move, error:unknown, status: EntityStatus}>()
+);
+
+export const loadMoveFailure = createAction(
+  '[Move] Load move failure',
+  props<{message: string}>()
+);
+
+
 const all = union({
   loadMoves,
-  saveMoves
+  saveMoves,
+  loadMovesFailure,
+  loadMove,
+  saveMove,
+  loadMoveFailure
 })
 
 export type MoveActionsUnion = typeof all;
