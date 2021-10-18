@@ -12,11 +12,6 @@ export const savePokemons = createAction(
   props<{pokemons: Pokemon[], error:unknown, status: EntityStatus}>()
 );
 
-export const loadPokemonsFailure = createAction(
-  '[Pokemon] Load pokemons failure',
-  props<{message: string}>()
-);
-
 
 
 export const loadPokemon = createAction(
@@ -29,20 +24,13 @@ export const savePokemon = createAction(
   props<{pokemon: Pokemon, error:unknown, status: EntityStatus}>()
 );
 
-export const loadPokemonFailure = createAction(
-  '[Pokemon] Load pokemon failure',
-  props<{message: string}>()
-);
-
 
 
 const all = union({
   loadPokemons,
   savePokemons,
-  loadPokemonsFailure,
   loadPokemon,
-  savePokemon,
-  loadPokemonFailure
+  savePokemon
 })
 
 export type PokemonActionsUnion = typeof all;

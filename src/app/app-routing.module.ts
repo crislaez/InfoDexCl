@@ -1,26 +1,33 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { LangGuard } from './core/i18n/guards/lang.guard';
 
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    // canLoad: [LangGuard],
+   // canActivate: [LangGuard],
   },
   {
     path: 'pokemon',
-    loadChildren: () => import('./pokemon/pokemon.module').then( m => m.PokemonPageModule)
+    loadChildren: () => import('./pokemon/pokemon.module').then( m => m.PokemonPageModule),
+   // canActivate: [LangGuard],
   },
   {
     path: 'ability',
-    loadChildren: () => import('./ability/ability.module').then( m => m.AbilityPageModule)
+    loadChildren: () => import('./ability/ability.module').then( m => m.AbilityPageModule),
+   // canActivate: [LangGuard],
   },
   {
     path: 'move',
-    loadChildren: () => import('./move/move.module').then( m => m.MovePageModule)
+    loadChildren: () => import('./move/move.module').then( m => m.MovePageModule),
+   // canActivate: [LangGuard],
   },
   {
     path: 'type',
-    loadChildren: () => import('./type/type.module').then( m => m.TypePageModule)
+    loadChildren: () => import('./type/type.module').then( m => m.TypePageModule),
+   // canActivate: [LangGuard],
   },
   {
     path: '**',

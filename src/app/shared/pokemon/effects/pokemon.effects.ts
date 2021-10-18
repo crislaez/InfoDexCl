@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { TranslateService } from '@ngx-translate/core';
+import * as NotificationActions from '@pokemon/shared/notification/actions/notification.actions';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { EntityStatus } from '../../shared/utils/utils';
 import { PokemonActions } from '../actions';
 import { PokemonService } from '../services/pokemon.service';
@@ -21,7 +21,7 @@ export class PokemonEffects {
           catchError( (error) => {
             return of(
               PokemonActions.savePokemons({ pokemons: [], error, status: EntityStatus.Error }),
-              PokemonActions.loadPokemonsFailure({message: 'ERRORS.ERROR_LOAD_POKEMONS'})
+              NotificationActions.notificationFailure({message: 'ERRORS.ERROR_LOAD_POKEMON'})
             )
           }),
         )
@@ -51,13 +51,6 @@ export class PokemonEffects {
     )
   );
 
-  loadPokemonsFailure$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(PokemonActions.loadPokemonsFailure, PokemonActions.loadPokemonFailure),
-      tap(({message}) => this.presentToast(this.translate.instant(message), 'danger')),
-    ), { dispatch: false }
-  );
-
   loadPokemonInit$ = createEffect(() =>
     of(PokemonActions.loadPokemons())
   );
@@ -66,25 +59,16 @@ export class PokemonEffects {
   private _PokemonCatchError(error): Observable<any>{
     return of(
       PokemonActions.savePokemon({ pokemon: {}, error, status: EntityStatus.Error }),
-      PokemonActions.loadPokemonFailure({message: 'ERRORS.ERROR_LOAD_POKEMON'})
+      NotificationActions.notificationFailure({message: 'ERRORS.ERROR_LOAD_POKEMON'})
     )
   }
+
 
   constructor(
     private actions$: Actions,
     private _pokemon: PokemonService,
-    private translate: TranslateService,
     public toastController: ToastController,
   ){}
 
-
-  async presentToast(message, color) {
-    const toast = await this.toastController.create({
-      message: message,
-      color: color,
-      duration: 1000
-    });
-    toast.present();
-  }
 
 }

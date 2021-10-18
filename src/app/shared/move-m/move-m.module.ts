@@ -1,18 +1,17 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-
-import { StoreModule} from '@ngrx/store';
-import * as fromMove from './reducers';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { NotificationModule } from '@pokemon/shared/notification/notification.module';
 import { MoveEffects } from './effects/move.effects';
+import * as fromMove from './reducers';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
+    NotificationModule,
     StoreModule.forFeature(fromMove.moveKey, fromMove.reducer),
     EffectsModule.forFeature([MoveEffects]),
   ]

@@ -12,10 +12,6 @@ export const saveAbilities = createAction(
   props<{abilities: Ability[], error:unknown, status: EntityStatus}>()
 );
 
-export const loadAbilitiesFailure = createAction(
-  '[Ability] Load abilities failure',
-  props<{message: string}>()
-);
 
 
 export const loadAbility = createAction(
@@ -28,20 +24,13 @@ export const saveAbility = createAction(
   props<{ability: Ability, error:unknown, status: EntityStatus}>()
 );
 
-export const loadAbilityFailure = createAction(
-  '[Ability] Load ability failure',
-  props<{message: string}>()
-);
-
 
 
 const all = union({
   loadAbilities,
   saveAbilities,
-  loadAbilitiesFailure,
   loadAbility,
-  saveAbility,
-  loadAbilityFailure
+  saveAbility
 })
 
 export type AbilityActionsUnion = typeof all;

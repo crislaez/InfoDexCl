@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { TranslateService } from '@ngx-translate/core';
+import * as NotificationActions from '@pokemon/shared/notification/actions/notification.actions';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { EntityStatus } from '../../shared/utils/utils';
 import { MoveActions } from '../actions';
 import { MoveService } from '../services/move.service';
@@ -21,7 +21,7 @@ export class MoveEffects {
           catchError( (error) => {
             return of(
               MoveActions.saveMoves({ moves: [], error, status: EntityStatus.Error}),
-              MoveActions.loadMovesFailure({message: 'ERRORS.ERROR_LOAD_MOVES'})
+              NotificationActions.notificationFailure({message: 'ERRORS.ERROR_LOAD_MOVES'})
             )
           }),
         )
@@ -38,21 +38,13 @@ export class MoveEffects {
           catchError( (error) => {
             return of(
               MoveActions.saveMove({ move:{}, error, status: EntityStatus.Error}),
-              MoveActions.loadMoveFailure({message: 'ERRORS.ERROR_LOAD_MOVE'})
+              NotificationActions.notificationFailure({message: 'ERRORS.ERROR_LOAD_MOVE'})
             )
           }),
         )
       )
     )
   );
-
-  loadPokemonsFailure$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(MoveActions.loadMovesFailure, MoveActions.loadMoveFailure),
-      tap(({message}) => this.presentToast(this.translate.instant(message), 'danger')),
-    ), { dispatch: false }
-  );
-
 
   loadMoveInit$ = createEffect(() =>
     of(MoveActions.loadMoves())
@@ -61,19 +53,9 @@ export class MoveEffects {
   constructor(
     private actions$: Actions,
     private _move: MoveService,
-    private translate: TranslateService,
     public toastController: ToastController,
   ){}
 
-
-  async presentToast(message, color) {
-    const toast = await this.toastController.create({
-      message: message,
-      color: color,
-      duration: 1000
-    });
-    toast.present();
-  }
 
 
 

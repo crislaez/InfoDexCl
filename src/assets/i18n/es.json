@@ -44,7 +44,9 @@
     "HALF_DAMAGE_TO":"Half damage to",
     "NO_DAMAGE_FROM":"No damage from",
     "NO_DAMAGE_TO":"No damage to",
-    "ALL_TYPE_MOVES":"All type moves"
+    "ALL_TYPE_MOVES":"All type moves",
+    "FILTER_BY_TYPES":"Por tipos",
+    "EVERYONE":"Todos"
   },
   "ERRORS":{
     "NO_DATA":"No data",
