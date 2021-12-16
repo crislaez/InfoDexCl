@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as NotificationActions from '@pokemon/shared/notification/actions/notification.actions';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { EntityStatus } from '../../shared/utils/utils';
+import { EntityStatus } from '../../utils/utils/functions';
 import { PokemonActions } from '../actions';
 import { PokemonService } from '../services/pokemon.service';
 

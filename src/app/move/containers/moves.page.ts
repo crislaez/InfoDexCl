@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { fromMove } from 'src/app/shared/move-m';
-import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '../../shared/shared/utils/utils';
+import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 
 
 @Component({
@@ -46,7 +46,8 @@ import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPoke
                 <!-- INFINITE SCROLL  -->
                 <ng-container *ngIf="info?.total as total">
                   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-                    <ion-infinite-scroll-content loadingSpinner="crescent" color="primary" class="loadingspinner">
+                    <ion-infinite-scroll-content class="loadingspinner">
+                      <ion-spinner *ngIf="$any(status) === 'pending'" class="loadingspinner"></ion-spinner>
                     </ion-infinite-scroll-content>
                   </ion-infinite-scroll>
                 </ng-container>
@@ -68,7 +69,7 @@ import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPoke
         <div>
           <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
           <br>
-          <span class="text-second-color"> An error has occurred, swipe down to reload </span>
+          <span class="text-second-color">{{ 'COMMON.ERROR' | translate }}</span>
         </div>
       </div>
     </ng-template>
@@ -82,7 +83,7 @@ import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPoke
 
     <!-- LOADER  -->
     <ng-template #loader>
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <ion-spinner class="loadingspinner"></ion-spinner>
      </ng-template>
 
     <!-- TO TOP BUTTON  -->

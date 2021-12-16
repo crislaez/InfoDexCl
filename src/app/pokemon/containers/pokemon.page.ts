@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { startWith, switchMap, tap } from 'rxjs/operators';
 import { fromPokemon, PokemonActions } from 'src/app/shared/pokemon';
-import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '../../shared/shared/utils/utils';
+import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 
 @Component({
   selector: 'app-pokemon',
@@ -94,8 +94,8 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
                     <h2>{{ 'COMMON.STATS' | translate}}</h2>
                   </ion-card-header>
                   <ion-card-content class="card-stats">
-                    <ion-button color="primary" class="margin-button" (click)="stastsValue = 1">Base stats</ion-button>
-                    <ion-button color="primary" class="margin-button" (click)="stastsValue = 2">Max stats</ion-button>
+                    <ion-button color="primary" class="margin-button" (click)="stastsValue = 1">{{ 'COMMON.BASE_STATS' | translate }}</ion-button>
+                    <ion-button color="primary" class="margin-button" (click)="stastsValue = 2">{{ 'COMMON.MAX_STATS' | translate }}</ion-button>
 
                     <ng-container *ngFor="let stat of pokemon?.stats; trackBy: trackById">
                       <ng-container *ngIf="stastsValue === 1">
@@ -111,7 +111,7 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
                       </ng-container>
                     </ng-container>
 
-                      <div class="card-stats-div capital-letter"><span class="span-dark">Total:</span></div>
+                      <div class="card-stats-div capital-letter"><span class="span-dark">{{ 'COMMON.TOTAL' | translate }}:</span></div>
                       <div class="card-stats-div">{{totalStats(pokemon?.stats)}}</div>
                   </ion-card-content>
                 </ion-card>
@@ -122,11 +122,11 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
                     <h2>{{ 'COMMON.INTERESTING_DATA' | translate}}</h2>
                   </ion-card-header>
                   <ng-container >
-                    <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.BASE_EXPERIENCE' | translate}}:</span></div>
+                    <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.BASE_EXPERIENCE' | translate }}:</span></div>
                     <div class="card-stats-div">{{pokemon?.base_experience}}</div>
-                    <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HEIGHT' | translate}}:</span></div>
+                    <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HEIGHT' | translate }}:</span></div>
                     <div class="card-stats-div">{{meterFormatter(pokemon?.height)}}</div>
-                    <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.WEIGHT' | translate}}:</span></div>
+                    <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.WEIGHT' | translate }}:</span></div>
                     <div class="card-stats-div">{{klFormatter(pokemon?.weight)}}</div>
                   </ng-container>
                 </ion-card>
@@ -235,7 +235,7 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
 
     <!-- LOADER  -->
     <ng-template #loader>
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <ion-spinner class="loadingspinner"></ion-spinner>
     </ng-template>
 
     <!-- TO TOP BUTTON  -->

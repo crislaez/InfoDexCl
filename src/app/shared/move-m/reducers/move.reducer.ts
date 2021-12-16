@@ -1,7 +1,7 @@
 import { createReducer, on  } from '@ngrx/store';
 import { MoveActions } from '../actions';
 import { Move } from '../models';
-import { EntityStatus } from '../../shared/utils/utils';
+import { EntityStatus } from '../../utils/utils/functions';
 
 
 export interface State{

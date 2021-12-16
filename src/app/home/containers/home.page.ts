@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { fromPokemon } from 'src/app/shared/pokemon';
-import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, trackById } from '../../shared/shared/utils/utils';
+import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, trackById } from '@pokemon/shared/utils/utils/functions';
 
 
 @Component({
@@ -21,7 +21,7 @@ import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPoke
       </ion-text>
     </div>
 
-    <ng-container *ngIf="info$ | async as info; else loader">
+    <ng-container *ngIf="(info$ | async) as info">
       <ng-container *ngIf="(status$ | async) as status">
         <ng-container *ngIf="status !== 'pending'; else loader">
           <ng-container *ngIf="status !== 'error'; else serverError">
@@ -48,7 +48,8 @@ import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPoke
               <!-- INFINITE SCROLL  -->
               <ng-container *ngIf="info?.total as total">
                 <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-                  <ion-infinite-scroll-content color="primary" class="loadingspinner">
+                  <ion-infinite-scroll-content class="loadingspinner">
+                    <ion-spinner *ngIf="$any(status) === 'pending'" class="loadingspinner"></ion-spinner>
                   </ion-infinite-scroll-content>
                 </ion-infinite-scroll>
               </ng-container>
@@ -78,13 +79,13 @@ import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPoke
     <!-- IS NO POKEMONS  -->
     <ng-template #noPokemons>
       <div class="error-serve">
-        <span >No search pokemon</span>
+        <span >{{ 'COMMON.NO_SEARCH_POKEMON' | translate }}</span>
       </div>
     </ng-template>
 
     <!-- LOADER  -->
     <ng-template #loader>
-      <ion-spinner color="primary"></ion-spinner>
+      <ion-spinner class="loadingspinner"></ion-spinner>
     </ng-template>
 
     <!-- TO TOP BUTTON  -->

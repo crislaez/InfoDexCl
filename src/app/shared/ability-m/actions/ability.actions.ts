@@ -1,6 +1,6 @@
 import { createAction, props, union} from '@ngrx/store';
 import { Ability } from '../models';
-import { EntityStatus } from '../../shared/utils/utils';
+import { EntityStatus } from '../../utils/utils/functions';
 
 
 export const loadAbilities = createAction(

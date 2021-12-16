@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { fromType, TypeActions } from '@pokemon/shared/type-m';
+import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 import { combineLatest } from 'rxjs';
-import { map, startWith, switchMap, tap } from 'rxjs/operators';
-import { clearName, defaultImagePokemon, EntityStatus, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '../../shared/shared/utils/utils';
+import { startWith, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-type',
@@ -191,7 +191,7 @@ import { clearName, defaultImagePokemon, EntityStatus, getPokemonImagePrincipal,
 
     <!-- LOADER  -->
     <ng-template #loader>
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <ion-spinner class="loadingspinner"></ion-spinner>
     </ng-template>
 
     <!-- TO TOP BUTTON  -->

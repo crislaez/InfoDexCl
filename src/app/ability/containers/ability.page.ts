@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { AbilityActions, fromAbility } from '@pokemon/shared/ability-m';
 import { combineLatest } from 'rxjs';
 import { startWith, switchMap, tap } from 'rxjs/operators';
-import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '../../shared/shared/utils/utils';
+import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 
 @Component({
   selector: 'app-ability',
@@ -34,38 +34,40 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
                   <ion-card-header class="card-header">
                     <h2>{{ 'COMMON.EFFECT' | translate }}</h2>
                   </ion-card-header>
-                <ion-card-content>
-                  <div *ngIf="getAbilityEffectEnglish(ability?.effect_entries); else noData">{{getAbilityEffectEnglish(ability?.effect_entries)}}</div>
-                </ion-card-content>
+
+                  <ion-card-content>
+                    <div *ngIf="getAbilityEffectEnglish(ability?.effect_entries); else noData">{{getAbilityEffectEnglish(ability?.effect_entries)}}</div>
+                  </ion-card-content>
                 </ion-card>
 
                 <!-- POKEMONS  -->
                 <ion-card class="card-stats fade-in-image">
-                    <ion-card-header class="card-header">
-                      <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
-                    </ion-card-header>
-                    <ion-card-content class="div-accuracy">
+                  <ion-card-header class="card-header">
+                    <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
+                  </ion-card-header>
+                  <ion-card-content class="div-accuracy">
 
-                      <ng-container *ngIf="ability?.pokemon?.length > 0; else noData">
-                        <ion-card class="div-pokemon-learning ion-activatable ripple-parent" *ngFor="let pokemon of ability?.pokemon; trackBy: trackById"  [routerLink]="['/pokemon/'+getPokemonPokedexNumber(pokemon?.pokemon?.url)]" >
-                          <ion-card-content class="pokemon-item">
-                            <ion-label class="span-complete">#{{getPokemonPokedexNumber(pokemon?.pokemon?.url)}}</ion-label>
-                            <ion-label class="span-complete capital-letter">{{clearName(pokemon?.pokemon?.name)}}</ion-label>
-                            <ion-avatar slot="start">
-                              <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.pokemon?.url)" (error)="errorImage($event, defaultImagePokemon(pokemon?.url))">
-                            </ion-avatar>
-                            <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HIDE' | translate }}:</span>
-                            <span *ngIf="pokemon?.is_hidden === true; else hideAbility">{{ 'COMMON.YES' | translate }}</span>
-                              <ng-template #hideAbility>{{ 'COMMON.NO' | translate }}</ng-template>
-                            </div>
-                          </ion-card-content>
-                          <!-- RIPPLE EFFECT -->
-                          <ion-ripple-effect></ion-ripple-effect>
-                        </ion-card>
-                      </ng-container>
+                    <ng-container *ngIf="ability?.pokemon?.length > 0; else noData">
+                      <ion-card class="div-pokemon-learning ion-activatable ripple-parent" *ngFor="let pokemon of ability?.pokemon; trackBy: trackById"  [routerLink]="['/pokemon/'+getPokemonPokedexNumber(pokemon?.pokemon?.url)]" >
+                        <ion-card-content class="pokemon-item">
+                          <ion-label class="span-complete">#{{getPokemonPokedexNumber(pokemon?.pokemon?.url)}}</ion-label>
+                          <ion-label class="span-complete capital-letter">{{clearName(pokemon?.pokemon?.name)}}</ion-label>
+                          <ion-avatar slot="start">
+                            <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.pokemon?.url)" (error)="errorImage($event, defaultImagePokemon(pokemon?.url))">
+                          </ion-avatar>
+                          <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HIDE' | translate }}:</span>
+                          <span *ngIf="pokemon?.is_hidden === true; else hideAbility">{{ 'COMMON.YES' | translate }}</span>
+                            <ng-template #hideAbility>{{ 'COMMON.NO' | translate }}</ng-template>
+                          </div>
+                        </ion-card-content>
 
-                    </ion-card-content>
+                        <!-- RIPPLE EFFECT -->
+                        <ion-ripple-effect></ion-ripple-effect>
+                      </ion-card>
+                    </ng-container>
+                  </ion-card-content>
                 </ion-card>
+
               </div>
 
             </ng-container>
@@ -106,7 +108,7 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
 
     <!-- LOADER  -->
     <ng-template #loader>
-      <ion-spinner ion-spinner name="crescent" color="primary"></ion-spinner>
+      <ion-spinner class="loadingspinner"></ion-spinner>
     </ng-template>
 
     <!-- TO TOP BUTTON  -->

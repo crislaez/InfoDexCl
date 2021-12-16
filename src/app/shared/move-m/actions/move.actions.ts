@@ -1,6 +1,6 @@
 import { createAction, props, union} from '@ngrx/store';
 import { Move } from '../models';
-import { EntityStatus } from '../../shared/utils/utils';
+import { EntityStatus } from '../../utils/utils/functions';
 
 export const loadMoves = createAction(
   '[Move] Load moves'

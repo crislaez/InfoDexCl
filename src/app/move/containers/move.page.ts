@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { fromMove, MoveActions } from '@pokemon/shared/move-m';
 import { combineLatest } from 'rxjs';
 import { startWith, switchMap, tap } from 'rxjs/operators';
-import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '../../shared/shared/utils/utils';
+import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 
 @Component({
   selector: 'app-move',
@@ -93,8 +93,8 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
                     <ion-card-header class="card-header">
                       <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
                     </ion-card-header>
-                    <ion-card-content class="div-accuracy">
 
+                    <ion-card-content class="div-accuracy">
                       <ion-card class="div-pokemon-learning ion-activatable ripple-parent" *ngFor="let pokemon of move?.learned_by_pokemon; trackBy: trackById" [routerLink]="['/pokemon/'+getPokemonPokedexNumber(pokemon?.url)]" >
                         <ion-card-content class="pokemon-item">
                           <ion-label class="span-complete">#{{getPokemonPokedexNumber(pokemon?.url)}} </ion-label>
@@ -103,11 +103,12 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
                             <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.url)" [alt]="getPokemonImagePrincipal(pokemon?.url)" (error)="errorImage($event, defaultImagePokemon(pokemon?.url))">
                           </ion-avatar>
                         </ion-card-content>
+
                         <!-- RIPPLE EFFECT -->
                         <ion-ripple-effect></ion-ripple-effect>
                       </ion-card>
-
                     </ion-card-content>
+
                   </ion-card>
 
                 </div>
@@ -155,7 +156,7 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
 
       <!-- LOADER  -->
       <ng-template #loader>
-        <ion-spinner name="crescent" color="primary"></ion-spinner>
+        <ion-spinner class="loadingspinner"></ion-spinner>
       </ng-template>
 
       <!-- TO TOP BUTTON  -->

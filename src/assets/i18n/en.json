@@ -31,7 +31,7 @@
     "VERSION":"Version",
     "EFFECT":"Effect",
     "LEARN_POKEMON":"Pokemon that learn it",
-    "DATA":"Data",
+    "DATA":"No data",
     "POWER":"Power",
     "DAMAGE_CLASS":"Damage class",
     "PP":"pp",
@@ -46,10 +46,14 @@
     "NO_DAMAGE_TO":"No damage to",
     "ALL_TYPE_MOVES":"All type moves",
     "FILTER_BY_TYPES":"Por tipos",
-    "EVERYONE":"Todos"
+    "EVERYONE":"Todos",
+    "NO_DATA":"No data",
+    "NO_SEARCH_POKEMON":"No search pokemon",
+    "TOTAL":"Total",
+    "BASE_STATS":"Base stats",
+    "MAX_STATS":"Max experience"
   },
   "ERRORS":{
-    "NO_DATA":"No data",
     "ERROR_LOAD_POKEMON":"Error loading pokemon",
     "ERROR_LOAD_POKEMONS":"Error loading pokemons",
     "ERROR_LOAD_ABILITY":"Error loading ability",
