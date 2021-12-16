@@ -1,6 +1,6 @@
-import { createAction, props, union} from '@ngrx/store';
-import { Type } from '../models';
+import { createAction, props } from '@ngrx/store';
 import { EntityStatus } from '../../utils/utils/functions';
+import { Type } from '../models';
 
 
 export const loadTypes = createAction(
@@ -23,14 +23,3 @@ export const saveType = createAction(
   '[Type] Save type',
   props<{pokemonType: Type, error:unknown, status: EntityStatus}>()
 );
-
-
-
-const all = union({
-  loadTypes,
-  saveTypes,
-  loadType,
-  saveType
-})
-
-export type TypeActionsUnion = typeof all;

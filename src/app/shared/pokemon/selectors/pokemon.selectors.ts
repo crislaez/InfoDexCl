@@ -1,45 +1,37 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromPokemon from './pokemon.reducer';
+import * as fromPokemon from '../reducers/pokemon.reducer';
 
-export const pokemonKey = 'pokemon';
-
-export interface State {
-  [pokemonKey]: fromPokemon.State
-}
-
-export const reducer = fromPokemon.reducer;
-
-export const getPokemonState = createFeatureSelector<State, fromPokemon.State>(pokemonKey);
+export const getPokemonState = createFeatureSelector<fromPokemon.State>(
+  fromPokemon.pokemonFeatureKey
+);
 
 
 export const getPokemons = createSelector(
   getPokemonState,
-  fromPokemon.getPokemons
-)
+  (state) => state?.pokemons
+);
 
 export const getStatus = createSelector(
   getPokemonState,
-  fromPokemon.getStatus
+  (state) => state?.status
 )
 
 export const getError = createSelector(
   getPokemonState,
-  fromPokemon.getError
+  (state) => state?.error
 )
 
 export const getPokemon = createSelector(
   getPokemonState,
-  fromPokemon.getPokemon
+  (state) => state?.pokemon
 )
 
 export const getPokemonStatus = createSelector(
   getPokemonState,
-  fromPokemon.getPokemonStatus
+  (state) => state?.pokemonStatus
 )
 
 export const getPokemonError = createSelector(
   getPokemonState,
-  fromPokemon.getPokemonError
+  (state) => state?.pokemonError
 )
-
-

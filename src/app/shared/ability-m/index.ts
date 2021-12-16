@@ -1,7 +1,6 @@
 
-import * as fromAbility from './reducers';
-export * from './effects/ability.effects';
-export * from './actions';
-export * from './services/ability.service';
+import * as fromAbility from './selectors/ability.selectors';
+import * as AbilityActions from './actions/ability.actions';
 export * from './models'
 export { fromAbility }
+export { AbilityActions }

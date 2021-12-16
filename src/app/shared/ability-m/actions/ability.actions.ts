@@ -23,14 +23,3 @@ export const saveAbility = createAction(
   '[Ability] Save ability',
   props<{ability: Ability, error:unknown, status: EntityStatus}>()
 );
-
-
-
-const all = union({
-  loadAbilities,
-  saveAbilities,
-  loadAbility,
-  saveAbility
-})
-
-export type AbilityActionsUnion = typeof all;

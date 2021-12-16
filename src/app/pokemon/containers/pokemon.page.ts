@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, EventEmitter, ViewChild } from '@an
 import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Store } from '@ngrx/store';
+import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 import { combineLatest } from 'rxjs';
 import { startWith, switchMap, tap } from 'rxjs/operators';
 import { fromPokemon, PokemonActions } from 'src/app/shared/pokemon';
-import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 
 @Component({
   selector: 'app-pokemon',
@@ -65,6 +65,7 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
                         <ion-label class="capital-letter span-dark">{{clearName(chain?.species_name)}} </ion-label>
                         <br>
                         <ion-label ><span *ngIf="chain?.trigger_name">{{clearName(chain?.trigger_name)}}</span><span *ngIf="chain?.min_level && chain?.min_level !== 1"> : {{chain?.min_level}}</span> </ion-label>
+                        <ion-label *ngIf="!chain?.trigger_name" class="color-menu-second"> - </ion-label>
                       </ion-card-content>
                       <!-- RIPPLE EFFECT -->
                       <ion-ripple-effect></ion-ripple-effect>
@@ -142,7 +143,7 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
                       <!-- RIPPLE EFFECT -->
                       <ion-ripple-effect></ion-ripple-effect>
                     </ion-card>
-                    <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HIDE' | translate}}:</span>
+                    <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HIDE' | translate}}: </span>
                       <span *ngIf="ability?.is_hidden === true; else hideAbility">{{ 'COMMON.YES' | translate}}</span>
                       <ng-template #hideAbility>{{ 'COMMON.NO' | translate}}</ng-template>
                     </div>

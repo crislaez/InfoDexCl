@@ -3,10 +3,10 @@ import { FormControl } from '@angular/forms';
 import { Keyboard } from '@capacitor/keyboard';
 import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
+import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 import { Observable } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { fromAbility } from 'src/app/shared/ability-m';
-import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 
 @Component({
   selector: 'app-abilities',
@@ -27,7 +27,7 @@ import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPoke
 
             <!-- BUSCADOR  -->
             <form (submit)="searchMove($event)" class="fade-in-card">
-              <ion-searchbar color="light" [placeholder]="'COMMON.ABILITY_SPREAT' | translate " [formControl]="ability" (ionClear)="clearSearch($event)"></ion-searchbar>
+              <ion-searchbar  [placeholder]="'COMMON.ABILITY_SPREAT' | translate " [formControl]="ability" (ionClear)="clearSearch($event)"></ion-searchbar>
             </form>
 
             <!-- ABILITIES LIST  -->

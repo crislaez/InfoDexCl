@@ -1,7 +1,6 @@
 
-import * as fromPokemon from './reducers';
-export * from './effects/pokemon.effects';
-export * from './actions';
-export * from './services/pokemon.service';
+import * as fromPokemon from './selectors/pokemon.selectors';
+import * as PokemonActions from './actions/pokemon.actions';
 export * from './models'
 export { fromPokemon }
+export { PokemonActions }

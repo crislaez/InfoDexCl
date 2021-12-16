@@ -5,14 +5,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { NotificationModule } from '@pokemon/shared/notification/notification.module';
 import { TypeEffects } from './effects/type.effects';
-import * as fromType from './reducers';
+import * as fromType from './reducers/type.reducer';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     NotificationModule,
-    StoreModule.forFeature(fromType.typeKey, fromType.reducer),
+    StoreModule.forFeature(fromType.typeFeatureKey, fromType.reducer),
     EffectsModule.forFeature([TypeEffects]),
   ]
 })

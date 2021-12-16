@@ -1,6 +1,6 @@
-import { createAction, props, union} from '@ngrx/store';
-import { Pokemon } from '../models';
+import { createAction, props } from '@ngrx/store';
 import { EntityStatus } from '../../utils/utils/functions';
+import { Pokemon } from '../models';
 
 
 export const loadPokemons = createAction(
@@ -25,12 +25,3 @@ export const savePokemon = createAction(
 );
 
 
-
-const all = union({
-  loadPokemons,
-  savePokemons,
-  loadPokemon,
-  savePokemon
-})
-
-export type PokemonActionsUnion = typeof all;

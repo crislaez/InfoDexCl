@@ -3,10 +3,10 @@ import { FormControl } from '@angular/forms';
 import { Keyboard } from '@capacitor/keyboard';
 import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
+import { getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 import { Observable } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { fromType } from 'src/app/shared/type-m';
-import { getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 
 @Component({
   selector: 'app-types',

@@ -1,7 +1,10 @@
 import { createReducer, on  } from '@ngrx/store';
-import { AbilityActions } from '../actions';
+import * as AbilityActions from '../actions/ability.actions';
 import { Ability } from '../models';
 import { EntityStatus } from '../../utils/utils/functions';
+
+export const abilityFeatureKey = 'ability';
+
 
 export interface State{
   abilities?: Ability[];
@@ -23,7 +26,7 @@ const initialState: State = {
 }
 
 
-const AbilitiesReducer = createReducer(
+export const reducer = createReducer(
   initialState,
   on(AbilityActions.loadAbilities, (state) => ({...state,  error :undefined, status: EntityStatus.Pending})),
   on(AbilityActions.saveAbilities, (state, { abilities, error, status }) => ({...state, abilities, error, status })),
@@ -32,14 +35,3 @@ const AbilitiesReducer = createReducer(
   on(AbilityActions.saveAbility, (state, { ability, error, status }) => ({...state, ability, abilityError: error, abilityStatus: status })),
 );
 
-export function reducer(state: State | undefined, action: AbilityActions.AbilityActionsUnion){
-  return AbilitiesReducer(state, action);
-}
-
-export const getAbilities = (state: State) => state?.abilities;
-export const getStatus = (state: State) => state?.status;
-export const getError = (state: State) => state?.error;
-
-export const getAbility = (state: State) => state?.ability;
-export const getAbilityStatus = (state: State) => state?.abilityStatus;
-export const getAbilityError = (state: State) => state?.abilityError;

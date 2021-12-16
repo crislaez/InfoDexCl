@@ -1,7 +1,9 @@
 import { createReducer, on  } from '@ngrx/store';
-import { TypeActions } from '../actions';
+import * as TypeActions from '../actions/type.actions';
 import { Type } from '../models';
 import { EntityStatus } from '../../utils/utils/functions';
+
+export const typeFeatureKey = 'type';
 
 export interface State{
   types?: Type[];
@@ -23,7 +25,7 @@ const initialState: State = {
 }
 
 
-const typeReducer = createReducer(
+export const reducer = createReducer(
   initialState,
   on(TypeActions.loadTypes, (state) => ({...state, error: undefined, status: EntityStatus.Pending})),
   on(TypeActions.saveTypes, (state, { types, error, status }) => ({...state, types, error, status })),
@@ -31,15 +33,3 @@ const typeReducer = createReducer(
   on(TypeActions.loadType, (state) => ({...state, typeError: undefined, typeStatus: EntityStatus.Pending})),
   on(TypeActions.saveType, (state, { pokemonType, error, status }) => ({...state, pokemonType, typeError:error, typeStatus: status })),
 );
-
-export function reducer(state: State | undefined, action: TypeActions.TypeActionsUnion){
-  return typeReducer(state, action);
-}
-
-export const getTypes = (state: State) => state?.types;
-export const getStatus = (state: State) => state?.status;
-export const getError = (state: State) => state?.error;
-
-export const getType = (state: State) => state?.pokemonType;
-export const getTypeStatus = (state: State) => state?.typeStatus;
-export const getTypeError = (state: State) => state?.typeError;

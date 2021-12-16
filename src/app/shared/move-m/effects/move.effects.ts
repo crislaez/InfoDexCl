@@ -5,7 +5,7 @@ import * as NotificationActions from '@pokemon/shared/notification/actions/notif
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { EntityStatus } from '../../utils/utils/functions';
-import { MoveActions } from '../actions';
+import * as MoveActions from '../actions/move.actions';
 import { MoveService } from '../services/move.service';
 
 

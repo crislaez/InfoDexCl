@@ -5,7 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { NotificationModule } from '@pokemon/shared/notification/notification.module';
 import { AbilityEffects } from './effects/ability.effects';
-import * as fromAbility from './reducers';
+import * as fromAbility from './reducers/ability.reducer';
 
 
 @NgModule({
@@ -13,7 +13,7 @@ import * as fromAbility from './reducers';
     CommonModule,
     FormsModule,
     NotificationModule,
-    StoreModule.forFeature(fromAbility.abilityKey, fromAbility.reducer),
+    StoreModule.forFeature(fromAbility.abilityFeatureKey, fromAbility.reducer),
     EffectsModule.forFeature([AbilityEffects]),
   ]
 })

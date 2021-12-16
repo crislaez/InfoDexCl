@@ -1,7 +1,9 @@
 import { createReducer, on  } from '@ngrx/store';
-import { PokemonActions } from '../actions';
+import * as PokemonActions from '../actions/pokemon.actions';
 import { Pokemon } from '../models';
 import { EntityStatus } from '../../utils/utils/functions';
+
+export const pokemonFeatureKey = 'pokemon';
 
 export interface State{
   pokemons?: Pokemon[];
@@ -22,7 +24,7 @@ const initialState: State = {
 }
 
 
-const PokemonReducer = createReducer(
+export const reducer = createReducer(
   initialState,
   on(PokemonActions.loadPokemons, (state) => ({ ...state, error: undefined, status: EntityStatus.Pending })),
   on(PokemonActions.savePokemons, (state, { pokemons, error, status }) => ({...state, pokemons, error, status })),
@@ -31,14 +33,3 @@ const PokemonReducer = createReducer(
   on(PokemonActions.savePokemon, (state, { pokemon, error, status }) => ({...state, pokemon, pokemonError: error, pokemonStatus: status })),
 );
 
-export function reducer(state: State | undefined, action: PokemonActions.PokemonActionsUnion){
-  return PokemonReducer(state, action);
-}
-
-export const getPokemons = (state: State) => state?.pokemons;
-export const getStatus = (state: State) => state?.status;
-export const getError = (state: State) => state?.error;
-
-export const getPokemon = (state: State) => state?.pokemon;
-export const getPokemonStatus = (state: State) => state?.pokemonStatus;
-export const getPokemonError = (state: State) => state?.pokemonError;

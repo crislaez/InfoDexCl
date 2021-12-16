@@ -1,6 +1,6 @@
-import { createAction, props, union} from '@ngrx/store';
-import { Move } from '../models';
+import { createAction, props } from '@ngrx/store';
 import { EntityStatus } from '../../utils/utils/functions';
+import { Move } from '../models';
 
 export const loadMoves = createAction(
   '[Move] Load moves'
@@ -23,13 +23,3 @@ export const saveMove = createAction(
   props<{move: Move, error:unknown, status: EntityStatus}>()
 );
 
-
-
-const all = union({
-  loadMoves,
-  saveMoves,
-  loadMove,
-  saveMove
-})
-
-export type MoveActionsUnion = typeof all;

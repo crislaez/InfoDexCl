@@ -1,7 +1,6 @@
 
-import * as fromMove from './reducers';
-export * from './effects/move.effects';
-export * from './actions';
-export * from './services/move.service';
+import * as fromMove from './selectors/move.selectors';
+import * as MoveActions from './actions/move.actions';
 export * from './models'
 export { fromMove }
+export { MoveActions }

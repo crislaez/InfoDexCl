@@ -3,10 +3,10 @@ import { FormControl } from '@angular/forms';
 import { Keyboard } from '@capacitor/keyboard';
 import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
+import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, trackById } from '@pokemon/shared/utils/utils/functions';
 import { Observable } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { fromPokemon } from 'src/app/shared/pokemon';
-import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, trackById } from '@pokemon/shared/utils/utils/functions';
 
 
 @Component({
@@ -28,7 +28,7 @@ import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPoke
 
             <!-- BUSCADOR  -->
             <form (submit)="searchPokemon($event)" class="fade-in-card">
-              <ion-searchbar color="light" [placeholder]="'COMMON.POKEMON_SPREAT' | translate" [formControl]="pokemon" (ionClear)="clearSearch($event)"></ion-searchbar>
+              <ion-searchbar [placeholder]="'COMMON.POKEMON_SPREAT' | translate" [formControl]="pokemon" (ionClear)="clearSearch($event)"></ion-searchbar>
             </form>
 
             <!-- POKEMON LIST  -->
@@ -38,7 +38,7 @@ import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPoke
                 <ion-card-content class="pokemon-item" [ngClass]="getCardrBackground(i)">
                   <ion-label class="capital-letter span-white">#{{getPokemonPokedexNumber(pokemon?.url)}}  {{clearName(pokemon?.name)}}</ion-label>
                   <ion-avatar slot="start">
-                    <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.url)" [alt]="getPokemonImagePrincipal(pokemon?.url)" (error)="errorImage($event,  defaultImagePokemon(pokemon?.url))">
+                    <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.url)" [alt]="pokemon?.name" (error)="errorImage($event,  defaultImagePokemon(pokemon?.url))">
                   </ion-avatar>
                 </ion-card-content>
 
