@@ -29,7 +29,7 @@ import { fromMove } from 'src/app/shared/move-m';
 
               <!-- BUSCADOR  -->
               <form (submit)="searchMove($event)" class="fade-in-card">
-                <ion-searchbar color="light" placeholder="move..." [formControl]="move" (ionClear)="clearSearch($event)"></ion-searchbar>
+                <ion-searchbar placeholder="move..." [formControl]="move" (ionClear)="clearSearch($event)"></ion-searchbar>
               </form>
 
               <!-- MOVES LIST  -->
@@ -66,7 +66,7 @@ import { fromMove } from 'src/app/shared/move-m';
     <!-- IS ERROR -->
     <ng-template #serverError>
       <div class="error-serve">
-        <div>
+        <div class="text-color-dark">
           <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
           <br>
           <span class="text-second-color">{{ 'COMMON.ERROR' | translate }}</span>
@@ -77,7 +77,12 @@ import { fromMove } from 'src/app/shared/move-m';
     <!-- IS NO MOVES  -->
     <ng-template #noMoves>
       <div class="error-serve">
-        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
+        <!-- <span >{{ 'COMMON.NO_DATA' | translate }}</span> -->
+        <div class="text-color-dark">
+          <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
+          <br>
+          <span >{{'COMMON.NO_DATA' | translate}}</span>
+        </div>
       </div>
     </ng-template>
 

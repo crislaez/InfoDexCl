@@ -45,6 +45,17 @@ import { fromPokemon } from 'src/app/shared/pokemon';
                 <ion-ripple-effect></ion-ripple-effect>
               </ion-card>
 
+              <!-- <div class="margin-top-20"></div>
+
+              <ion-list>
+                <ion-item detail *ngFor="let pokemon of info?.pokemons; let i = index; trackBy: trackById" [routerLink]="['/pokemon/'+ getPokemonPokedexNumber(pokemon?.url)]" [ngClass]="getCardrBackground(i)">
+                  <ion-label class="capital-letter span-white">#{{getPokemonPokedexNumber(pokemon?.url)}}  {{clearName(pokemon?.name)}}</ion-label>
+                  <ion-avatar slot="start">
+                    <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.url)" [alt]="pokemon?.name" (error)="errorImage($event,  defaultImagePokemon(pokemon?.url))">
+                  </ion-avatar>
+                </ion-item>
+              </ion-list> -->
+
               <!-- INFINITE SCROLL  -->
               <ng-container *ngIf="info?.total as total">
                 <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
@@ -68,10 +79,10 @@ import { fromPokemon } from 'src/app/shared/pokemon';
     <!-- IS ERROR -->
     <ng-template #serverError>
       <div class="error-serve">
-        <div>
-          <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
+        <div class="text-color-dark">
+          <span><ion-icon class="big-size" name="cloud-offline-outline"></ion-icon></span>
           <br>
-          <span class="text-second-color">{{ 'COMMON.ERROR' | translate }}</span>
+          <span class="">{{ 'COMMON.ERROR' | translate }}</span>
         </div>
       </div>
     </ng-template>
@@ -79,7 +90,11 @@ import { fromPokemon } from 'src/app/shared/pokemon';
     <!-- IS NO POKEMONS  -->
     <ng-template #noPokemons>
       <div class="error-serve">
-        <span >{{ 'COMMON.NO_SEARCH_POKEMON' | translate }}</span>
+        <div class="text-color-dark">
+          <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
+          <br>
+          <span >{{'COMMON.NO_SEARCH_POKEMON' | translate}}</span>
+        </div>
       </div>
     </ng-template>
 

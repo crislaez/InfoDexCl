@@ -32,10 +32,10 @@ import { MenuController } from '@ionic/angular';
 
       <ion-content >
         <ion-list>
-          <ion-item class="color-menu" [routerLink]="['home']" (click)="openEnd()">{{ 'COMMON.POKEMON' | translate }}</ion-item>
-          <ion-item class="color-menu" [routerLink]="['move']" (click)="openEnd()">{{ 'COMMON.MOVES' | translate }}</ion-item>
-          <ion-item class="color-menu" [routerLink]="['ability']" (click)="openEnd()">{{ 'COMMON.ABILITIES' | translate }}</ion-item>
-          <ion-item class="color-menu" [routerLink]="['type']" (click)="openEnd()">{{ 'COMMON.TYPES' | translate }}</ion-item>
+          <ion-item detail class="color-menu" [routerLink]="['home']" (click)="openEnd()">{{ 'COMMON.POKEMON' | translate }}</ion-item>
+          <ion-item detail class="color-menu" [routerLink]="['move']" (click)="openEnd()">{{ 'COMMON.MOVES' | translate }}</ion-item>
+          <ion-item detail class="color-menu" [routerLink]="['ability']" (click)="openEnd()">{{ 'COMMON.ABILITIES' | translate }}</ion-item>
+          <ion-item detail class="color-menu" [routerLink]="['type']" (click)="openEnd()">{{ 'COMMON.TYPES' | translate }}</ion-item>
         </ion-list>
       </ion-content>
     </ion-menu>

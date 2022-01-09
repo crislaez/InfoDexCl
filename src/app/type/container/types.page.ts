@@ -27,7 +27,7 @@ import { fromType } from 'src/app/shared/type-m';
 
             <!-- BUSCADOR  -->
             <form (submit)="searchType($event)" class="fade-in-card">
-              <ion-searchbar color="light" placeholder="type..." [formControl]="type" (ionClear)="clearSearch($event)"></ion-searchbar>
+              <ion-searchbar placeholder="type..." [formControl]="type" (ionClear)="clearSearch($event)"></ion-searchbar>
             </form>
 
             <!-- TYPES LIST  -->
@@ -37,6 +37,7 @@ import { fromType } from 'src/app/shared/type-m';
                 <ion-card-content class="type-item">
                   <ion-label class="capital-letter span-white">{{type?.name}}</ion-label>
                 </ion-card-content>
+
                   <!-- RIPPLE EFFECT -->
                   <ion-ripple-effect></ion-ripple-effect>
               </ion-card>
@@ -65,7 +66,7 @@ import { fromType } from 'src/app/shared/type-m';
     <!-- IS ERROR -->
     <ng-template #serverError>
       <div class="error-serve">
-        <div>
+        <div class="text-color-dark">
           <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
           <br>
           <span class="item-color">{{ 'COMMON.ERROR' | translate }}</span>
@@ -76,7 +77,11 @@ import { fromType } from 'src/app/shared/type-m';
     <!-- IS NO TYPES  -->
     <ng-template #noTypes>
       <div class="error-serve">
-        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
+        <div class="text-color-dark">
+          <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
+          <br>
+          <span >{{'COMMON.NO_DATA' | translate}}</span>
+        </div>
       </div>
     </ng-template>
 

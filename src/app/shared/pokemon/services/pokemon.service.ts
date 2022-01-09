@@ -18,6 +18,10 @@ export class PokemonService {
   getPokemons(): Observable<any>{
     return this.http.get<any>(`${this.baseURL}pokemon?limit=-1`).pipe(
       map(response => (response || [])),
+      // map(() => {
+      //   return []
+      //   throw 504
+      // }),
       catchError((error) => {
         return throwError(error)
       })

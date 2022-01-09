@@ -27,7 +27,7 @@ import { fromAbility } from 'src/app/shared/ability-m';
 
             <!-- BUSCADOR  -->
             <form (submit)="searchMove($event)" class="fade-in-card">
-              <ion-searchbar  [placeholder]="'COMMON.ABILITY_SPREAT' | translate " [formControl]="ability" (ionClear)="clearSearch($event)"></ion-searchbar>
+              <ion-searchbar [placeholder]="'COMMON.ABILITY_SPREAT' | translate " [formControl]="ability" (ionClear)="clearSearch($event)"></ion-searchbar>
             </form>
 
             <!-- ABILITIES LIST  -->
@@ -64,7 +64,7 @@ import { fromAbility } from 'src/app/shared/ability-m';
     <!-- IS ERROR -->
     <ng-template #serverError>
       <div class="error-serve">
-        <div>
+        <div class="text-color-dark">
           <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
           <br>
           <span class="text-second-color">{{ 'COMMON.ERROR' | translate }} </span>
@@ -75,7 +75,11 @@ import { fromAbility } from 'src/app/shared/ability-m';
     <!-- IS NO MOVES  -->
     <ng-template #noAbilities>
       <div class="error-serve">
-        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
+        <div class="text-color-dark">
+          <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
+          <br>
+          <span >{{'COMMON.NO_DATA' | translate}}</span>
+        </div>
       </div>
     </ng-template>
 

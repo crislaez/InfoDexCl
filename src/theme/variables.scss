@@ -251,11 +251,15 @@ ion-fab-button{
   border-radius: 50%;
 }
 
+ion-content{
+  --background: #F4F4F4;
+}
 //buscador
 ion-searchbar{
   --box-shadow: none !important;
   --border-radius: 50px !important;
-  --background:#F4F4F4;
+  --background:#fff;
+  color: #282c34;
 }
 
 ion-infinite-scroll-content{
@@ -295,9 +299,39 @@ ion-title{
   text-align: center;
 }
 
+ion-list {
+  background: #F4F4F4;
+  width:100%;
+  padding: 0px !important;
+
+  ion-item{
+    width:100%;
+    --background: #F4F4F4;
+    color: #282c34;
+
+    ion-img{
+      width: 20%;
+    }
+
+    ion-label{
+      margin-left: 10%;
+      // height:50px;
+    }
+
+  }
+}
+
 .div-clear{
   width: 10%;
   height: 50px;
+}
+
+.text-color-light{
+  color: #fff;
+}
+
+.text-color-dark{
+  color: #282c34;
 }
 
 ion-card-content{
@@ -560,6 +594,14 @@ ion-refresher {
   --color : #1D2536;
 }
 
+.max-size{
+  font-size: 30px !important;
+}
+
+.margin-top-20{
+  margin-top: 20px;
+}
+
 @mixin displayFunction(){
   display: flex;
   flex-direction: row;
@@ -584,97 +626,121 @@ ion-refresher {
 }
 
 .green{
-  background: #A8EFB1
+  background: #A8EFB1 !important;
+  --background: #A8EFB1 !important;
 }
 
 .water{
-  background: #85B7FA
+  background: #85B7FA !important;
+  --background: #85B7FA !important;
 }
 
 .bug{
-  background: #DEEFA8
+  background: #DEEFA8 !important;
+  --background: #DEEFA8 !important;
 }
 
 .dark{
-  background: #7F7F7F
+  background: #7F7F7F !important;
+  --background: #7F7F7F !important;
 }
 
 .dragon{
-  background: #829BFF
+  background: #829BFF !important;
+  --background: #829BFF !important;
 }
 
 .electric{
-  background: #F1E93B
+  background: #F1E93B !important;
+  --background: #F1E93B !important;
 }
 
 .fire{
-  background: #F5A76A
+  background: #F5A76A !important;
+  --background: #F5A76A !important;
 }
 
 .fighting{
-  background: #CCAB6B
+  background: #CCAB6B !important;
+  --background: #CCAB6B !important;
 }
 
 .fly{
-  background: #D7E4E7
+  background: #D7E4E7 !important;
+ --background: #D7E4E7 !important;
 }
 
 .ghost{
-  background: #BBA5FF
+  background: #BBA5FF !important;
+  --background: #BBA5FF !important;
 }
 
 .ground{
-  background: #F2D39D
+  background: #F2D39D !important;
+  --background: #F2D39D !important;
 }
 
 .ice{
-  background: #B7F0EE
+  background: #B7F0EE !important;
+  --background: #B7F0EE !important;
 }
 
 .normal{
-  background: #E9DED6
+  background: #E9DED6 !important;
+  --background: #E9DED6 !important;
 }
 
 .poison{
-  background:  #A082FF
+  background:  #A082FF !important;
+  --background:  #A082FF !important;
 }
 
 .rock{
-  background: #DEC19E
+  background: #DEC19E !important;
+  --background: #DEC19E !important;
 }
 
 .steel{
-  background: #CACACA
+  background: #CACACA !important;
+  --background: #CACACA !important;
 }
 
 .psychic{
-  background: #F7D3F7
+  background: #F7D3F7 !important;
+  --background: #F7D3F7 !important;
 }
 
 .fairy{
-  background: #E68DE7
+  background: #E68DE7 !important;
+  --background: #E68DE7 !important;
 }
 
 .none{
-  background: #CEB5CD;
+  background: #CEB5CD !important;
+  --background: #CEB5CD !important;
 }
 
 .physical{
-  background: #FA7644
+  background: #FA7644 !important;
+  --background: #FA7644 !important;
 }
 
 .special{
-  background: #9AB6D4;
+  background: #9AB6D4 !important;
+  --background: #9AB6D4 !important;
 }
 
 .status{
-  background: #E5E8EB;
+  background: #E5E8EB !important;
+  --background: #E5E8EB !important;
 }
 
 .move{
-  background: #1D2536;
+  background: #1D2536 !important;
+  --background: #1D2536 !important;
 }
 
 .ability{
-  background: #CEB5CD;
+  background: #CEB5CD !important;
+  --background: #CEB5CD !important;
 }
