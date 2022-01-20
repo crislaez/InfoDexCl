@@ -11,6 +11,7 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
   selector: 'app-ability',
   template:`
    <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
+    <div class="empty-header"></div>
 
      <ng-container *ngIf="(ability$ | async) as ability">
        <ng-container *ngIf="(status$ | async) as status">
@@ -18,6 +19,8 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
           <ng-container *ngIf="status !== 'error'; else serverError">
 
             <ng-container *ngIf="isNotData(ability); else noAbility">
+              <div class="empty-header-radius none"></div>
+
               <div class="container none">
 
                 <!-- HEADER  -->
@@ -102,7 +105,11 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
      <!-- IS NO ABILITY  -->
     <ng-template #noAbility>
       <div class="error-serve">
-      <span >{{ 'COMMON.NO_DATA' | translate }}</span>
+        <div class="text-color-dark">
+          <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
+          <br>
+          <span >{{'COMMON.NO_DATA' | translate}}</span>
+        </div>
       </div>
     </ng-template>
 

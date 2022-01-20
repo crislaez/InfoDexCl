@@ -51,7 +51,14 @@
     "NO_SEARCH_POKEMON":"No search pokemon",
     "TOTAL":"Total",
     "BASE_STATS":"Base stats",
-    "MAX_STATS":"Max experience"
+    "MAX_STATS":"Max experience",
+    "POKEMON_TITLE":"POKÉMON",
+    "MOVES_TITLE":"MOVES",
+    "MOVE_TITLE":"MOVE",
+    "TYPES_TITLE":"TYPES",
+    "TYPE_TITLE":"TYPE",
+    "ABILITIES_TITLE":"ABILITIES",
+    "ABILITY_TITLE":"ABILITY"
   },
   "ERRORS":{
     "ERROR_LOAD_POKEMON":"Error loading pokemon",

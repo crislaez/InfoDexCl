@@ -11,6 +11,7 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
   selector: 'app-move',
   template:`
     <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
+    <div class="empty-header"></div>
 
       <ng-container *ngIf="(move$ | async) as move">
         <ng-container *ngIf="(status$ | async) as status">
@@ -18,6 +19,8 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
             <ng-container *ngIf="status !== 'error'; else serverError">
 
               <ng-container *ngIf="isNotData(move); else noMove">
+                <div class="empty-header-radius" [ngClass]="getClassColor(move?.type?.name)"></div>
+
                 <div class="container" [ngClass]="getClassColor(move?.type?.name)">
 
                   <!-- HEADER  -->
@@ -143,14 +146,18 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
       <!-- IS NO DATA  -->
       <ng-template #noData>
         <ion-card-content class="no-data">
-          <span >{{ 'COMMON.NO_DATA' | translate }}</span>
+          <span class="item-color">{{ 'COMMON.NO_DATA' | translate }}</span>
         </ion-card-content>
       </ng-template>
 
       <!-- IS NO MOVE  -->
       <ng-template #noMove>
         <div class="error-serve">
-          <span >{{ 'COMMON.NO_DATA' | translate }}</span>
+          <div class="text-color-dark">
+            <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
+            <br>
+            <span >{{'COMMON.NO_DATA' | translate}}</span>
+          </div>
         </div>
       </ng-template>
 

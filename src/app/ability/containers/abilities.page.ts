@@ -12,13 +12,9 @@ import { fromAbility } from 'src/app/shared/ability-m';
   selector: 'app-abilities',
   template: `
   <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
+    <div class="empty-header"></div>
 
-    <!-- HEADER  -->
-    <div class="header" no-border>
-      <ion-text>
-        <h1>{{ 'COMMON.ABILITIES' | translate }}</h1>
-      </ion-text>
-    </div>
+    <div class="empty-header-radius"></div>
 
     <ng-container *ngIf="(info$ | async) as info">
       <ng-container *ngIf="(status$ | async) as status">

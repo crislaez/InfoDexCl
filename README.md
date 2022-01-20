@@ -2,21 +2,23 @@
 
 Infodexcl es una aplicación hecha en Ionic (Angular, TypeScript, Sass/Css, Html, Rxjs, Ngrx)
 
-<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_1.PNG" />
+<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_1.jpg" />
 <hr>
-<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_2.PNG" />
+<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_2.jpg" />
 <hr>
-<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_3.PNG" />
+<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_3.jpg" />
 <hr>
-<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_4.PNG" />
+<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_4.jpg" />
 <hr>
-<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_5.PNG" />
+<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_5.jpg" />
 <hr>
-<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_6.PNG" />
+<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_6.jpg" />
 <hr>
-<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_7.PNG" />
+<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_7.jpg" />
 <hr>
-<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_8.PNG" />
+<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_8.jpg" />
+<hr>
+<img src="https://github.com/crislaez/InfoDexCl/blob/master/src/assets/images/infoDexCl_9.jpg" />
 
 ### Que hace el proyecto
 

@@ -11,14 +11,16 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
   selector: 'app-type',
   template:`
   <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
+    <div class="empty-header"></div>
 
     <ng-container *ngIf="(type$ | async) as type">
       <ng-container *ngIf="(status$ | async) as status">
         <ng-container *ngIf="status !== 'pending'; else loader">
           <ng-container *ngIf="status !== 'error'; else serverError">
 
-
             <ng-container *ngIf="isNotData(type); else noType">
+              <div class="empty-header-radius" [ngClass]="getClassColor(type?.name)"></div>
+
               <div class="container" [ngClass]="getClassColor(type?.name)">
 
                 <!-- HEADER  -->
@@ -167,7 +169,7 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
     <!-- IS ERROR -->
     <ng-template #serverError>
       <div class="error-serve">
-        <div>
+        <div class="text-color-dark">
           <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
           <br>
           <span class="item-color">{{ 'COMMON.ERROR' | translate }}</span>
@@ -185,7 +187,11 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
     <!-- IS NO MOVE  -->
     <ng-template #noType>
       <div class="error-serve">
-        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
+        <div class="text-color-dark">
+          <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
+          <br>
+          <span >{{'COMMON.NO_DATA' | translate}}</span>
+        </div>
       </div>
     </ng-template>
 

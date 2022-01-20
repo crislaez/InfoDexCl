@@ -1,5 +1,7 @@
+import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 
 @Component({
@@ -7,14 +9,14 @@ import { MenuController } from '@ionic/angular';
   template:`
   <ion-app>
     <!-- CABECERA  -->
-    <ion-header [translucent]="true" no-border>
+    <ion-header  class="ion-no-border">
       <ion-toolbar mode="md|ios">
 
         <ion-button fill="clear" size="small" slot="start"  (click)="open()">
           <ion-menu-button class="color-menu-second"></ion-menu-button>
         </ion-button>
 
-        <ion-title class="color-menu-second" >{{ 'COMMON.TITLE' | translate }}</ion-title>
+        <ion-title *ngIf="currentSection$ |async as currentSection" class="color-menu-second" >{{ currentSection | translate }}</ion-title>
 
         <div size="small" slot="end" class="div-clear"  >
         </div>
@@ -49,6 +51,23 @@ import { MenuController } from '@ionic/angular';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RootComponent {
+
+  currentSection$: Observable<string> = this.router.events.pipe(
+    filter((event: any) => event instanceof NavigationStart),
+    map((event: NavigationEnd) => {
+      const { url = ''} = event || {};
+      if(url === '/home') return 'COMMON.POKEMON_TITLE';
+      if(url?.includes('/pokemon/')) return 'COMMON.POKEMON_TITLE';
+      if(url === '/move') return 'COMMON.MOVES_TITLE';
+      if(url?.includes('/move/')) return 'COMMON.MOVE_TITLE';
+      if(url === '/ability') return 'COMMON.ABILITIES_TITLE';
+      if(url?.includes('/ability/')) return 'COMMON.ABILITY_TITLE';
+      if(url === '/type') return 'COMMON.TYPES_TITLE';
+      if(url?.includes('/type/')) return 'COMMON.TYPE_TITLE';
+      return 'COMMON.TITLE';
+    })
+  );
+
 
   constructor(
     private menu: MenuController,

@@ -13,13 +13,9 @@ import { fromPokemon } from 'src/app/shared/pokemon';
   selector: 'app-home',
   template:`
   <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
+    <div class="empty-header"></div>
 
-    <!-- HEADER  -->
-    <div class="header" no-border>
-      <ion-text>
-        <h1>{{ 'COMMON.POKEMON' | translate }}</h1>
-      </ion-text>
-    </div>
+    <div class="empty-header-radius"></div>
 
     <ng-container *ngIf="(info$ | async) as info">
       <ng-container *ngIf="(status$ | async) as status">
@@ -71,8 +67,8 @@ import { fromPokemon } from 'src/app/shared/pokemon';
       </ng-container>
     </ng-container>
 
-     <!-- REFRESH -->
-     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" >
+    <!-- REFRESH -->
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" >
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 

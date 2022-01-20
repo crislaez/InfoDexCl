@@ -12,12 +12,16 @@ import { fromPokemon, PokemonActions } from 'src/app/shared/pokemon';
   template: `
   <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
 
+    <div class="empty-header"></div>
+
     <ng-container *ngIf="(pokemon$ | async) as pokemon">
       <ng-container *ngIf="(status$ | async) as status">
         <ng-container *ngIf="status !== 'pending'; else loader">
           <ng-container *ngIf="status !== 'error'; else serverError">
 
             <ng-container *ngIf="isNotData(pokemon); else noPokemon">
+              <div class="empty-header-radius" [ngClass]="getClassColor(pokemon, '')"></div>
+
               <div class="container" [ngClass]="getClassColor(pokemon, '')">
 
                 <!-- HEADER  -->

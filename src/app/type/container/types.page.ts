@@ -12,13 +12,9 @@ import { fromType } from 'src/app/shared/type-m';
   selector: 'app-types',
   template: `
   <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
+  <div class="empty-header"></div>
 
-    <!-- HEADER  -->
-    <div class="header" no-border>
-      <ion-text>
-        <h1>{{ 'COMMON.TYPES' | translate }}</h1>
-      </ion-text>
-    </div>
+  <div class="empty-header-radius"></div>
 
     <ng-container *ngIf="(info$ | async) as info; else loader">
       <ng-container *ngIf="(status$ | async) as status">
