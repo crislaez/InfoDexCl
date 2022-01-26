@@ -32,8 +32,8 @@ import { fromPokemon, PokemonActions } from 'src/app/shared/pokemon';
                     <div class="header-container-empty" ></div>
                     <ng-container *ngIf="pokemon?.types">
                       <h2>{{ 'COMMON.TYPE' | translate}}</h2>
-                      <ion-card class="card-type card-shadow ion-activatable ripple-parent" *ngFor="let type of pokemon?.types; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(type?.type?.url)]" [ngClass]="getClassColor(null, type?.type?.name)">
-                        <ion-label class="capital-letter">{{type?.type?.name}} </ion-label>
+                      <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let type of pokemon?.types; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(type?.type?.url)]" [ngStyle]="{'box-shadow':type?.type?.name=== 'dark' ? '0px 0px 10px white' : '0px 0px 10px gray' }" [ngClass]="getClassColor(null, type?.type?.name)">
+                        <ion-label class="capital-letter">{{ type?.type?.name }}</ion-label>
                         <!-- RIPPLE EFFECT -->
                         <ion-ripple-effect></ion-ripple-effect>
                       </ion-card>
@@ -195,14 +195,14 @@ import { fromPokemon, PokemonActions } from 'src/app/shared/pokemon';
                   <ng-container *ngFor="let generation of getKeysGenerationsImages(getPokemonGenerations(pokemon, generations)); trackBy: trackById">
                     <ion-card class="card-generations-sprite fade-in-image" *ngIf="ifGenerationImage(getPokemonGeneration(pokemon, generations, generation))" >
                       <h3 class="capital-letter">{{generation}}</h3>
-                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.back_default as image" class="card-pokemon-image" [src]="image" [alt]="image">
-                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.back_female as image" class="card-pokemon-image" [src]="image" [alt]="image">
-                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.back_shiny as image" class="card-pokemon-image" [src]="image" [alt]="image">
-                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.back_shiny_female as image" class="card-pokemon-image" [src]="image" [alt]="image">
-                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.front_default as image" class="card-pokemon-image" [src]="image" [alt]="image">
-                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.front_female as image" class="card-pokemon-image" [src]="image" [alt]="image">
-                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.front_shiny as image" class="card-pokemon-image" [src]="image" [alt]="image">
-                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.front_shiny_female as image" class="card-pokemon-image" [src]="image" [alt]="image">
+                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.back_default as image" class="card-pokemon-image" [src]="image" [alt]="image" (error)="errorImage($event, notFoundImage)">
+                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.back_female as image" class="card-pokemon-image" [src]="image" [alt]="image" (error)="errorImage($event, notFoundImage)">
+                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.back_shiny as image" class="card-pokemon-image" [src]="image" [alt]="image" (error)="errorImage($event, notFoundImage)">
+                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.back_shiny_female as image" class="card-pokemon-image" [src]="image" [alt]="image" (error)="errorImage($event, notFoundImage)">
+                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.front_default as image" class="card-pokemon-image" [src]="image" [alt]="image" (error)="errorImage($event, notFoundImage)">
+                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.front_female as image" class="card-pokemon-image" [src]="image" [alt]="image" (error)="errorImage($event, notFoundImage)">
+                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.front_shiny as image" class="card-pokemon-image" [src]="image" [alt]="image" (error)="errorImage($event, notFoundImage)">
+                      <img *ngIf="getPokemonGeneration(pokemon, generations, generation)?.front_shiny_female as image" class="card-pokemon-image" [src]="image" [alt]="image" (error)="errorImage($event, notFoundImage)">
                     </ion-card>
                   </ng-container>
                 </ng-container>
@@ -280,6 +280,7 @@ export class PokemonPage {
     switchMap(() =>
       this.store.select(fromPokemon.getPokemon)
     )
+    ,tap(d => console.log(d))
   );
 
 
