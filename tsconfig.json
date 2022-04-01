@@ -16,6 +16,7 @@
     "paths":{
       "@pokemon/shared/*": ["./src/app/shared/*"],
       "@pokemon/core/*": ["./src/app/core/*"],
+      "@pokemon/shared-ui/*": ["./src/app/shared-ui/*"],
     }
   },
   "angularCompilerOptions": {

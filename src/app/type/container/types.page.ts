@@ -12,86 +12,75 @@ import { fromType } from 'src/app/shared/type-m';
   selector: 'app-types',
   template: `
   <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
-  <div class="empty-header"></div>
 
-  <div class="empty-header-radius"></div>
+    <div class="empty-header">
+      <!-- BUSCADOR  -->
+      <form (submit)="searchType($event)" class="fade-in-card">
+        <ion-searchbar placeholder="type..." [formControl]="type" (ionClear)="clearSearch($event)"></ion-searchbar>
+      </form>
+    </div>
 
-    <ng-container *ngIf="(info$ | async) as info; else loader">
-      <ng-container *ngIf="(status$ | async) as status">
-        <ng-container *ngIf="status !== 'pending'; else loader">
-          <ng-container *ngIf="status !== 'error'; else serverError">
+    <div class="empty-header-radius"></div>
 
-            <!-- BUSCADOR  -->
-            <form (submit)="searchType($event)" class="fade-in-card">
-              <ion-searchbar placeholder="type..." [formControl]="type" (ionClear)="clearSearch($event)"></ion-searchbar>
-            </form>
+      <ng-container *ngIf="(info$ | async) as info; else loader">
+        <ng-container *ngIf="(status$ | async) as status">
+          <ng-container *ngIf="status !== 'pending'; else loader">
+            <ng-container *ngIf="status !== 'error'; else serverError">
 
-            <!-- TYPES LIST  -->
-            <ng-container *ngIf="info?.types?.length > 0; else noTypes">
+              <!-- TYPES LIST  -->
+              <ng-container *ngIf="info?.types?.length > 0; else noTypes">
 
-              <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let type of info?.types; let i = index; trackBy: trackById"  [ngClass]="getClassColor(type?.name)" [routerLink]="['/type/'+ type?.name]" >
-                <ion-card-content class="type-item">
-                  <ion-label class="capital-letter span-white">{{type?.name}}</ion-label>
-                </ion-card-content>
+                <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let type of info?.types; let i = index; trackBy: trackById"  [ngClass]="getClassColor(type?.name)" [routerLink]="['/type/'+ type?.name]" >
+                  <ion-card-content class="type-item">
+                    <ion-label class="capital-letter span-white">{{type?.name}}</ion-label>
+                  </ion-card-content>
 
-                  <!-- RIPPLE EFFECT -->
-                  <ion-ripple-effect></ion-ripple-effect>
-              </ion-card>
+                    <!-- RIPPLE EFFECT -->
+                    <ion-ripple-effect></ion-ripple-effect>
+                </ion-card>
 
-              <!-- INFINITE SCROLL  -->
-              <ng-container *ngIf="info?.total as total">
-                <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-                  <ion-infinite-scroll-content class="loadingspinner">
-                    <ion-spinner *ngIf="$any(status) === 'pending'" class="loadingspinner"></ion-spinner>
-                  </ion-infinite-scroll-content>
-                </ion-infinite-scroll>
+                <!-- INFINITE SCROLL  -->
+                <ng-container *ngIf="info?.total as total">
+                  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
+                    <ion-infinite-scroll-content class="loadingspinner">
+                      <ion-spinner *ngIf="$any(status) === 'pending'" class="loadingspinner"></ion-spinner>
+                    </ion-infinite-scroll-content>
+                  </ion-infinite-scroll>
+                </ng-container>
+
               </ng-container>
 
             </ng-container>
-
           </ng-container>
         </ng-container>
       </ng-container>
-    </ng-container>
 
-    <!-- REFRESH -->
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+      <!-- REFRESH -->
+      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
 
-    <!-- IS ERROR -->
-    <ng-template #serverError>
-      <div class="error-serve">
-        <div class="text-color-dark">
-          <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
-          <br>
-          <span class="item-color">{{ 'COMMON.ERROR' | translate }}</span>
-        </div>
-      </div>
-    </ng-template>
+      <!-- IS ERROR -->
+      <ng-template #serverError>
+        <app-no-data [title]="'COMMON.ERROR'" [image]="'assets/images/error.png'" [top]="'20vh'"></app-no-data>
+      </ng-template>
 
-    <!-- IS NO TYPES  -->
-    <ng-template #noTypes>
-      <div class="error-serve">
-        <div class="text-color-dark">
-          <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
-          <br>
-          <span >{{'COMMON.NO_DATA' | translate}}</span>
-        </div>
-      </div>
-    </ng-template>
+      <!-- IS NO TYPES  -->
+      <ng-template #noTypes>
+        <app-no-data [title]="'COMMON.NORESULT'" [image]="'assets/images/empty.png'" [top]="'20vh'"></app-no-data>
+      </ng-template>
 
-    <!-- LOADER  -->
-    <ng-template #loader>
-      <ion-spinner class="loadingspinner"></ion-spinner>
-    </ng-template>
+      <!-- LOADER  -->
+      <ng-template #loader>
+        <app-spinner></app-spinner>
+      </ng-template>
 
-    <!-- TO TOP BUTTON  -->
-    <ion-fab *ngIf="showButton" vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button class="color-button color-button-text" (click)="gotToTop(content)"> <ion-icon name="arrow-up-circle-outline"></ion-icon></ion-fab-button>
-    </ion-fab>
+      <!-- TO TOP BUTTON  -->
+      <ion-fab *ngIf="showButton" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button class="color-button color-button-text" (click)="gotToTop(content)"> <ion-icon name="arrow-up-circle-outline"></ion-icon></ion-fab-button>
+      </ion-fab>
 
-  </ion-content>
+    </ion-content>
   `,
   styleUrls: ['./types.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

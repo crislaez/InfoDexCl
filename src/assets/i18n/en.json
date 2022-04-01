@@ -2,6 +2,7 @@
   "COMMON":{
     "TITLE":"InfoDex",
     "MENU":"Menu",
+    "NO_DATA":"No data",
     "NORESULT":"No data found, swipe down to reload",
     "ERROR":"An error has occurred, swipe down to reload",
     "POKEMON":"Pokémon",
@@ -46,8 +47,7 @@
     "NO_DAMAGE_TO":"No damage to",
     "ALL_TYPE_MOVES":"All type moves",
     "FILTER_BY_TYPES":"Por tipos",
-    "EVERYONE":"Todos",
-    "NO_DATA":"No data",
+    "EVERYONE":"All",
     "NO_SEARCH_POKEMON":"No search pokemon",
     "TOTAL":"Total",
     "BASE_STATS":"Base stats",

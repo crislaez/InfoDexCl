@@ -13,7 +13,12 @@ import { fromMove } from 'src/app/shared/move-m';
   selector: 'app-moves',
   template: `
   <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
-    <div class="empty-header"></div>
+    <div class="empty-header">
+      <!-- BUSCADOR  -->
+      <form (submit)="searchMove($event)" class="fade-in-card">
+        <ion-searchbar placeholder="move..." [formControl]="move" (ionClear)="clearSearch($event)"></ion-searchbar>
+      </form>
+    </div>
 
     <div class="empty-header-radius"></div>
 
@@ -21,12 +26,6 @@ import { fromMove } from 'src/app/shared/move-m';
       <ng-container *ngIf="(status$ | async) as status">
         <ng-container *ngIf="status !== 'pending'; else loader">
           <ng-container *ngIf="status !== 'error'; else serverError">
-
-
-              <!-- BUSCADOR  -->
-              <form (submit)="searchMove($event)" class="fade-in-card">
-                <ion-searchbar placeholder="move..." [formControl]="move" (ionClear)="clearSearch($event)"></ion-searchbar>
-              </form>
 
               <!-- MOVES LIST  -->
               <ng-container *ngIf="info?.moves?.length > 0; else noMoves">
@@ -61,31 +60,18 @@ import { fromMove } from 'src/app/shared/move-m';
 
     <!-- IS ERROR -->
     <ng-template #serverError>
-      <div class="error-serve">
-        <div class="text-color-dark">
-          <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
-          <br>
-          <span class="text-second-color">{{ 'COMMON.ERROR' | translate }}</span>
-        </div>
-      </div>
+      <app-no-data [title]="'COMMON.ERROR'" [image]="'assets/images/error.png'" [top]="'20vh'"></app-no-data>
     </ng-template>
 
     <!-- IS NO MOVES  -->
     <ng-template #noMoves>
-      <div class="error-serve">
-        <!-- <span >{{ 'COMMON.NO_DATA' | translate }}</span> -->
-        <div class="text-color-dark">
-          <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
-          <br>
-          <span >{{'COMMON.NO_DATA' | translate}}</span>
-        </div>
-      </div>
+      <app-no-data [title]="'COMMON.NORESULT'" [image]="'assets/images/empty.png'" [top]="'20vh'"></app-no-data>
     </ng-template>
 
     <!-- LOADER  -->
     <ng-template #loader>
-      <ion-spinner class="loadingspinner"></ion-spinner>
-     </ng-template>
+      <app-spinner></app-spinner>
+    </ng-template>
 
     <!-- TO TOP BUTTON  -->
     <ion-fab *ngIf="showButton" vertical="bottom" horizontal="end" slot="fixed">

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
+import { GenericsModule } from '@pokemon/shared-ui/generics/generics.module';
 import { MoveMModule } from '../shared/move-m/move-m.module';
 import { SharedModule } from '../shared/shared/shared.module';
 import { MovePage } from './containers/move.page';
@@ -16,6 +17,7 @@ import { MovePageRoutingModule } from './move-routing.module';
     IonicModule,
     SharedModule,
     MoveMModule,
+    GenericsModule,
     TranslateModule.forChild(),
     MovePageRoutingModule
   ],

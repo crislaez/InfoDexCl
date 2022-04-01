@@ -221,26 +221,17 @@ import { fromPokemon, PokemonActions } from 'src/app/shared/pokemon';
 
     <!-- IS ERROR -->
     <ng-template #serverError>
-      <div class="error-serve">
-        <div>
-          <span><ion-icon class="item-color big-size" name="cloud-offline-outline"></ion-icon></span>
-          <br>
-          <span class="item-color">{{ 'COMMON.ERROR' | translate }}</span>
-        </div>
-      </div>
+      <app-no-data [title]="'COMMON.ERROR'" [image]="'assets/images/error.png'" [top]="'0vh'"></app-no-data>
     </ng-template>
 
     <!-- IS NO POKEMONS  -->
     <ng-template #noPokemon>
-      <div class="error-serve">
-        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
-      </div>
+      <app-no-data [title]="'COMMON.NORESULT'" [image]="'assets/images/empty.png'" [top]="'0vh'"></app-no-data>
     </ng-template>
-
 
     <!-- LOADER  -->
     <ng-template #loader>
-      <ion-spinner class="loadingspinner"></ion-spinner>
+      <app-spinner></app-spinner>
     </ng-template>
 
     <!-- TO TOP BUTTON  -->
@@ -280,7 +271,6 @@ export class PokemonPage {
     switchMap(() =>
       this.store.select(fromPokemon.getPokemon)
     )
-    ,tap(d => console.log(d))
   );
 
 

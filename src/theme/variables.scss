@@ -246,6 +246,9 @@
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+$primary: #694BB4;
+$secondary: #B09EDA;
+
 ion-fab-button{
   --background: #694BB4;
   border-radius: 50%;
@@ -260,7 +263,7 @@ ion-content{
 ion-searchbar{
   --box-shadow: none !important;
   --border-radius: 50px !important;
-  --background:#fff;
+  --background: #B09EDA;
   color: #282c34;
 }
 
@@ -300,7 +303,7 @@ ion-header {
 .empty-header{
   background: #694BB4;
   width: 100%;
-  height: 100px;
+  height: 150px;
 }
 
 .empty-header-radius{
@@ -394,7 +397,7 @@ ion-card{
 form{
   width: 90%;
   margin: auto;
-  margin-top: 30px;
+  padding-top: 50px;
 }
 
 .color-menu{
@@ -523,26 +526,6 @@ ion-virtual-scroll{
   justify-content: space-around;
 }
 
-.error-serve{
-  width: 100%;
-  height: 100vh;
-  display: block;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-content: center;
-
-  ion-icon{
-    font-size: 25px;
-  }
-
-  div{
-    width: 80%;
-    text-align: center;
-  }
-}
-
 .redirect{
   color: var(--ion-color-secondary);
 }
@@ -613,9 +596,6 @@ ion-refresher {
   border-radius: 10px;
 }
 
-.loadingspinner{
-  --color : #694BB4;
-}
 
 .max-size{
   font-size: 30px !important;

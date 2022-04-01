@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
+import { GenericsModule } from '@pokemon/shared-ui/generics/generics.module';
 import { AbilityMModule } from '../shared/ability-m/ability-m.module';
 import { SharedModule } from '../shared/shared/shared.module';
 import { AbilityPageRoutingModule } from './ability-routing.module';
@@ -16,6 +17,7 @@ import { AbilityPage } from './containers/ability.page';
     IonicModule,
     SharedModule,
     AbilityMModule,
+    GenericsModule,
     TranslateModule.forChild(),
     AbilityPageRoutingModule
   ],

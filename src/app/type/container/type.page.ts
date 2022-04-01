@@ -168,13 +168,7 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
 
     <!-- IS ERROR -->
     <ng-template #serverError>
-      <div class="error-serve">
-        <div class="text-color-dark">
-          <span><ion-icon class="text-second-color big-size" name="cloud-offline-outline"></ion-icon></span>
-          <br>
-          <span class="item-color">{{ 'COMMON.ERROR' | translate }}</span>
-        </div>
-      </div>
+      <app-no-data [title]="'COMMON.NORESULT'" [image]="'assets/images/empty.png'" [top]="'20vh'"></app-no-data>
     </ng-template>
 
     <!-- IS NO DATA  -->
@@ -186,18 +180,12 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
 
     <!-- IS NO MOVE  -->
     <ng-template #noType>
-      <div class="error-serve">
-        <div class="text-color-dark">
-          <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
-          <br>
-          <span >{{'COMMON.NO_DATA' | translate}}</span>
-        </div>
-      </div>
+      <app-no-data [title]="'COMMON.NORESULT'" [image]="'assets/images/empty.png'" [top]="'20vh'"></app-no-data>
     </ng-template>
 
     <!-- LOADER  -->
     <ng-template #loader>
-      <ion-spinner class="loadingspinner"></ion-spinner>
+      <app-spinner></app-spinner>
     </ng-template>
 
     <!-- TO TOP BUTTON  -->

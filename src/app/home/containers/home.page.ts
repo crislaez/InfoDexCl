@@ -13,7 +13,13 @@ import { fromPokemon } from 'src/app/shared/pokemon';
   selector: 'app-home',
   template:`
   <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
-    <div class="empty-header"></div>
+
+    <div class="empty-header">
+      <!-- BUSCADOR  -->
+      <form (submit)="searchPokemon($event)" class="fade-in-card">
+        <ion-searchbar [placeholder]="'COMMON.POKEMON_SPREAT' | translate" [formControl]="pokemon" (ionClear)="clearSearch($event)"></ion-searchbar>
+      </form>
+    </div>
 
     <div class="empty-header-radius"></div>
 
@@ -21,11 +27,6 @@ import { fromPokemon } from 'src/app/shared/pokemon';
       <ng-container *ngIf="(status$ | async) as status">
         <ng-container *ngIf="status !== 'pending'; else loader">
           <ng-container *ngIf="status !== 'error'; else serverError">
-
-            <!-- BUSCADOR  -->
-            <form (submit)="searchPokemon($event)" class="fade-in-card">
-              <ion-searchbar [placeholder]="'COMMON.POKEMON_SPREAT' | translate" [formControl]="pokemon" (ionClear)="clearSearch($event)"></ion-searchbar>
-            </form>
 
             <!-- POKEMON LIST  -->
             <ng-container *ngIf="info?.pokemons?.length > 0; else noPokemons">
@@ -41,22 +42,11 @@ import { fromPokemon } from 'src/app/shared/pokemon';
                 <ion-ripple-effect></ion-ripple-effect>
               </ion-card>
 
-              <!-- <div class="margin-top-20"></div>
-
-              <ion-list>
-                <ion-item detail *ngFor="let pokemon of info?.pokemons; let i = index; trackBy: trackById" [routerLink]="['/pokemon/'+ getPokemonPokedexNumber(pokemon?.url)]" [ngClass]="getCardrBackground(i)">
-                  <ion-label class="capital-letter span-white">#{{getPokemonPokedexNumber(pokemon?.url)}}  {{clearName(pokemon?.name)}}</ion-label>
-                  <ion-avatar slot="start">
-                    <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.url)" [alt]="pokemon?.name" (error)="errorImage($event,  defaultImagePokemon(pokemon?.url))">
-                  </ion-avatar>
-                </ion-item>
-              </ion-list> -->
-
               <!-- INFINITE SCROLL  -->
               <ng-container *ngIf="info?.total as total">
                 <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
                   <ion-infinite-scroll-content class="loadingspinner">
-                    <ion-spinner *ngIf="$any(status) === 'pending'" class="loadingspinner"></ion-spinner>
+                    <app-spinner [top]="'0%'" *ngIf="$any(status) === 'pending'"></app-spinner>
                   </ion-infinite-scroll-content>
                 </ion-infinite-scroll>
               </ng-container>
@@ -74,29 +64,17 @@ import { fromPokemon } from 'src/app/shared/pokemon';
 
     <!-- IS ERROR -->
     <ng-template #serverError>
-      <div class="error-serve">
-        <div class="text-color-dark">
-          <span><ion-icon class="big-size" name="cloud-offline-outline"></ion-icon></span>
-          <br>
-          <span class="">{{ 'COMMON.ERROR' | translate }}</span>
-        </div>
-      </div>
+      <app-no-data [title]="'COMMON.ERROR'" [image]="'assets/images/error.png'" [top]="'20vh'"></app-no-data>
     </ng-template>
 
     <!-- IS NO POKEMONS  -->
     <ng-template #noPokemons>
-      <div class="error-serve">
-        <div class="text-color-dark">
-          <span><ion-icon class="max-size" name="clipboard-outline"></ion-icon></span>
-          <br>
-          <span >{{'COMMON.NO_SEARCH_POKEMON' | translate}}</span>
-        </div>
-      </div>
+      <app-no-data [title]="'COMMON.NO_SEARCH_POKEMON'" [image]="'assets/images/empty.png'" [top]="'20vh'"></app-no-data>
     </ng-template>
 
     <!-- LOADER  -->
     <ng-template #loader>
-      <ion-spinner class="loadingspinner"></ion-spinner>
+      <app-spinner></app-spinner>
     </ng-template>
 
     <!-- TO TOP BUTTON  -->
@@ -137,12 +115,9 @@ export class HomePage  {
     switchMap(({perPage, search}) => {
       return this.store.select(fromPokemon.getPokemons).pipe(
         map(pokemons => {
-          let result = [...pokemons];
-
-          if(!!search){
-            result = (pokemons || []).filter(({name}) => name === search?.toLowerCase() || name?.includes(search?.toLowerCase() ) || (search?.toLowerCase()  || '')?.includes(name));
-          }
-
+          const result = !!search
+                ? (pokemons || []).filter(({name}) => name === search?.toLowerCase() || name?.includes(search?.toLowerCase() ) || (search?.toLowerCase()  || '')?.includes(name))
+                : [...pokemons];
           return {
             pokemons: (result || [])?.slice(0, perPage),
             total: result?.length
@@ -179,15 +154,13 @@ export class HomePage  {
 
   // INIFINITE SCROLL
   loadData(event, total) {
-    setTimeout(() => {
-      this.statusComponent = {...this.statusComponent, perPage: this.statusComponent.perPage + 15};
-      if(this.statusComponent.perPage >= total){
-        if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
-      }
-      this.infiniteScroll$.next(this.statusComponent);
+    this.statusComponent = {...this.statusComponent, perPage: this.statusComponent.perPage + 15};
+    if(this.statusComponent.perPage >= total){
+      if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
+    }
+    this.infiniteScroll$.next(this.statusComponent);
 
-      event.target.complete();
-    }, 500);
+    event.target.complete();
   }
 
   // REFRESH
