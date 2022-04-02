@@ -20,7 +20,7 @@ export class PokemonService {
       map(response => (response || [])),
       // map(() => {
       //   return []
-      //   throw 504
+      //   // throw 504
       // }),
       catchError((error) => {
         return throwError(error)

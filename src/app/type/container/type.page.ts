@@ -32,89 +32,41 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
                   </div>
                 </div>
 
-                <!--DOUBLE  DAMAGE FROM -->
-                <ion-card class="card-stats fade-in-image">
-                  <ion-card-header class="card-header">
-                    <h2>{{ 'COMMON.DOUBLE_DAMAGE_FROM' | translate }}</h2>
-                  </ion-card-header>
-                  <ion-card-content *ngIf="type?.damage_relations?.double_damage_from?.length; else noData" class="div-accuracy">
-                    <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.double_damage_from; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
-                      <ion-label class="capital-letter">{{item?.name}}</ion-label>
-                      <!-- RIPPLE EFFECT -->
-                      <ion-ripple-effect></ion-ripple-effect>
-                    </ion-card>
-                  </ion-card-content>
-                </ion-card>
+                <!--DOUBLE DAMAGE FROM -->
+                <app-type-card
+                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [items]="type?.damage_relations?.double_damage_from">
+                </app-type-card>
 
-                <!--DOUBLE  DAMAGE TO -->
-                <ion-card class="card-stats fade-in-image">
-                  <ion-card-header class="card-header">
-                    <h2>{{ 'COMMON.DOUBLE_DAMAGE_TO' | translate }}</h2>
-                  </ion-card-header>
-                  <ion-card-content  *ngIf="type?.damage_relations?.double_damage_to?.length; else noData" class="div-accuracy">
-                    <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.double_damage_to; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
-                      <ion-label class="capital-letter">{{item?.name}}</ion-label>
-                      <!-- RIPPLE EFFECT -->
-                      <ion-ripple-effect></ion-ripple-effect>
-                    </ion-card>
-                  </ion-card-content>
-                </ion-card>
+                <!--DOUBLE DAMAGE TO -->
+                <app-type-card
+                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [items]="type?.damage_relations?.double_damage_to">
+                </app-type-card>
 
-                <!--HALF  DAMAGE FROM -->
-                <ion-card class="card-stats fade-in-image">
-                  <ion-card-header class="card-header">
-                    <h2>{{ 'COMMON.HALF_DAMAGE_FROM' | translate }}</h2>
-                  </ion-card-header>
-                  <ion-card-content *ngIf="type?.damage_relations?.half_damage_from?.length; else noData" class="div-accuracy">
-                    <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.half_damage_from; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
-                      <ion-label class="capital-letter">{{item?.name}}</ion-label>
-                      <!-- RIPPLE EFFECT -->
-                      <ion-ripple-effect></ion-ripple-effect>
-                    </ion-card>
-                  </ion-card-content>
-                </ion-card>
+                <!--HALF DAMAGE FROM -->
+                <app-type-card
+                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [items]="type?.damage_relations?.half_damage_from">
+                </app-type-card>
 
-                <!--HALF  DAMAGE TO -->
-                <ion-card class="card-stats fade-in-image">
-                  <ion-card-header class="card-header">
-                    <h2>{{ 'COMMON.HALF_DAMAGE_TO' | translate }}</h2>
-                  </ion-card-header>
-                  <ion-card-content *ngIf="type?.damage_relations?.half_damage_to?.length; else noData" class="div-accuracy">
-                    <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.half_damage_to; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
-                      <ion-label class="capital-letter">{{item?.name}}</ion-label>
-                      <!-- RIPPLE EFFECT -->
-                      <ion-ripple-effect></ion-ripple-effect>
-                    </ion-card>
-                  </ion-card-content>
-                </ion-card>
+                <!--HALF DAMAGE TO -->
+                <app-type-card
+                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [items]="type?.damage_relations?.half_damage_to">
+                </app-type-card>
 
-                <!--NO  DAMAGE FROM -->
-                <ion-card class="card-stats fade-in-image">
-                  <ion-card-header class="card-header">
-                    <h2>{{ 'COMMON.NO_DAMAGE_FROM' | translate }}</h2>
-                  </ion-card-header>
-                  <ion-card-content *ngIf="type?.damage_relations?.no_damage_from?.length; else noData" class="div-accuracy">
-                    <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.no_damage_from; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
-                      <ion-label class="capital-letter">{{item?.name}}</ion-label>
-                      <!-- RIPPLE EFFECT -->
-                      <ion-ripple-effect></ion-ripple-effect>
-                    </ion-card>
-                  </ion-card-content>
-                </ion-card>
+                <!--NO DAMAGE FROM -->
+                <app-type-card
+                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [items]="type?.damage_relations?.no_damage_from">
+                </app-type-card>
 
-                <!--NO  DAMAGE TO -->
-                <ion-card class="card-stats fade-in-image">
-                  <ion-card-header class="card-header">
-                    <h2>{{ 'COMMON.NO_DAMAGE_TO' | translate }}</h2>
-                  </ion-card-header>
-                  <ion-card-content *ngIf="type?.damage_relations?.no_damage_to?.length; else noData" class="div-accuracy">
-                    <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let item of type?.damage_relations?.no_damage_to; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
-                      <ion-label class="capital-letter">{{item?.name}}</ion-label>
-                      <!-- RIPPLE EFFECT -->
-                      <ion-ripple-effect></ion-ripple-effect>
-                    </ion-card>
-                  </ion-card-content>
-                </ion-card>
+                <!--NO DAMAGE TO -->
+                <app-type-card
+                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [items]="type?.damage_relations?.no_damage_to">
+                </app-type-card>
 
                 <!-- POKEMON / MOVES -->
                 <ion-card class="card-stats fade-in-image">

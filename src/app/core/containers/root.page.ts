@@ -10,7 +10,7 @@ import { MenuController } from '@ionic/angular';
   <ion-app>
     <!-- CABECERA  -->
     <ion-header  class="ion-no-border">
-      <ion-toolbar mode="md|ios">
+      <ion-toolbar >
 
         <ion-button fill="clear" size="small" slot="start"  (click)="open()">
           <ion-menu-button class="color-menu-second"></ion-menu-button>
@@ -34,10 +34,7 @@ import { MenuController } from '@ionic/angular';
 
       <ion-content >
         <ion-list>
-          <ion-item detail class="color-menu" [routerLink]="['home']" (click)="openEnd()">{{ 'COMMON.POKEMON' | translate }}</ion-item>
-          <ion-item detail class="color-menu" [routerLink]="['move']" (click)="openEnd()">{{ 'COMMON.MOVES' | translate }}</ion-item>
-          <ion-item detail class="color-menu" [routerLink]="['ability']" (click)="openEnd()">{{ 'COMMON.ABILITIES' | translate }}</ion-item>
-          <ion-item detail class="color-menu" [routerLink]="['type']" (click)="openEnd()">{{ 'COMMON.TYPES' | translate }}</ion-item>
+          <ion-item *ngFor="let item of menuList" detail class="color-menu" [routerLink]="[item?.link]" (click)="openEnd()">{{ item?.label | translate }}</ion-item>
         </ion-list>
       </ion-content>
     </ion-menu>
@@ -68,6 +65,12 @@ export class RootComponent {
     })
   );
 
+  menuList = [
+    {id:1, label:'COMMON.POKEMON', link:'home'},
+    {id:2, label:'COMMON.MOVES', link:'move'},
+    {id:3, label:'COMMON.ABILITIES', link:'ability'},
+    {id:4, label:'COMMON.TYPES', link:'type'}
+  ]
 
   constructor(
     private menu: MenuController,

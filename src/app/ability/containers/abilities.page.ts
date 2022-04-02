@@ -29,22 +29,15 @@ import { fromAbility } from 'src/app/shared/ability-m';
 
             <!-- ABILITIES LIST  -->
             <ng-container *ngIf="info?.abilities?.length > 0; else noAbilities">
-              <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let ability of info?.abilities; let i = index; trackBy: trackById" [routerLink]="['/ability/'+ ability?.name]" [ngClass]="getCardrBackground(i)">
-                <ion-card-content class="ability-item">
-                  <ion-label class="capital-letter span-white">{{clearName(ability?.name)}}</ion-label>
-                </ion-card-content>
-                <!-- RIPPLE EFFECT -->
-                <ion-ripple-effect></ion-ripple-effect>
-              </ion-card>
 
-              <!-- INFINITE SCROLL  -->
-              <ng-container *ngIf="info?.total as total">
-                <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-                  <ion-infinite-scroll-content class="loadingspinner">
-                    <ion-spinner *ngIf="$any(status) === 'pending'" class="loadingspinner"></ion-spinner>
-                  </ion-infinite-scroll-content>
-                </ion-infinite-scroll>
-              </ng-container>
+              <app-infinite-scroll
+                [items]="info?.abilities"
+                [total]="info?.total"
+                [status]="status"
+                [route]="'/ability/'"
+                [isPokemon]="false"
+                (loadDataTrigger)="loadData($event)">
+              </app-infinite-scroll>
             </ng-container>
 
           </ng-container>
@@ -150,16 +143,14 @@ export class AbilitiesPage {
   }
 
   // INIFINITE SCROLL
-   loadData(event, total) {
-    setTimeout(() => {
-      this.statusComponent = {...this.statusComponent, perPage: this.statusComponent.perPage + 15};
-      if(this.statusComponent.perPage >= total){
-        if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
-      }
-      this.infiniteScroll$.next(this.statusComponent);
+   loadData({event, total}) {
+    this.statusComponent = {...this.statusComponent, perPage: this.statusComponent.perPage + 15};
+    if(this.statusComponent.perPage >= total){
+      if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
+    }
+    this.infiniteScroll$.next(this.statusComponent);
 
-      event.target.complete();
-    }, 500);
+    event.target.complete();
   }
 
   // REFRESH

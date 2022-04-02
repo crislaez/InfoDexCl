@@ -40,6 +40,27 @@ export const getCardrBackground = (index: number): string => {
   if (number.includes('9')) return 'fairy'
 }
 
+export const getClassColor = (name): string => {
+  if(name.toLowerCase() === 'grass') return 'green'
+  if(name.toLowerCase() === 'water') return 'water'
+  if(name.toLowerCase() === 'bug') return 'bug'
+  if(name.toLowerCase() === 'dark') return 'dark'
+  if(name.toLowerCase() === 'dragon') return 'dragon'
+  if(name.toLowerCase() === 'electric') return 'electric'
+  if(name.toLowerCase() === 'fire') return 'fire'
+  if(name.toLowerCase() === 'fighting') return 'fighting'
+  if(name.toLowerCase() === 'fly' || name.toLowerCase() === 'flying') return 'fly'
+  if(name.toLowerCase() === 'ghost') return 'ghost'
+  if(name.toLowerCase() === 'ground') return 'ground'
+  if(name.toLowerCase() === 'ice') return 'ice'
+  if(name.toLowerCase() === 'normal') return 'normal'
+  if(name.toLowerCase() === 'poison') return 'poison'
+  if(name.toLowerCase() === 'rock') return 'rock'
+  if(name.toLowerCase() === 'steel') return 'steel'
+  if(name.toLowerCase() === 'psychic') return 'psychic'
+  if(name.toLowerCase() === 'fairy') return 'fairy'
+}
+
 export const clearName = (name: string): string => {
   if(name === null) return ''
   return name?.replace(/-/g, " ") || name

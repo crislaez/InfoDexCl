@@ -30,23 +30,15 @@ import { fromType } from 'src/app/shared/type-m';
               <!-- TYPES LIST  -->
               <ng-container *ngIf="info?.types?.length > 0; else noTypes">
 
-                <ion-card class="ion-activatable ripple-parent fade-in-image" *ngFor="let type of info?.types; let i = index; trackBy: trackById"  [ngClass]="getClassColor(type?.name)" [routerLink]="['/type/'+ type?.name]" >
-                  <ion-card-content class="type-item">
-                    <ion-label class="capital-letter span-white">{{type?.name}}</ion-label>
-                  </ion-card-content>
-
-                    <!-- RIPPLE EFFECT -->
-                    <ion-ripple-effect></ion-ripple-effect>
-                </ion-card>
-
-                <!-- INFINITE SCROLL  -->
-                <ng-container *ngIf="info?.total as total">
-                  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, total)">
-                    <ion-infinite-scroll-content class="loadingspinner">
-                      <ion-spinner *ngIf="$any(status) === 'pending'" class="loadingspinner"></ion-spinner>
-                    </ion-infinite-scroll-content>
-                  </ion-infinite-scroll>
-                </ng-container>
+                <app-infinite-scroll
+                  [items]="info?.types"
+                  [total]="info?.total"
+                  [status]="status"
+                  [route]="'/type/'"
+                  [isPokemon]="false"
+                  [isType]="true"
+                  (loadDataTrigger)="loadData($event)">
+                </app-infinite-scroll>
 
               </ng-container>
 
@@ -152,16 +144,14 @@ export class TypesPage {
   }
 
   // INIFINITE SCROLL
-  loadData(event, total) {
-    setTimeout(() => {
-      this.statusComponent = {...this.statusComponent, perPage: this.statusComponent.perPage + 15};
-      if(this.statusComponent.perPage >= total){
-        if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
-      }
-      this.infiniteScroll$.next(this.statusComponent);
+  loadData({event, total}) {
+    this.statusComponent = {...this.statusComponent, perPage: this.statusComponent.perPage + 15};
+    if(this.statusComponent.perPage >= total){
+      if(this.ionInfiniteScroll) this.ionInfiniteScroll.disabled = true
+    }
+    this.infiniteScroll$.next(this.statusComponent);
 
-      event.target.complete();
-    }, 500);
+    event.target.complete();
   }
 
   // REFRESH
@@ -182,25 +172,6 @@ export class TypesPage {
     else this.showButton = false
   }
 
-  getClassColor(name): string{
-    if(name.toLowerCase() === 'grass') return 'green'
-    if(name.toLowerCase() === 'water') return 'water'
-    if(name.toLowerCase() === 'bug') return 'bug'
-    if(name.toLowerCase() === 'dark') return 'dark'
-    if(name.toLowerCase() === 'dragon') return 'dragon'
-    if(name.toLowerCase() === 'electric') return 'electric'
-    if(name.toLowerCase() === 'fire') return 'fire'
-    if(name.toLowerCase() === 'fighting') return 'fighting'
-    if(name.toLowerCase() === 'fly' || name.toLowerCase() === 'flying') return 'fly'
-    if(name.toLowerCase() === 'ghost') return 'ghost'
-    if(name.toLowerCase() === 'ground') return 'ground'
-    if(name.toLowerCase() === 'ice') return 'ice'
-    if(name.toLowerCase() === 'normal') return 'normal'
-    if(name.toLowerCase() === 'poison') return 'poison'
-    if(name.toLowerCase() === 'rock') return 'rock'
-    if(name.toLowerCase() === 'steel') return 'steel'
-    if(name.toLowerCase() === 'psychic') return 'psychic'
-    if(name.toLowerCase() === 'fairy') return 'fairy'
-  }
+
 
 }

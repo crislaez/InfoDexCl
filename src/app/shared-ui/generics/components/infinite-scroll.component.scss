@@ -1,0 +1,16 @@
+@import '../../../../theme/variables';
+
+:host{
+  width: 100%;
+}
+
+ion-avatar{
+  width: 4em;
+  height: 4em;
+  background: white;
+}
+
+.type-item{
+  width: 100%;
+  text-align: center;
+}
