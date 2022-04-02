@@ -123,13 +123,6 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
       <app-no-data [title]="'COMMON.NORESULT'" [image]="'assets/images/empty.png'" [top]="'20vh'"></app-no-data>
     </ng-template>
 
-    <!-- IS NO DATA  -->
-    <ng-template #noData>
-      <ion-card-content class="no-data">
-        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
-      </ion-card-content>
-    </ng-template>
-
     <!-- IS NO MOVE  -->
     <ng-template #noType>
       <app-no-data [title]="'COMMON.NORESULT'" [image]="'assets/images/empty.png'" [top]="'20vh'"></app-no-data>
