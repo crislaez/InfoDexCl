@@ -7,6 +7,7 @@ import { GenericsModule } from '@pokemon/shared-ui/generics/generics.module';
 import { AbilityMModule } from '../shared/ability-m/ability-m.module';
 import { SharedModule } from '../shared/shared/shared.module';
 import { AbilityPageRoutingModule } from './ability-routing.module';
+import { PokemonsAbilityCardComponent } from './components/pokemons-ability-card.component';
 import { AbilitiesPage } from './containers/abilities.page';
 import { AbilityPage } from './containers/ability.page';
 
@@ -23,7 +24,8 @@ import { AbilityPage } from './containers/ability.page';
   ],
   declarations: [
     AbilityPage,
-    AbilitiesPage
+    AbilitiesPage,
+    PokemonsAbilityCardComponent
   ]
 })
 export class AbilityPageModule {}

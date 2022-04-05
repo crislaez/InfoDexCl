@@ -44,32 +44,9 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
                 </ion-card>
 
                 <!-- POKEMONS  -->
-                <ion-card class="card-stats fade-in-image">
-                  <ion-card-header class="card-header">
-                    <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
-                  </ion-card-header>
-                  <ion-card-content class="div-accuracy">
-
-                    <ng-container *ngIf="ability?.pokemon?.length > 0; else noData">
-                      <ion-card class="div-pokemon-learning ion-activatable ripple-parent" *ngFor="let pokemon of ability?.pokemon; trackBy: trackById"  [routerLink]="['/pokemon/'+getPokemonPokedexNumber(pokemon?.pokemon?.url)]" >
-                        <ion-card-content class="pokemon-item">
-                          <ion-label class="span-complete">#{{getPokemonPokedexNumber(pokemon?.pokemon?.url)}}</ion-label>
-                          <ion-label class="span-complete capital-letter">{{clearName(pokemon?.pokemon?.name)}}</ion-label>
-                          <ion-avatar slot="start">
-                            <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.pokemon?.url)" (error)="errorImage($event, defaultImagePokemon(pokemon?.url))">
-                          </ion-avatar>
-                          <div class="card-stats-div"><span class="span-dark">{{ 'COMMON.HIDE' | translate }}:</span>
-                          <span *ngIf="pokemon?.is_hidden === true; else hideAbility">{{ 'COMMON.YES' | translate }}</span>
-                            <ng-template #hideAbility>{{ 'COMMON.NO' | translate }}</ng-template>
-                          </div>
-                        </ion-card-content>
-
-                        <!-- RIPPLE EFFECT -->
-                        <ion-ripple-effect></ion-ripple-effect>
-                      </ion-card>
-                    </ng-container>
-                  </ion-card-content>
-                </ion-card>
+                <app-pokemons-ability-card
+                  [ability]="ability">
+                </app-pokemons-ability-card>
 
               </div>
 
@@ -150,7 +127,7 @@ export class AbilityPage {
   ) { }
 
 
-   errorImage(event, url) {
+  errorImage(event, url) {
     event.target.src = url;
   }
 

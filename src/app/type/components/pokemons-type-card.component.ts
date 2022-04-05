@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { clearName, getPokemonImagePrincipal, getPokemonPokedexNumber, getTypeClassColor, trackById } from '@pokemon/shared/utils/utils/functions';
-
+import { Type } from '@pokemon/shared/type-m';
 
 @Component({
   selector: 'app-pokemons-type-card',
@@ -57,7 +57,7 @@ export class PokemonsTypeCardComponent {
   clearName = clearName;
   trackById = trackById;
   @Input() pokemonOrMove: number;
-  @Input() type: any;
+  @Input() type: Type;
 
 
   constructor() { }
