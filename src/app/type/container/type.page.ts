@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { fromType, TypeActions } from '@pokemon/shared/type-m';
-import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
+import { gotToTop, isNotData, getTypeClassColor } from '@pokemon/shared/utils/utils/functions';
 import { combineLatest } from 'rxjs';
 import { startWith, switchMap, tap } from 'rxjs/operators';
 
@@ -19,9 +19,9 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
           <ng-container *ngIf="status !== 'error'; else serverError">
 
             <ng-container *ngIf="isNotData(type); else noType">
-              <div class="empty-header-radius" [ngClass]="getClassColor(type?.name)"></div>
+              <div class="empty-header-radius" [ngClass]="getTypeClassColor(type?.name)"></div>
 
-              <div class="container" [ngClass]="getClassColor(type?.name)">
+              <div class="container" [ngClass]="getTypeClassColor(type?.name)">
 
                 <!-- HEADER  -->
                 <div class="header" no-border>
@@ -69,41 +69,10 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
                 </app-type-card>
 
                 <!-- POKEMON / MOVES -->
-                <ion-card class="card-stats fade-in-image">
-                  <ion-card-header class="card-header displayed">
-                    <ion-button color="primary" class="margin-button" (click)="pokemonOrMove = 1">{{ 'COMMON.POKEMON' | translate }}</ion-button>
-                    <ion-button color="primary" class="margin-button" (click)="pokemonOrMove = 2">{{ 'COMMON.MOVE' | translate }}</ion-button>
-                    <h2 *ngIf="pokemonOrMove === 1; else allMovesTitle">{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
-                    <ng-template #allMovesTitle>
-                      <h2>{{ 'COMMON.ALL_TYPE_MOVES' | translate }}</h2>
-                    </ng-template>
-                  </ion-card-header>
-                  <ion-card-content class="div-accuracy">
-                    <!-- LEARNING BY POKEMON  -->
-                    <ng-container *ngIf="pokemonOrMove === 1; else allMoves">
-                      <ion-card class="div-pokemon-learning ion-activatable ripple-parent" *ngFor="let pokemon of type?.pokemon; trackBy: trackById" [routerLink]="['/pokemon/'+getPokemonPokedexNumber(pokemon?.pokemon?.url)]" >
-                        <ion-card-content class="pokemon-item">
-                          <ion-label class="span-complete">#{{getPokemonPokedexNumber(pokemon?.pokemon?.url)}}</ion-label>
-                          <ion-label class="span-complete capital-letter">{{clearName(pokemon?.pokemon?.name)}}</ion-label>
-                          <ion-avatar slot="start">
-                            <img loading="lazy" [src]="getPokemonImagePrincipal(pokemon?.pokemon?.url)" [alt]="getPokemonImagePrincipal(pokemon?.pokemon?.url)" (error)="errorImage($event, defaultImagePokemon(pokemon?.pokemon?.url))">
-                          </ion-avatar>
-                        </ion-card-content>
-                        <!-- RIPPLE EFFECT -->
-                      <ion-ripple-effect></ion-ripple-effect>
-                      </ion-card>
-                    </ng-container>
-                    <!-- ALL MOVES  -->
-                    <ng-template #allMoves>
-                      <ion-card class="card-type div-min-height middle-width move ion-activatable ripple-parent" *ngFor="let item of type?.moves; trackBy: trackById" [routerLink]="['/move/'+getPokemonPokedexNumber(item?.url)]" [ngClass]="getClassColor(item?.name)">
-                        <ion-label class="capital-letter">{{clearName(item?.name)}}</ion-label>
-                        <!-- RIPPLE EFFECT -->
-                        <ion-ripple-effect></ion-ripple-effect>
-                      </ion-card>
-                    </ng-template>
-
-                  </ion-card-content>
-                </ion-card>
+                <app-pokemons-type-card
+                  [pokemonOrMove]="pokemonOrMove"
+                  [type]="type">
+                </app-pokemons-type-card>
 
               </div>
 
@@ -145,12 +114,8 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
 })
 export class TypePage {
 
-  getPokemonImagePrincipal = getPokemonImagePrincipal;
-  getPokemonPokedexNumber = getPokemonPokedexNumber;
-  defaultImagePokemon = defaultImagePokemon;
-  clearName = clearName;
+  getTypeClassColor = getTypeClassColor;
   isNotData = isNotData;
-  trackById = trackById;
   gotToTop = gotToTop;
   @ViewChild(IonContent, {static: true}) content: IonContent;
   pokemonOrMove = 1;
@@ -178,29 +143,8 @@ export class TypePage {
   ) {  }
 
 
-  errorImage(event, url) {
-    event.target.src = url;
-  }
-
-  getClassColor(type: string): string{
-    if(type === 'grass' ) return 'green'
-    if(type === 'water') return 'water'
-    if(type === 'bug') return 'bug'
-    if(type === 'dark') return 'dark'
-    if(type === 'dragon') return 'dragon'
-    if(type === 'electric') return 'electric'
-    if(type === 'fire') return 'fire'
-    if(type === 'fighting') return 'fighting'
-    if(type === 'fly' || type === 'flying') return 'fly'
-    if(type === 'ghost') return 'ghost'
-    if(type === 'ground') return 'ground'
-    if(type === 'ice') return 'ice'
-    if(type === 'normal') return 'normal'
-    if(type === 'poison') return 'poison'
-    if(type === 'rock') return 'rock'
-    if(type === 'steel') return 'steel'
-    if(type === 'psychic') return 'psychic'
-    if(type === 'fairy') return 'fairy'
+  errorImage(event) {
+    event.target.src = '../../../assets/images/notFound.png';
   }
 
   doRefresh(event) {

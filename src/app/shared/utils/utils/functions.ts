@@ -61,6 +61,27 @@ export const getClassColor = (name): string => {
   if(name.toLowerCase() === 'fairy') return 'fairy'
 }
 
+export const getTypeClassColor = (type: string): string => {
+  if(type === 'grass' ) return 'green'
+  if(type === 'water') return 'water'
+  if(type === 'bug') return 'bug'
+  if(type === 'dark') return 'dark'
+  if(type === 'dragon') return 'dragon'
+  if(type === 'electric') return 'electric'
+  if(type === 'fire') return 'fire'
+  if(type === 'fighting') return 'fighting'
+  if(type === 'fly' || type === 'flying') return 'fly'
+  if(type === 'ghost') return 'ghost'
+  if(type === 'ground') return 'ground'
+  if(type === 'ice') return 'ice'
+  if(type === 'normal') return 'normal'
+  if(type === 'poison') return 'poison'
+  if(type === 'rock') return 'rock'
+  if(type === 'steel') return 'steel'
+  if(type === 'psychic') return 'psychic'
+  if(type === 'fairy') return 'fairy'
+}
+
 export const clearName = (name: string): string => {
   if(name === null) return ''
   return name?.replace(/-/g, " ") || name
