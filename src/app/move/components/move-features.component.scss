@@ -1,0 +1,24 @@
+@import '../../../theme/variables';
+
+:host{
+  width: 100%;
+
+  ion-card{
+    width: 92%;
+    margin: 0 auto;
+    margin-top: 30px;
+  }
+
+  .div-accuracy-stats{
+    width: 70%;
+    margin-bottom: 10px;
+    @include displayFunction();
+    justify-content: space-between;
+    div {
+      width: 45%;
+    }
+  }
+
+
+
+}

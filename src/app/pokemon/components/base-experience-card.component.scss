@@ -8,17 +8,10 @@
     margin: 0 auto;
     margin-top: 30px;
   }
-}
 
-.displayed {
-  @include displayFunction();
-}
-
-.action-wrapper{
-  width: 100%;
-  @include displayFunction();
-
-  ion-button {
-    width: 30%;
+  .card-stats-div{
+    width: 45%;
+    padding: 5px;
   }
+
 }

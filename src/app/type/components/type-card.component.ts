@@ -4,7 +4,7 @@ import { getClassColor, getPokemonPokedexNumber, trackById } from '@pokemon/shar
 @Component({
   selector: 'app-type-card',
   template:`
-    <ion-card class="card-stats fade-in-image">
+    <ion-card class="container-card card-stats fade-in-image">
       <ion-card-header class="card-header">
         <h2>{{ title | translate }}</h2>
       </ion-card-header>

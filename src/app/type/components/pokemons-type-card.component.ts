@@ -5,7 +5,7 @@ import { Type } from '@pokemon/shared/type-m';
 @Component({
   selector: 'app-pokemons-type-card',
   template:`
-    <ion-card class="card-stats fade-in-image">
+    <ion-card class="container-card card-stats fade-in-image">
 
       <ion-card-header class="card-header displayed">
         <div class="action-wrapper">

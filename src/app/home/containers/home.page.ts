@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Keyboard } from '@capacitor/keyboard';
 import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
-import { clearName, defaultImagePokemon, errorImage, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, trackById } from '@pokemon/shared/utils/utils/functions';
+import { clearName, defaultImagePokemon, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, trackById } from '@pokemon/shared/utils/utils/functions';
 import { Observable } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { fromPokemon } from 'src/app/shared/pokemon';
@@ -83,7 +83,6 @@ export class HomePage  {
   getCardrBackground = getCardrBackground;
   clearName = clearName;
   trackById = trackById;
-  errorImage = errorImage;
   gotToTop = gotToTop;
   @ViewChild(IonInfiniteScroll) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent, {static: true}) content: IonContent;

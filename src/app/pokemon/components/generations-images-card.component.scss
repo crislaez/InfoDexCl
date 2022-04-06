@@ -1,0 +1,26 @@
+@import '../../../theme/variables';
+
+:host{
+  width: 100%;
+
+  .container-card{
+    width: 92%;
+    margin: 0 auto;
+    margin-top: 30px;
+  }
+
+  .card-generations-sprite{
+    width: 100%;
+    @include displayFunction();
+    h3{
+      width: 100%;
+      text-align: center;
+    }
+    img{
+      width: 40%;
+      height: 130px
+    }
+  }
+
+
+}

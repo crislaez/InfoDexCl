@@ -1,23 +1,2 @@
 @import '../../../theme/variables';
 
-
-.div-accuracy-stats{
-  width: 70%;
-  margin-bottom: 10px;
-  @include displayFunction();
-  justify-content: space-between;
-  div {
-    width: 45%;
-  }
-}
-.div-accuracy-pokemon{
-  width: 40%;
-}
-
-.div-accuracy-effect{
-  width: 100%;
-}
-
-.add-padding{
-  padding: 5px;
-}

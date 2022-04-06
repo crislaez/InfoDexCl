@@ -5,7 +5,7 @@ import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPok
 @Component({
   selector: 'app-pokemons-ability-card',
   template:`
-    <ion-card class="card-stats fade-in-image">
+    <ion-card class="container-card card-stats fade-in-image">
       <ion-card-header class="card-header">
         <h2>{{ 'COMMON.LEARN_POKEMON' | translate }}</h2>
       </ion-card-header>

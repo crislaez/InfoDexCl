@@ -10,7 +10,7 @@ import { clearName, defaultImagePokemon, EntityStatus, errorImage, getCardrBackg
         <ion-card-content class="pokemon-item" [ngClass]="getCardrBackground(i)">
           <ion-label class="capital-letter span-white">#{{getPokemonPokedexNumber(item?.url)}}  {{clearName(item?.name)}}</ion-label>
           <ion-avatar slot="start">
-            <img loading="lazy" [src]="getPokemonImagePrincipal(item?.url)" [alt]="item?.name" (error)="errorImage($event,  defaultImagePokemon(item?.url))">
+            <img loading="lazy" [src]="getPokemonImagePrincipal(item?.url)" [alt]="item?.name" (error)="errorImage($event)">
           </ion-avatar>
         </ion-card-content>
 
@@ -51,7 +51,6 @@ export class InfiniteScrollComponent {
   getClassColor = getClassColor;
   clearName = clearName;
   trackById = trackById;
-  errorImage = errorImage;
   @Input() items: any
   @Input() total: number;
   @Input() status: EntityStatus;
@@ -63,6 +62,10 @@ export class InfiniteScrollComponent {
 
   constructor() { }
 
+
+  errorImage(event) {
+    event.target.src = '../../../assets/images/notFound.png';
+  }
 
   getClass(name: string, i: number): string{
     return this.isType ? this.getClassColor(name) : this.getCardrBackground(i)
