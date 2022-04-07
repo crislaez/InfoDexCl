@@ -12,6 +12,7 @@ import { BaseExperienceCardComponent } from './components/base-experience-card.c
 import { EvolutionChainCardComponent } from './components/evolution-chain-card.component';
 import { GenerationsImagesCardComponent } from './components/generations-images-card.component';
 import { MovesCardComponent } from './components/moves-card.component';
+import { PokemonSelectedCardComponent } from './components/pokemon-selected-card.component';
 import { StatsCardComponent } from './components/stats-card.component';
 import { PokemonPage } from './containers/pokemon.page';
 import { PokemonPageRoutingModule } from './pokemon-routing.module';
@@ -35,7 +36,8 @@ import { PokemonPageRoutingModule } from './pokemon-routing.module';
     MovesCardComponent,
     StatsCardComponent,
     AbilitiesCardComponent,
-    BaseExperienceCardComponent
+    BaseExperienceCardComponent,
+    PokemonSelectedCardComponent
   ]
 })
 export class PokemonPageModule {}

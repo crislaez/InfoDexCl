@@ -13,8 +13,12 @@ import { trackById } from '@pokemon/shared/utils/utils/functions';
       <ion-card-content class="card-stats">
 
         <div class="card-stats">
-          <ion-button color="primary" class="margin-button" (click)="stastsValue = 1">{{ 'COMMON.BASE_STATS' | translate }}</ion-button>
-          <ion-button color="primary" class="margin-button" (click)="stastsValue = 2">{{ 'COMMON.MAX_STATS' | translate }}</ion-button>
+          <div class="card-stats-left">
+            <ion-button color="primary" (click)="stastsValue = 1">{{ 'COMMON.BASE_STATS' | translate }}</ion-button>
+          </div>
+          <div class="card-stats-rigth">
+            <ion-button color="primary" (click)="stastsValue = 2">{{ 'COMMON.MAX_STATS' | translate }}</ion-button>
+          </div>
         </div>
 
         <ng-container *ngFor="let stat of pokemon?.stats; trackBy: trackById">

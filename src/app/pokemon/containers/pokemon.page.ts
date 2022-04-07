@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, ViewChild } from '@an
 import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Store } from '@ngrx/store';
-import { clearName, defaultImagePokemon, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
+import { clearName, defaultImagePokemon, getClassColorType, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 import { combineLatest } from 'rxjs';
 import { startWith, switchMap, tap } from 'rxjs/operators';
 import { fromPokemon, PokemonActions } from 'src/app/shared/pokemon';
@@ -20,25 +20,15 @@ import { fromPokemon, PokemonActions } from 'src/app/shared/pokemon';
           <ng-container *ngIf="status !== 'error'; else serverError">
 
             <ng-container *ngIf="isNotData(pokemon); else noPokemon">
-              <div class="empty-header-radius" [ngClass]="getClassColor(pokemon, '')"></div>
+              <div class="empty-header-radius" [ngClass]="getClassColorType(pokemon, '')"></div>
 
-              <div class="container" [ngClass]="getClassColor(pokemon, '')">
+              <div class="container" [ngClass]="getClassColorType(pokemon, '')">
 
                 <!-- HEADER  -->
                 <div class="header" no-border>
-                  <div class="header-container">
-                    <ion-back-button defaultHref="/home" class="color-menu" [text]="''"></ion-back-button>
-                    <h1 class="capital-letter">{{clearName(pokemon?.name)}}</h1>
-                    <div class="header-container-empty" ></div>
-                    <ng-container *ngIf="pokemon?.types">
-                      <h2>{{ 'COMMON.TYPE' | translate}}</h2>
-                      <ion-card class="card-type ion-activatable ripple-parent" *ngFor="let type of pokemon?.types; trackBy: trackById" [routerLink]="['/type/'+getPokemonPokedexNumber(type?.type?.url)]" [ngStyle]="{'box-shadow':type?.type?.name=== 'dark' ? '0px 0px 10px white' : '0px 0px 10px gray' }" [ngClass]="getClassColor(null, type?.type?.name)">
-                        <ion-label class="capital-letter">{{ type?.type?.name }}</ion-label>
-                        <!-- RIPPLE EFFECT -->
-                        <ion-ripple-effect></ion-ripple-effect>
-                      </ion-card>
-                    </ng-container>
-                  </div>
+                  <app-pokemon-selected-card
+                    [pokemon]="pokemon">
+                  </app-pokemon-selected-card>
                 </div>
 
                 <!-- IMAGES  -->
@@ -149,6 +139,7 @@ export class PokemonPage {
   getPokemonImagePrincipal = getPokemonImagePrincipal;
   getPokemonPokedexNumber = getPokemonPokedexNumber;
   defaultImagePokemon = defaultImagePokemon;
+  getClassColorType = getClassColorType;
   clearName = clearName;
   isNotData = isNotData;
   trackById = trackById;
@@ -164,7 +155,7 @@ export class PokemonPage {
     this.route.params,
     this.reload$.pipe(startWith(''))
   ]).pipe(
-    tap(([{name}, reload]) => {
+    tap(([{name}]) => {
       this.store.dispatch(PokemonActions.loadPokemon({pokemonName: name}))
     }),
     switchMap(() =>
@@ -181,43 +172,6 @@ export class PokemonPage {
 
   errorImage(event) {
     event.target.src = '../../../assets/images/notFound.png';
-  }
-
-  getImage(image: string): string{
-     if(image) return image
-     else return this.notFoundImage
-  }
-
-  getKeysImages(pokemon): any{
-    return Object.keys(pokemon?.sprites).filter((item) =>
-    item === 'back_default' || item === 'back_female' ||item === 'back_shiny' ||item === 'back_shiny_female' ||
-    item === 'front_default' || item === 'front_female' ||item === 'front_shiny' ||item === 'front_shiny_female'
-    ) || []
-  }
-
-  getClassColor(pokemon: any, type: string): string{
-    if(this.getPokemonType(pokemon) === 'grass' || type === 'grass' ) return 'green'
-    if(this.getPokemonType(pokemon) === 'water' || type === 'water') return 'water'
-    if(this.getPokemonType(pokemon) === 'bug' || type === 'bug') return 'bug'
-    if(this.getPokemonType(pokemon) === 'dark' || type === 'dark') return 'dark'
-    if(this.getPokemonType(pokemon) === 'dragon' || type === 'dragon') return 'dragon'
-    if(this.getPokemonType(pokemon) === 'electric' || type === 'electric') return 'electric'
-    if(this.getPokemonType(pokemon) === 'fire' || type === 'fire') return 'fire'
-    if(this.getPokemonType(pokemon) === 'fighting' || type === 'fighting') return 'fighting'
-    if(this.getPokemonType(pokemon) === 'fly' || this.getPokemonType(pokemon) === 'flying' || type === 'fly' || type === 'flying') return 'fly'
-    if(this.getPokemonType(pokemon) === 'ghost' || type === 'ghost') return 'ghost'
-    if(this.getPokemonType(pokemon) === 'ground' || type === 'ground') return 'ground'
-    if(this.getPokemonType(pokemon) === 'ice' || type === 'ice') return 'ice'
-    if(this.getPokemonType(pokemon) === 'normal' || type === 'normal') return 'normal'
-    if(this.getPokemonType(pokemon) === 'poison' || type === 'poison') return 'poison'
-    if(this.getPokemonType(pokemon) === 'rock' || type === 'rock') return 'rock'
-    if(this.getPokemonType(pokemon) === 'steel' || type === 'steel') return 'steel'
-    if(this.getPokemonType(pokemon) === 'psychic' || type === 'psychic') return 'psychic'
-    if(this.getPokemonType(pokemon) === 'fairy' || type === 'fairy') return 'fairy'
-  }
-
-  getPokemonType(pokemon: any): string {
-    return pokemon?.types?.[0]?.type?.name
   }
 
   getPokemonImage(pokemon: any): string{

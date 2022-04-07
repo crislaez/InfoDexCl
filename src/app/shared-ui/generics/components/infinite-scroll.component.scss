@@ -4,6 +4,15 @@
   width: 100%;
 }
 
+ion-card{
+
+  ion-card-content{
+    padding: 0px;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
+}
+
 ion-avatar{
   width: 4em;
   height: 4em;

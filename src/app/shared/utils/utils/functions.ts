@@ -1,4 +1,5 @@
 import { IonContent } from "@ionic/angular"
+import { Pokemon } from "@pokemon/shared/pokemon"
 
 export const getPokemonImagePrincipal = (url: string): string => {
   const pokemonId =  url?.split('/')[6] || ''
@@ -81,6 +82,29 @@ export const getTypeClassColor = (type: string): string => {
   if(type === 'psychic') return 'psychic'
   if(type === 'fairy') return 'fairy'
 }
+
+export const getClassColorType = (pokemon: Pokemon, type: string): string => {
+  const pokemonName = pokemon?.types?.[0]?.type?.name;
+  if(pokemonName === 'grass' || type === 'grass' ) return 'green'
+  if(pokemonName === 'water' || type === 'water') return 'water'
+  if(pokemonName === 'bug' || type === 'bug') return 'bug'
+  if(pokemonName === 'dark' || type === 'dark') return 'dark'
+  if(pokemonName === 'dragon' || type === 'dragon') return 'dragon'
+  if(pokemonName === 'electric' || type === 'electric') return 'electric'
+  if(pokemonName === 'fire' || type === 'fire') return 'fire'
+  if(pokemonName === 'fighting' || type === 'fighting') return 'fighting'
+  if(pokemonName === 'fly' || pokemonName === 'flying' || type === 'fly' || type === 'flying') return 'fly'
+  if(pokemonName === 'ghost' || type === 'ghost') return 'ghost'
+  if(pokemonName === 'ground' || type === 'ground') return 'ground'
+  if(pokemonName === 'ice' || type === 'ice') return 'ice'
+  if(pokemonName === 'normal' || type === 'normal') return 'normal'
+  if(pokemonName === 'poison' || type === 'poison') return 'poison'
+  if(pokemonName === 'rock' || type === 'rock') return 'rock'
+  if(pokemonName === 'steel' || type === 'steel') return 'steel'
+  if(pokemonName === 'psychic' || type === 'psychic') return 'psychic'
+  if(pokemonName === 'fairy' || type === 'fairy') return 'fairy'
+}
+
 
 export const clearName = (name: string): string => {
   if(name === null) return ''
