@@ -8,7 +8,7 @@ import { getClassColor, getPokemonPokedexNumber, trackById } from '@pokemon/shar
   template:`
     <ion-card class="card-stats fade-in-image">
       <ion-card-header class="card-header">
-        <h2>{{ 'COMMON.DATA' | translate }}</h2>
+        <h2>{{ 'COMMON.MOVE_DATA' | translate }}</h2>
       </ion-card-header>
       <ion-card-content class="div-accuracy">
         <div class="div-accuracy-stats">

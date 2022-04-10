@@ -5,7 +5,7 @@ import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { clearName, defaultImagePokemon, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, trackById } from '@pokemon/shared/utils/utils/functions';
 import { Observable } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { fromPokemon } from 'src/app/shared/pokemon';
 
 
@@ -16,7 +16,7 @@ import { fromPokemon } from 'src/app/shared/pokemon';
 
     <div class="empty-header">
       <!-- BUSCADOR  -->
-      <form (submit)="searchPokemon($event)" class="fade-in-card">
+      <form *ngIf="!['pending','error']?.includes(status$ | async)" (submit)="searchPokemon($event)" class="fade-in-card">
         <ion-searchbar [placeholder]="'COMMON.POKEMON_SPREAT' | translate" [formControl]="pokemon" (ionClear)="clearSearch($event)"></ion-searchbar>
       </form>
     </div>
@@ -95,7 +95,7 @@ export class HomePage  {
 
   pokemon = new FormControl('');
   infiniteScroll$ = new EventEmitter<{perPage:number, search:string}>();
-  status$ = this.store.pipe(select(fromPokemon.getStatus));
+  status$ = this.store.pipe(select(fromPokemon.getStatus)).pipe(shareReplay(1));
 
   info$: Observable<any> = this.infiniteScroll$.pipe(
     startWith(this.statusComponent),

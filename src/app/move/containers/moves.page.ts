@@ -5,7 +5,7 @@ import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 import { Observable } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { fromMove } from 'src/app/shared/move-m';
 
 
@@ -15,7 +15,7 @@ import { fromMove } from 'src/app/shared/move-m';
   <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="logScrolling($any($event))">
     <div class="empty-header">
       <!-- BUSCADOR  -->
-      <form (submit)="searchMove($event)" class="fade-in-card">
+      <form *ngIf="!['pending','error']?.includes(status$ | async)" (submit)="searchMove($event)" class="fade-in-card">
         <ion-searchbar placeholder="move..." [formControl]="move" (ionClear)="clearSearch($event)"></ion-searchbar>
       </form>
     </div>
@@ -96,7 +96,7 @@ export class MovesPage {
 
   move = new FormControl('');
   infiniteScroll$ = new EventEmitter<{perPage:number, search:string}>();
-  status$ = this.store.pipe(select(fromMove.getStatus));
+  status$ = this.store.pipe(select(fromMove.getStatus)).pipe(shareReplay(1));
 
   info$: Observable<any> = this.infiniteScroll$.pipe(
     startWith(this.statusComponent),

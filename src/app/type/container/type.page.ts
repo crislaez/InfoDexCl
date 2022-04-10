@@ -34,19 +34,19 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
 
                 <!--DOUBLE DAMAGE FROM -->
                 <app-type-card
-                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [title]="'COMMON.DOUBLE_DAMAGE_FROM'"
                   [items]="type?.damage_relations?.double_damage_from">
                 </app-type-card>
 
                 <!--DOUBLE DAMAGE TO -->
                 <app-type-card
-                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [title]="'COMMON.DOUBLE_DAMAGE_TO'"
                   [items]="type?.damage_relations?.double_damage_to">
                 </app-type-card>
 
                 <!--HALF DAMAGE FROM -->
                 <app-type-card
-                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [title]="'COMMON.HALF_DAMAGE_FROM'"
                   [items]="type?.damage_relations?.half_damage_from">
                 </app-type-card>
 
@@ -58,13 +58,13 @@ import { startWith, switchMap, tap } from 'rxjs/operators';
 
                 <!--NO DAMAGE FROM -->
                 <app-type-card
-                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [title]="'COMMON.NO_DAMAGE_FROM'"
                   [items]="type?.damage_relations?.no_damage_from">
                 </app-type-card>
 
                 <!--NO DAMAGE TO -->
                 <app-type-card
-                  [title]="'COMMON.HALF_DAMAGE_TO'"
+                  [title]="'COMMON.NO_DAMAGE_TO'"
                   [items]="type?.damage_relations?.no_damage_to">
                 </app-type-card>
 

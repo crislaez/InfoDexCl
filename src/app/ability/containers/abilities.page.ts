@@ -5,7 +5,7 @@ import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { clearName, getCardrBackground, getPokemonImagePrincipal, getPokemonPokedexNumber, gotToTop, isNotData, trackById } from '@pokemon/shared/utils/utils/functions';
 import { Observable } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { fromAbility } from 'src/app/shared/ability-m';
 
 @Component({
@@ -15,7 +15,7 @@ import { fromAbility } from 'src/app/shared/ability-m';
 
     <div class="empty-header">
       <!-- BUSCADOR  -->
-      <form (submit)="searchMove($event)" class="fade-in-card">
+      <form *ngIf="!['pending','error']?.includes(status$ | async)" (submit)="searchMove($event)" class="fade-in-card">
         <ion-searchbar [placeholder]="'COMMON.ABILITY_SPREAT' | translate " [formControl]="ability" (ionClear)="clearSearch($event)"></ion-searchbar>
       </form>
     </div>
@@ -95,7 +95,7 @@ export class AbilitiesPage {
 
   ability = new FormControl('');
   infiniteScroll$ = new EventEmitter();
-  status$ = this.store.pipe(select(fromAbility.getStatus));
+  status$ = this.store.pipe(select(fromAbility.getStatus)).pipe(shareReplay(1));
 
   info$: Observable<any> = this.infiniteScroll$.pipe(
     startWith(this.statusComponent),

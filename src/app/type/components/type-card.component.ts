@@ -20,7 +20,7 @@ import { getClassColor, getPokemonPokedexNumber, trackById } from '@pokemon/shar
     <!-- IS NO DATA  -->
     <ng-template #noData>
       <ion-card-content class="no-data">
-        <span >{{ 'COMMON.NO_DATA' | translate }}</span>
+        <span >{{ 'COMMON.NONE' | translate }}</span>
       </ion-card-content>
     </ng-template>
   `,
